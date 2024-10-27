@@ -12,6 +12,12 @@ export default defineConfig({
 		poolOptions: {
 			useAtomics: true
 		},
-		testTimeout: 3000
+		testTimeout: 3000,
+		browser: {
+			enabled: true,
+			name: 'chromium',
+			headless: false,
+			provider: 'playwright'
+		},
 	},
 });
