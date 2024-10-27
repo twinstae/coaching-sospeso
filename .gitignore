@@ -27,3 +27,5 @@ pnpm-debug.log*
 .clj-kondo
 
 *storybook.log
+
+src/components/__screenshots__
