@@ -1,13 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import { expect, test } from 'vitest'
+import { render } from '@testing-library/react';
+import { test } from 'vitest'
 import Counter from './Counter';
-import userEvent from '@testing-library/user-event'
+import { queryTL } from '../siheom/queryTL';
+import { expectTL } from '../siheom/expectTL';
 
 test('Counter를 렌더한다', async () => {
   render(<Counter />);
 
-  await userEvent.click(screen.getByRole('button', { name: "0" }))
-  await userEvent.click(screen.getByRole('button', { name: "1" }))
+  await queryTL.button("0").click();
+  await queryTL.button("1").click();
 
-  expect(screen.getByRole('button', { name: "2" })).toBeInTheDocument()
+  await expectTL(queryTL.button("2")).toBeVisible()
 })
