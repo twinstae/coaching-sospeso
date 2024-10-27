@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 .lsp
 .clj-kondo
+
+*storybook.log
