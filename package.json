@@ -13,11 +13,13 @@
     "unit": "vitest",
     "e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "deploy": "vercel deploy --prebuilt"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/react": "^3.6.2",
+    "@astrojs/vercel": "^7.8.2",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "astro": "4.16.7",
