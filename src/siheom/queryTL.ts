@@ -156,12 +156,7 @@ export function createQueryTL(getBaseElement = () => document.body) {
   const query = safeFromEntries(
     roles.map((role) => [
       role,
-      (_name?: string | RegExp, exact = false) => {
-        const name = _name
-          ? exact || _name instanceof RegExp
-            ? _name
-            : new RegExp(_name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")
-          : "";
+      (name: string | RegExp) => {
         const result: TLocator = {
           async click(options) {
             const fakeError = new Error();
@@ -253,12 +248,7 @@ export function createQueryTL(getBaseElement = () => document.body) {
 
   return {
     ...query,
-    text: (_text: string | RegExp, exact = false) => {
-      const text = _text
-        ? exact || _text instanceof RegExp
-          ? _text
-          : new RegExp(_text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")
-        : "";
+    text: (text: string | RegExp) => {
       const find = () => base().findByText(text);
       const result: TLocator = {
         async click(options) {
