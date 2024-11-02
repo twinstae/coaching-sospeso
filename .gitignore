@@ -34,3 +34,4 @@ pnpm-debug.log*
 /blob-report/
 /playwright/.cache/
 coverage
+test.db

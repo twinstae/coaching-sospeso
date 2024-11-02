@@ -23,6 +23,10 @@ export default defineWorkspace([
   {
     extends: './vitest.config.ts',
     test: {
+      pool: 'vmThreads',
+      poolOptions: {
+        useAtomics: true
+      },
       include: [
         'src/actions/**/*.test.ts',
         'src/sospeso/**/*.test.ts',

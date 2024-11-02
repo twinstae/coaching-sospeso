@@ -1,4 +1,4 @@
-import { SospesoIssuingForm } from '@/components/SospesoIssuingForm';
+import { SospesoIssuingForm } from "@/components/SospesoIssuingForm";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof SospesoIssuingForm> = {
@@ -11,7 +11,7 @@ type Story = StoryObj<typeof SospesoIssuingForm>;
 export const Base: Story = {
   args: {
     onSubmit: async (command) => {
-      alert(JSON.stringify(command))
-    }
+      alert(JSON.stringify(command));
+    },
   },
 };
