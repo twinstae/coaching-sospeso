@@ -29,3 +29,7 @@ pnpm-debug.log*
 *storybook.log
 
 src/components/__screenshots__
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
