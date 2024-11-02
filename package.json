@@ -62,6 +62,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "storybook": "^8.3.6",
     "tailwindcss": "^3.4.14",
+    "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.4"
   }
 }
