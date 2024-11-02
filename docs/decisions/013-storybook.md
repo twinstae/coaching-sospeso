@@ -1,4 +1,4 @@
-# 인터페이스와 의존성 설계와 주입 : 가난한 이의 DI
+# 스토리북 : Storybook? Astrobook?
 
 상태 : proposed | rejected | accepted | deprecated
 
