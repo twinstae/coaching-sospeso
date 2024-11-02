@@ -1,8 +1,6 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import { getViteConfig } from 'astro/config';
 
-export default defineConfig({
-	plugins: [react()],
+export default getViteConfig({
 	root: './',
 	test: {
 		setupFiles: './setupTests.ts',
