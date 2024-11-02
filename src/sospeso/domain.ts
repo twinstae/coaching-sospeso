@@ -173,13 +173,13 @@ export function consumeSospeso(
     sospeso.id === command.sospesoId,
     "소스페소와 커맨드의 id가 다릅니다!",
   );
-  invariant(isApproved(sospeso), "승인되지 않은 소스페소입니다!")
+  invariant(isApproved(sospeso), "승인되지 않은 소스페소입니다!");
 
   return {
     ...sospeso,
     consuming: {
-        id: command.consumingId,
-        consumedAt: command.consumedAt
-    }
-  }
+      id: command.consumingId,
+      consumedAt: command.consumedAt,
+    },
+  };
 }
