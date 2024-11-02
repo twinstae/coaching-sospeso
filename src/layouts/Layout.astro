@@ -8,13 +8,13 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="ko-kr" data-theme="lofi">
+<html data-theme="lofi" lang="ko-kr">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+		<meta content="Astro description" name="description" />
+		<meta content="width=device-width" name="viewport" />
+		<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+		<meta content={Astro.generator} name="generator" />
 		<title>{title}</title>
 		<link
 			href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css"
