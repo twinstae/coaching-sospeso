@@ -55,7 +55,7 @@ export function SospesoIssuingForm({
         />
       </label>
       {errors.to && <p role="alert" aria-label={errors.to} >{errors.to}</p>}
-      <button type="submit">발행하기</button>
+      <button className='btn btn-primary' type="submit">발행하기</button>
     </form>
   );
 }
