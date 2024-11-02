@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "lint": "astro check src && eslint src",
     "format": "prettier src --write",
     "build": "astro build",
@@ -12,9 +11,9 @@
     "astro": "astro",
     "unit": "vitest",
     "e2e": "playwright test",
+    "e2e:install": "playwright install --with-deps",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "deploy": "vercel deploy --prebuilt"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
