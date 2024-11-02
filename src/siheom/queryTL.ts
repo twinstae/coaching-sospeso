@@ -12,13 +12,13 @@ function safeFromEntries<K extends PropertyKey, V>(entries: [K, V][]) {
 
 export function swapStackAsync(fakeError: Error, error: unknown) {
   if (error instanceof Error) {
-    const lines = fakeError.stack?.split("\n") ?? [];
-    const fail = error.stack?.split("\n").slice(0, 5) ?? [];
-    error.stack = [...fail, lines[0], ...lines.slice(2)].join("\n");
-    // console.log(error.stack);
-    return Promise.reject(error);
+    const lines = fakeError.stack?.split("\n").slice(0, 5) ?? [];
+    const fail = error.stack?.split("\n") ?? [];
+    error.stack = [fail, ...lines.slice(2)].join("\n");
+    // console.log(error.stack)
+    throw error
   }
-  return Promise.reject(error);
+  throw error;
 }
 
 export function swapStackSync(fakeError: Error, error: unknown) {
@@ -202,9 +202,9 @@ export function createQueryTL(getBaseElement = () => document.body) {
           find: async () => {
             const fakeError = new Error();
             try {
-              return await base().findByRole(role, { name });
+              return base().findByRole(role, { name });
             } catch (error) {
-              return swapStackAsync(fakeError, error);
+              throw swapStackAsync(fakeError, error);
             }
           },
           findAll: async () => {
@@ -212,7 +212,7 @@ export function createQueryTL(getBaseElement = () => document.body) {
             try {
               return await base().findAllByRole(role, { name });
             } catch (error) {
-              return swapStackAsync(fakeError, error);
+              throw swapStackAsync(fakeError, error);
             }
           },
           get: () => {
