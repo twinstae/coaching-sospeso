@@ -1,4 +1,5 @@
 import invariant from "../invariant";
+import Application from "../pages/sospeso/[sospesoId]/application.astro";
 
 type SospesoIssuing = {
   id: string;
@@ -13,18 +14,28 @@ type SospesoApplication = {
   appliedAt: Date;
 };
 
-type SospesoUsing = {
+type SospesoConsuming = {
   id: string;
 
-  usedAt: Date;
+  consumedAt: Date;
 };
 
 type Sospeso = {
   id: string;
   issuing: SospesoIssuing;
   applicationList: SospesoApplication[];
-  using: SospesoUsing | undefined;
+  consuming: SospesoConsuming | undefined;
 };
+
+export function isApproved(sospeso: Sospeso) {
+  return sospeso.applicationList.some(
+    (application) => application.status === "approved",
+  );
+}
+
+export function isConsumed(sospeso: Sospeso) {
+  return sospeso.consuming !== undefined;
+}
 
 type SospesoIssuingCommand = {
   sospesoId: string;
@@ -44,7 +55,7 @@ export function issueSospeso(command: SospesoIssuingCommand): Sospeso {
       issuedAt: command.issuedAt,
     },
     applicationList: [],
-    using: undefined,
+    consuming: undefined,
   };
 }
 
@@ -54,7 +65,7 @@ type SospesoApplicationCommand = {
   appliedAt: Date;
 };
 
-function isApplicationLocked(sospeso: Sospeso) {
+export function isApplicationLocked(sospeso: Sospeso) {
   return sospeso.applicationList.some(
     (application) =>
       application.status === "applied" || application.status === "approved",
@@ -65,7 +76,10 @@ export function applySospeso(
   sospeso: Sospeso,
   command: SospesoApplicationCommand,
 ): Sospeso {
-  invariant(sospeso.id === command.sospesoId);
+  invariant(
+    sospeso.id === command.sospesoId,
+    "소스페소와 커맨드의 id가 다릅니다!",
+  );
 
   if (isApplicationLocked(sospeso)) {
     throw new Error("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.");
@@ -84,6 +98,88 @@ export function applySospeso(
   };
 }
 
-export function isUsed(sospeso: Sospeso) {
-  return sospeso.using !== undefined;
+type SospesoApplicationApproveCommand = {
+  sospesoId: string;
+  applicationId: string;
+};
+
+export function approveApplication(
+  sospeso: Sospeso,
+  command: SospesoApplicationApproveCommand,
+): Sospeso {
+  invariant(
+    sospeso.id === command.sospesoId,
+    "소스페소와 커맨드의 id가 다릅니다!",
+  );
+  invariant(
+    sospeso.applicationList.some(
+      (application) => application.id === command.applicationId,
+    ),
+    "이 소스페소에 신청된 적이 없는 id입니다!",
+  );
+  invariant(!isApproved(sospeso), "이미 승인된 소스페소입니다!");
+
+  return {
+    ...sospeso,
+    applicationList: sospeso.applicationList.map((application) => {
+      if (application.id === command.applicationId) {
+        return { ...application, status: "approved" };
+      }
+      return { ...application, status: "rejected" };
+    }),
+  };
+}
+
+type SospesoApplicationRejectCommand = {
+  sospesoId: string;
+  applicationId: string;
+};
+
+export function rejectApplication(
+  sospeso: Sospeso,
+  command: SospesoApplicationRejectCommand,
+): Sospeso {
+  invariant(
+    sospeso.id === command.sospesoId,
+    "소스페소와 커맨드의 id가 다릅니다!",
+  );
+  invariant(
+    sospeso.applicationList.some(
+      (application) => application.id === command.applicationId,
+    ),
+    "이 소스페소에 신청된 적이 없는 id입니다",
+  );
+
+  return {
+    ...sospeso,
+    applicationList: sospeso.applicationList.map((application) => {
+      if (application.id === command.applicationId) {
+        return { ...application, status: "rejected" };
+      }
+      return application;
+    }),
+  };
+}
+
+export function consumeSospeso(
+  sospeso: Sospeso,
+  command: {
+    sospesoId: string;
+    consumingId: string;
+    consumedAt: Date;
+  },
+): Sospeso {
+  invariant(
+    sospeso.id === command.sospesoId,
+    "소스페소와 커맨드의 id가 다릅니다!",
+  );
+  invariant(isApproved(sospeso), "승인되지 않은 소스페소입니다!")
+
+  return {
+    ...sospeso,
+    consuming: {
+        id: command.consumingId,
+        consumedAt: command.consumedAt
+    }
+  }
 }
