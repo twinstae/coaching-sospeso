@@ -31,23 +31,21 @@ describe("sospeso", () => {
 
   test("하나의 소스페소에 두 번 신청할 수는 없다", () => {
     const appliedSospeso = applySospeso(issuedSospeso, {
+      sospesoId: issuedSospeso.id,
+      applicationId: crypto.randomUUID(),
+      appliedAt: new Date(),
+    });
+
+    expect(() => {
+      applySospeso(appliedSospeso, {
         sospesoId: issuedSospeso.id,
         applicationId: crypto.randomUUID(),
         appliedAt: new Date(),
       });
-    
-    expect(() => {
-        applySospeso(appliedSospeso, {
-            sospesoId: issuedSospeso.id,
-            applicationId: crypto.randomUUID(),
-            appliedAt: new Date(),
-        });
-    }).toThrowError("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.")
+    }).toThrowError("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.");
   });
 
-  test("소스페소 신청을 승인할 수 있다", () => {
-
-  });
+  test("소스페소 신청을 승인할 수 있다", () => {});
 
   test("소스페소 신청을 거절할 수 있다", () => {});
 

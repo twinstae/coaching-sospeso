@@ -54,8 +54,11 @@ type SospesoApplicationCommand = {
   appliedAt: Date;
 };
 
-function isApplicationLocked(sospeso: Sospeso){
-    return sospeso.applicationList.some(application => application.status === 'applied' || application.status === 'approved')
+function isApplicationLocked(sospeso: Sospeso) {
+  return sospeso.applicationList.some(
+    (application) =>
+      application.status === "applied" || application.status === "approved",
+  );
 }
 
 export function applySospeso(
@@ -64,8 +67,8 @@ export function applySospeso(
 ): Sospeso {
   invariant(sospeso.id === command.sospesoId);
 
-  if (isApplicationLocked(sospeso)){
-    throw new Error("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.")
+  if (isApplicationLocked(sospeso)) {
+    throw new Error("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.");
   }
 
   return {
