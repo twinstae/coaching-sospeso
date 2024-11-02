@@ -6,17 +6,24 @@ type SospesoListItemDto = {
     to: string;
 }
 
-let _fakeState: Record<string, Sospeso> = {}
+export interface SospesoRepositoryI  {
+    retrieveSospesoList(): Promise<SospesoListItemDto[]>;
+    updateOrSave(sospesoId: string, update: (sospeso: Sospeso | undefined) => Sospeso): Promise<void>;
+}
 
-export const fakeRepository = {
-    async retrieveSospesoList(): Promise<SospesoListItemDto[]>{
-        return Object.values(_fakeState).map(sospeso => ({
-            from: sospeso.from,
-            to: sospeso.to,
-            id: sospeso.id
-        }))
-    },
-    async save(sospeso: Sospeso): Promise<void>{
-        _fakeState[sospeso.id] = sospeso;
+export const createFakeRepository = (initState: Record<string, Sospeso> = {}): SospesoRepositoryI => {
+    let _fakeState = initState
+
+    return {
+        async retrieveSospesoList(): Promise<SospesoListItemDto[]>{
+            return Object.values(_fakeState).map(sospeso => ({
+                from: sospeso.from,
+                to: sospeso.to,
+                id: sospeso.id
+            }))
+        },
+        async updateOrSave(sospesoId: string, update: (sospeso: Sospeso | undefined) => Sospeso): Promise<void>{
+            _fakeState[sospesoId] = update(_fakeState[sospesoId])
+        }
     }
 }
