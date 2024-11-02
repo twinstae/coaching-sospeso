@@ -1,5 +1,4 @@
 import invariant from "../invariant";
-import Application from "../pages/sospeso/[sospesoId]/application.astro";
 
 type SospesoIssuing = {
   id: string;
@@ -20,8 +19,10 @@ type SospesoConsuming = {
   consumedAt: Date;
 };
 
-type Sospeso = {
+export type Sospeso = {
   id: string;
+  from: string;
+  to: string;
   issuing: SospesoIssuing;
   applicationList: SospesoApplication[];
   consuming: SospesoConsuming | undefined;
@@ -40,6 +41,8 @@ export function isConsumed(sospeso: Sospeso) {
 type SospesoIssuingCommand = {
   sospesoId: string;
   issuedAt: Date;
+  from: string;
+  to: string;
 };
 
 /**
@@ -50,6 +53,8 @@ type SospesoIssuingCommand = {
 export function issueSospeso(command: SospesoIssuingCommand): Sospeso {
   return {
     id: command.sospesoId,
+    from: command.from,
+    to: command.to,
     issuing: {
       id: command.sospesoId,
       issuedAt: command.issuedAt,

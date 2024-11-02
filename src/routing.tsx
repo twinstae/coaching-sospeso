@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 import * as v from "valibot";
+import { navigate as astroNavigate } from 'astro:transitions/client';
 
 type StaticRoute = { path: string };
 
@@ -71,4 +72,13 @@ export function Link<RouteKey extends RouteKeys>(
   } & Omit<ComponentProps<"a">, "href">,
 ) {
   return <a {...props} href={href(routeKey, params)}></a>;
+}
+
+export function navigate<RouteKey extends RouteKeys>(
+  routeKey: RouteKey,
+  params: (typeof routes)[RouteKey] extends DynamicRoute
+    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
+    : undefined,
+) {
+  return astroNavigate(href(routeKey, params))
 }
