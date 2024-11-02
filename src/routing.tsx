@@ -14,9 +14,15 @@ const routes = {
         path: "/sospeso/issuing"
     },
     "소스페소-상세": {
-        path: "/sospeso/[sospeso_id]",
+        path: "/sospeso/[sospesoId]",
         paramsSchema: v.object({
-            sospeso_id: v.pipe(v.string(), v.uuid())
+            sospesoId: v.pipe(v.string(), v.uuid())
+        })
+    },
+    "소스페소-신청": {
+        path: "/sospeso/[sospesoId]/application",
+        paramsSchema: v.object({
+            sospesoId: v.pipe(v.string(), v.uuid())
         })
     }
 } satisfies Record<string, Route>
