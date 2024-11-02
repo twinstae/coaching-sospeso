@@ -2,8 +2,7 @@ import { waitFor } from "@testing-library/dom";
 import { expect } from "vitest";
 import { swapStackAsync, type TLocator } from "./queryTL";
 
-const NonVisibleElement = document.createElement("div");
-NonVisibleElement.ariaHidden = "true";
+const NonVisibleElement = document.createElement("div"); NonVisibleElement.ariaHidden = "true";
 
 export function expectTL(tLocator: TLocator): {
 	toBeChecked: () => Promise<void>;
@@ -42,7 +41,7 @@ export function expectTL(tLocator: TLocator): {
 	return {
 		async toBeChecked() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toBeChecked();
 				} catch (error) {
@@ -52,7 +51,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toBeVisible() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toBeVisible();
 				} catch (error) {
@@ -62,7 +61,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toBeDisabled() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toHaveAttribute("aria-disabled", "true");
 				} catch (error) {
@@ -72,7 +71,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toBeCurrent(type) {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toHaveAttribute("aria-current", type);
 				} catch (error) {
@@ -82,7 +81,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toBeExpanded() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toHaveAttribute("aria-expanded", "true");
 				} catch (error) {
@@ -92,7 +91,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toBeSelected() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toHaveAttribute("aria-selected", "true");
 				} catch (error) {
@@ -102,7 +101,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toBeFocusable() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).not.toHaveAttribute("tabindex", "-1");
 				} catch (error) {
@@ -112,7 +111,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toHaveText(text) {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toHaveTextContent(text);
 				} catch (error) {
@@ -122,7 +121,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toHaveValue(value) {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toHaveValue(value);
 				} catch (error) {
@@ -132,7 +131,7 @@ export function expectTL(tLocator: TLocator): {
 		},
 		async toHaveTextContents(value) {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.getAll().map((el) => el.textContent)).toEqual(value);
 				} catch (error) {
@@ -163,7 +162,7 @@ export function expectTL(tLocator: TLocator): {
 
 		async toBeFocused() {
 			const fakeError = new Error();
-			return waitFor(() => {
+			return waitFor(async () => {
 				try {
 					expect(tLocator.get()).toBe(document.activeElement);
 				} catch (error) {
@@ -174,7 +173,7 @@ export function expectTL(tLocator: TLocator): {
 		not: {
 			async toBeChecked() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toBeChecked();
 					} catch (error) {
@@ -184,7 +183,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toBeVisible() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						// null인 경우도 playwright와 같이 non visible로 처리
 						expect(tLocator.query() ?? NonVisibleElement).not.toBeVisible();
@@ -195,7 +194,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toBeDisabled() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toHaveAttribute("aria-disabled", "true");
 					} catch (error) {
@@ -204,9 +203,8 @@ export function expectTL(tLocator: TLocator): {
 				});
 			},
 			async toBeCurrent(type = "false") {
-				const fakeError = new Error();
-				if (type === "false") {
-					return waitFor(() => {
+				const fakeError = new Error(); if (type === "false") {
+					return waitFor(async () => {
 						try {
 							expect(tLocator.get()).toHaveAttribute("aria-current", "false");
 						} catch (error) {
@@ -214,7 +212,7 @@ export function expectTL(tLocator: TLocator): {
 						}
 					});
 				}
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toHaveAttribute("aria-current", type);
 					} catch (error) {
@@ -224,7 +222,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toBeExpanded() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toHaveAttribute("aria-expanded", "true");
 					} catch (error) {
@@ -234,7 +232,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toBeSelected() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toHaveAttribute("aria-selected", "true");
 					} catch (error) {
@@ -244,7 +242,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toBeFocusable() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).toHaveAttribute("tabindex", "-1");
 					} catch (error) {
@@ -254,7 +252,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toHaveText(text) {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toHaveTextContent(text);
 					} catch (error) {
@@ -264,7 +262,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toHaveValue(value) {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toHaveValue(value);
 					} catch (error) {
@@ -274,7 +272,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toHaveTextContents(value) {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.getAll().map((el) => el.textContent)).not.toEqual(
 							value,
@@ -306,7 +304,7 @@ export function expectTL(tLocator: TLocator): {
 			},
 			async toBeFocused() {
 				const fakeError = new Error();
-				return waitFor(() => {
+				return waitFor(async () => {
 					try {
 						expect(tLocator.get()).not.toBe(document.activeElement);
 					} catch (error) {

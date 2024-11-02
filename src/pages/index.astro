@@ -1,40 +1,38 @@
 ---
-import Counter from '../components/Counter';
+import Counter from "../components/Counter";
 import Cube from "../components/Cube.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Welcome to Astro.">
-	<div class="hero bg-base-200 py-40">
-		<div class="hero-content text-center">
-			<div class="max-w-md">
-				<h1 class="text-5xl font-bold mb-12">코칭 소스페소</h1>
-				<p class="mb-4">
-					소스페소라는 맡겨둔 커피라는 뜻의 이탈리아어입니다. 커피값을
-					누군가 먼저 계산해두고 영수증을 걸어두면, 조건에 맞는 누구나
-					그 커피를 마실 수 있습니다. 경제적 여유가 없는 노인, 노숙자
-					등등...
-				</p>
-				<p>
-					코칭 소스페소도 비슷합니다. 도움을 받을 경제적 여력이 없는
-					사회 초년생과 취약 계층을 위해 누군가 코칭비를 미리
-					지불하면. 조건에 맞는 사람이라면 누구나 코칭을 받고 도움을
-					받을 수 있습니다.
-				</p>
-				<button class="btn btn-primary mt-12">더 보러가기</button>
-			</div>
-		</div>
-	</div>
+  <div class="hero bg-base-200 py-40">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold mb-12">코칭 소스페소</h1>
+        <p class="mb-4">
+          소스페소라는 맡겨둔 커피라는 뜻의 이탈리아어입니다. 커피값을 누군가
+          먼저 계산해두고 영수증을 걸어두면, 조건에 맞는 누구나 그 커피를 마실
+          수 있습니다. 경제적 여유가 없는 노인, 노숙자 등등...
+        </p>
+        <p>
+          코칭 소스페소도 비슷합니다. 도움을 받을 경제적 여력이 없는 사회
+          초년생과 취약 계층을 위해 누군가 코칭비를 미리 지불하면. 조건에 맞는
+          사람이라면 누구나 코칭을 받고 도움을 받을 수 있습니다.
+        </p>
+        <button class="btn btn-primary mt-12">더 보러가기</button>
+      </div>
+    </div>
+  </div>
 
-	<Counter client:idle />
-	
-	<div class="grid grid-cols-3 gap-1 bg-stone-800 p-1">
-		<Cube />
-		<Cube />
-		<Cube isEmpty={true} />
+  <Counter client:idle />
 
-		<Cube />
-		<Cube />
-		<Cube />
-	</div>
+  <div class="grid grid-cols-3 gap-1 bg-stone-800 p-1">
+    <Cube />
+    <Cube />
+    <Cube isEmpty={true} />
+
+    <Cube />
+    <Cube />
+    <Cube />
+  </div>
 </Layout>

@@ -3,42 +3,40 @@ const { isEmpty } = Astro.props;
 ---
 
 <li class="bg-stone-600 aspect-square relative list-none">
-    <div class="absolute inset-1 flex items-center justify-center">
-        {
-            !isEmpty && (
-                <div class="bg-white w-3/5 h-4/5 flex flex-col text-sm gap-2 px-2">
-                    <div class="text-center font-bold text-lg">무료 코칭</div>
+  <div class="absolute inset-1 flex items-center justify-center">
+    {
+      !isEmpty && (
+        <div class="bg-white w-3/5 h-4/5 flex flex-col text-sm gap-2 px-2">
+          <div class="text-center font-bold text-lg">무료 코칭</div>
 
-                    <div class="flex justify-between">
-                        <div class="flex flex-col justify-between border-black border-2 p-0.5 px-2">
-                            <span class="font-semibold">From:</span>
-                            <span>재호</span>
-                        </div>
+          <div class="flex justify-between">
+            <div class="flex flex-col justify-between border-black border-2 p-0.5 px-2">
+              <span class="font-semibold">From:</span>
+              <span>재호</span>
+            </div>
 
-                        <div class="flex flex-col justify-between border-black border-2 p-0.5 px-2">
-                            <span class="font-semibold">Date:</span>
-                            <span>24. 4. 5</span>
-                        </div>
-                    </div>
+            <div class="flex flex-col justify-between border-black border-2 p-0.5 px-2">
+              <span class="font-semibold">Date:</span>
+              <span>24. 4. 5</span>
+            </div>
+          </div>
 
-                    <div class="border-black border-2 p-0.5 px-2">
-                        <div class="text-center font-semibold">코칭 1세션</div>
+          <div class="border-black border-2 p-0.5 px-2">
+            <div class="text-center font-semibold">코칭 1세션</div>
 
-                        <div class="space-y-2">
-                            <span class="font-semibold">To:</span>
-                            <p class="text-sm font-handwriting">
-                                퀴어 문화 축제 올 사람
-                            </p>
-                        </div>
-                    </div>
+            <div class="space-y-2">
+              <span class="font-semibold">To:</span>
+              <p class="text-sm font-handwriting">퀴어 문화 축제 올 사람</p>
+            </div>
+          </div>
 
-                    <div class="text-center text-sm font-semibold">
-                        코칭 소스페소 태그
-                    </div>
+          <div class="text-center text-sm font-semibold">
+            코칭 소스페소 태그
+          </div>
 
-                    <div class="text-center font-bold text-xl">Life Lifter</div>
-                </div>
-            )
-        }
-    </div>
+          <div class="text-center font-bold text-xl">Life Lifter</div>
+        </div>
+      )
+    }
+  </div>
 </li>
