@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import Counter from "../components/Counter";
+import Counter from "../shared/components/Counter";
 
 const meta: Meta<typeof Counter> = {
   component: Counter,

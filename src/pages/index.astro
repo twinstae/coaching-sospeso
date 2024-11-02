@@ -1,6 +1,5 @@
 ---
-import Counter from "../components/Counter";
-import Cube from "../components/Cube.astro";
+import Counter from "../shared/components/Counter";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -25,14 +24,4 @@ import Layout from "../layouts/Layout.astro";
   </div>
 
   <Counter client:idle />
-
-  <div class="grid grid-cols-3 gap-1 bg-stone-800 p-1">
-    <Cube />
-    <Cube />
-    <Cube isEmpty={true} />
-
-    <Cube />
-    <Cube />
-    <Cube />
-  </div>
 </Layout>
