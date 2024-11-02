@@ -8,7 +8,7 @@ const issuingSchema = v.object({
   to: v.string(),
 });
 
-function SospesoIssuingForm({
+export function SospesoIssuingForm({
   onSubmit,
 }: {
   onSubmit: (command: { from: string; to: string }) => Promise<void>;
@@ -44,7 +44,7 @@ function SospesoIssuingForm({
           placeholder="ex) 탐정토끼, 김태희"
         />
       </label>
-      {errors.from && <p role="alert">{errors.from}</p>}
+      {errors.from && <p role="alert" aria-label={errors.from} >{errors.from}</p>}
       <label className="input input-bordered flex items-center gap-2">
         To.
         <input
@@ -54,7 +54,7 @@ function SospesoIssuingForm({
           placeholder="ex) 퀴어 문화 축제 올 사람"
         />
       </label>
-      {errors.to && <p role="alert">{errors.to}</p>}
+      {errors.to && <p role="alert" aria-label={errors.to} >{errors.to}</p>}
       <button type="submit">발행하기</button>
     </form>
   );

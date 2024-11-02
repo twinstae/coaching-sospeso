@@ -48,6 +48,7 @@
     "@typescript-eslint/parser": "^8.12.2",
     "@vitejs/plugin-react": "^4.3.3",
     "@vitest/browser": "^2.1.4",
+    "@vitest/ui": "2.1.4",
     "autoprefixer": "^10.4.20",
     "babel-plugin-react-compiler": "19.0.0-beta-6fc168f-20241025",
     "clsx": "^2.1.1",
