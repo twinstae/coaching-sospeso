@@ -1,3 +1,4 @@
+import type { ComponentProps } from "react";
 import * as v from "valibot";
 
 type StaticRoute = { path: string };
@@ -39,13 +40,13 @@ function resolveRoute(key: RouteKeys) {
 
 type RouteKeys = keyof typeof routes;
 
-export function href<Key extends RouteKeys>(
-  key: Key,
-  params: (typeof routes)[Key] extends DynamicRoute
-    ? v.InferOutput<(typeof routes)[Key]["paramsSchema"]>
+export function href<RouteKey extends RouteKeys>(
+  routeKey: RouteKey,
+  params: (typeof routes)[RouteKey] extends DynamicRoute
+    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
     : undefined,
 ) {
-  const route = resolveRoute(key);
+  const route = resolveRoute(routeKey);
 
   if ("paramsSchema" in route) {
     try {
@@ -59,4 +60,15 @@ export function href<Key extends RouteKeys>(
     }
   }
   return route.path;
+}
+
+export function Link<RouteKey extends RouteKeys>(
+  { routeKey, params, ...props}: {
+    routeKey: RouteKey;
+    params: (typeof routes)[RouteKey] extends DynamicRoute
+      ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
+      : undefined;
+  } & Omit<ComponentProps<"a">, "href">,
+) {
+  return <a {...props} href={href(routeKey, params)}></a>;
 }
