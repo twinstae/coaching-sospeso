@@ -4,36 +4,11 @@ import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
 import { SospesoDetail } from "./SospesoDetail";
 import { href } from "@/routing";
-
-const ISSUED_SOSPESO = {
-  id: "2a88cac2-c021-48c6-9288-ecf0464d5bc2",
-  from: { id: "1234", nickname: "탐정토끼" },
-  to: "퀴어 문화 축제 올 사람",
-  status: "issued", // 읽기 모델 "issued" | "pending" | "consumed"
-  consuming: undefined,
-} as const;
-
-const PENDING_SOSPESO = {
-  id: "2a88cac2-c021-48c6-9288-ecf0464d5bc2",
-  from: { id: "1234", nickname: "탐정토끼" },
-  to: "퀴어 문화 축제 올 사람",
-  status: "pending", // 읽기 모델 "issued" | "pending" | "consumed"
-  consuming: undefined,
-} as const;
-
-const CONSUMED_SOSPESO = {
-  id: "2a88cac2-c021-48c6-9288-ecf0464d5bc2",
-  from: { id: "1234", nickname: "탐정토끼" },
-  to: "퀴어 문화 축제 올 사람",
-  status: "consumed", // 읽기 모델 "issued" | "pending" | "consumed"
-  consuming: {
-    consumer: {
-      id: "444",
-      nickname: "촛불이",
-    },
-    content: "탐토에게 테스트 코칭을 받아서 너무 좋았어요!",
-  },
-} as const;
+import {
+  CONSUMED_SOSPESO,
+  ISSUED_SOSPESO,
+  PENDING_SOSPESO,
+} from "@/sospeso/fixtures";
 
 const STAMP_ALT = "사용됨";
 
