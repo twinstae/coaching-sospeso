@@ -130,7 +130,7 @@ export function approveApplication(
       if (application.id === command.applicationId) {
         return { ...application, status: "approved" };
       }
-      return { ...application, status: "rejected" };
+      return application;
     }),
   };
 }

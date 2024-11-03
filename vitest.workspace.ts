@@ -1,14 +1,9 @@
-// vitest.workspace.ts
-import { getViteConfig } from 'astro/config'
 import { defineWorkspace } from 'vitest/config'
 
 export default defineWorkspace([
-  getViteConfig({
+  {
+    extends: './vitest.config.ts',
     test: {
-      pool: 'vmThreads',
-      poolOptions: {
-        useAtomics: true
-      },
       setupFiles: './setupTests.ts',
       include: [
         'src/components/**/*.test.{ts,tsx}',
@@ -24,15 +19,17 @@ export default defineWorkspace([
         provider: 'playwright'
       },
     },
-  }),
-  getViteConfig({
+  },
+  {
+    extends: './vitest.config.ts',
     test: {
       include: [
         'src/actions/**/*.test.ts',
         'src/sospeso/**/*.test.ts',
+        'src/*.test.ts',
       ],
       name: 'unit',
       environment: 'node',
     },
-  }),
+  },
 ])

@@ -87,6 +87,38 @@ describe("sospeso", () => {
 
   test("거절한 소스페소는 다시 신청할 수 있다", () => {
     expect(isApplicationLocked(rejectedSospeso)).toBe(false);
+
+    const secondApplicationId = crypto.randomUUID();
+
+    const appliedSospeso = applySospeso(rejectedSospeso, {
+      sospesoId: rejectedSospeso.id,
+      applicationId: secondApplicationId,
+      appliedAt: new Date(),
+    });
+
+    const approvedSospeso = approveApplication(appliedSospeso, {
+      sospesoId: appliedSospeso.id,
+      applicationId: secondApplicationId,
+    });
+
+    expect(approvedSospeso.applicationList.map(a => a.status)).toEqual(["rejected", "approved"])
+  });
+
+  test("두 번 이상 거절할 수도 있다", () => {
+    const secondApplicationId = crypto.randomUUID();
+
+    const appliedSospeso = applySospeso(rejectedSospeso, {
+      sospesoId: rejectedSospeso.id,
+      applicationId: secondApplicationId,
+      appliedAt: new Date(),
+    });
+
+    const rejectedAgainSospeso = rejectApplication(appliedSospeso, {
+      sospesoId: appliedSospeso.id,
+      applicationId: secondApplicationId,
+    });
+
+    expect(rejectedAgainSospeso.applicationList.map(a => a.status)).toEqual(["rejected", "rejected"])
   });
 
   test("승인된 소스페소를 사용 처리할 수 있다", () => {
