@@ -22,15 +22,13 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         to: z.string(),
       }),
       handler: async (input) => {
-        const issuedSospeso = domain.issueSospeso({
-          ...input,
-          issuedAt: new Date(),
-        });
-
         await sospesoRepo.updateOrSave(input.sospesoId, (existed) => {
-          invariant(existed === undefined);
+          invariant(existed === undefined, "이미 생성된 소스페소입니다!");
 
-          return issuedSospeso;
+          return domain.issueSospeso({
+            ...input,
+            issuedAt: new Date(),
+          });;
         });
       },
     }),
