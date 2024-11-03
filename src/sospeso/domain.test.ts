@@ -132,4 +132,22 @@ describe("sospeso", () => {
 
     expect(isConsumed(consumedSospeso)).toBe(true);
   });
+
+  test("사용한 소스페소를 다시 사용 처리할 수 없다", () => {
+    const consumedSospeso = consumeSospeso(approvedSospeso, {
+      sospesoId: issuedSospeso.id,
+      consumingId: crypto.randomUUID(),
+      consumedAt: new Date(),
+    });
+
+    expect(isConsumed(consumedSospeso)).toBe(true);
+
+    expect(() => {
+      consumeSospeso(consumedSospeso, {
+        sospesoId: issuedSospeso.id,
+        consumingId: crypto.randomUUID(),
+        consumedAt: new Date(),
+      });
+    }).toThrowErrorMatchingInlineSnapshot(`[Invariant Error: 이미 사용한 소스페소입니다!]`)
+  });
 });

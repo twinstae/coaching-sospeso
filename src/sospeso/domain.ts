@@ -179,6 +179,7 @@ export function consumeSospeso(
     "소스페소와 커맨드의 id가 다릅니다!",
   );
   invariant(isApproved(sospeso), "승인되지 않은 소스페소입니다!");
+  invariant(!isConsumed(sospeso), "이미 사용한 소스페소입니다!");
 
   return {
     ...sospeso,
