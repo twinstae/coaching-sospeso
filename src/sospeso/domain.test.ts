@@ -16,6 +16,8 @@ describe("sospeso", () => {
   const issuedSospeso = issueSospeso({
     sospesoId: sospesoId,
     issuedAt: now,
+    from: '탐정토끼',
+    to: '퀴어 문화 축제 올 사람'
   });
 
   test("소스페소를 발행할 수 있다.", () => {
