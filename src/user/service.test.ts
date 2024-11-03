@@ -52,15 +52,14 @@ describe("sospeso", () => {
     });
 
     expect(await repo.retrieveUserById(TEST_USER.id)).toEqual({
-        id: TEST_USER.id,
-        email: TEST_USER.email,
-        name: "김토끼",
-        nickname: "검은 토끼",
-        phone: "010-1111-2222",
+      id: TEST_USER.id,
+      email: TEST_USER.email,
+      name: "김토끼",
+      nickname: "검은 토끼",
+      phone: "010-1111-2222",
     });
   });
 
-  
   test("탈퇴하면 이름, 전화번호, 이메일이 사라지고, 별명과 id만 남는다", async () => {
     const repo = createFakeRepository({ [TEST_USER.id]: TEST_USER });
 
@@ -68,12 +67,12 @@ describe("sospeso", () => {
     await withdraw(repo, TEST_USER.id, withdrawnAt);
 
     expect(await repo.retrieveUserById(TEST_USER.id)).toStrictEqual({
-        id: TEST_USER.id,
-        nickname: TEST_USER.nickname,
-        name: null,
-        email: null,
-        phone: null,
-        withdrawnAt
+      id: TEST_USER.id,
+      nickname: TEST_USER.nickname,
+      name: null,
+      email: null,
+      phone: null,
+      withdrawnAt,
     });
   });
 });

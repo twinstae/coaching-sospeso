@@ -4,5 +4,5 @@ export const TEST_USER = {
   name: "김태희",
   phone: "010-4827-1733",
   nickname: "탐정토끼",
-  withdrawnAt: undefined
+  withdrawnAt: undefined,
 };

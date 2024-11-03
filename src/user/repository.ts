@@ -34,7 +34,10 @@ export const createFakeRepository = (
         throw Error("이미 같은 이메일로 가입되어 있습니다.");
       }
 
-      if (oldUser === undefined && nicknameList.includes(updatedUser.nickname)) {
+      if (
+        oldUser === undefined &&
+        nicknameList.includes(updatedUser.nickname)
+      ) {
         throw Error("이미 같은 닉네임으로 가입되어 있습니다.");
       }
 

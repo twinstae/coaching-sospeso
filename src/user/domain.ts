@@ -8,7 +8,8 @@ export type User =
       nickname: string;
       withdrawnAt: undefined;
     }
-  | { // 탈퇴한 유저
+  | {
+      // 탈퇴한 유저
       id: string;
       nickname: string;
 
