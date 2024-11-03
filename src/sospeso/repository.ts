@@ -26,7 +26,7 @@ type SospesoDto =
     };
 export interface SospesoRepositoryI {
   retrieveSospesoList(): Promise<SospesoListItemDto[]>;
-  retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto>;
+  retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto | undefined>;
   updateOrSave(
     sospesoId: string,
     update: (sospeso: Sospeso | undefined) => Sospeso,
@@ -53,7 +53,28 @@ export const createFakeRepository = (
         return undefined;
       }
 
-      // TODO: schema로 정의해서 검증할 것
+      const status = calcStatus(sospeso);
+
+      if (status === "consumed") {
+        return {
+          id: sospeso.id,
+          from: {
+            // TODO! 발행자가 유저 관리와 연결
+            id: "1231",
+            nickname: "423423",
+          },
+          status,
+          to: sospeso.to,
+          consuming: {
+            // TODO: 사용 담당자가 유저 관리와 연결
+            consumer: {
+              id: "3231",
+              nickname: "촛불이",
+            },
+            content: "후기..",
+          },
+        };
+      }
 
       return {
         id: sospeso.id,
@@ -62,19 +83,9 @@ export const createFakeRepository = (
           id: "1231",
           nickname: "423423",
         },
-        status: calcStatus(sospeso),
+        status,
         to: sospeso.to,
-        consuming: sospeso.consuming
-          ? {
-              // TODO: 사용 담당자가 유저 관리와 연결
-              consumer: {
-                id: "3231",
-                nickname: "촛불이",
-              },
-              content: "후기..",
-            }
-          : undefined,
-      } as any;
+      };
     },
     async updateOrSave(
       sospesoId: string,
