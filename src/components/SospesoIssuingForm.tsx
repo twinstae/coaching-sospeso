@@ -1,4 +1,4 @@
-import { navigate } from '@/routing';
+import { navigate } from "@/routing";
 import { actions } from "astro:actions";
 import { useMemo, useState } from "react";
 import * as v from "valibot";
@@ -44,7 +44,11 @@ export function SospesoIssuingForm({
           placeholder="ex) 탐정토끼, 김태희"
         />
       </label>
-      {errors.from && <p role="alert" aria-label={errors.from} >{errors.from}</p>}
+      {errors.from && (
+        <p role="alert" aria-label={errors.from}>
+          {errors.from}
+        </p>
+      )}
       <label className="input input-bordered flex items-center gap-2">
         To.
         <input
@@ -54,8 +58,14 @@ export function SospesoIssuingForm({
           placeholder="ex) 퀴어 문화 축제 올 사람"
         />
       </label>
-      {errors.to && <p role="alert" aria-label={errors.to} >{errors.to}</p>}
-      <button className='btn btn-primary' type="submit">발행하기</button>
+      {errors.to && (
+        <p role="alert" aria-label={errors.to}>
+          {errors.to}
+        </p>
+      )}
+      <button className="btn btn-primary" type="submit">
+        발행하기
+      </button>
     </form>
   );
 }
@@ -66,10 +76,9 @@ export const SospesoIssuingFormWithAstroAction = () => {
   return (
     <SospesoIssuingForm
       onSubmit={async (command) => {
-        actions.issueSospeso({ sospesoId, ...command })
-          .then(() => {
-            navigate("소스페소-상세", { sospesoId })
-          });
+        actions.issueSospeso({ sospesoId, ...command }).then(() => {
+          navigate("소스페소-상세", { sospesoId });
+        });
       }}
     />
   );

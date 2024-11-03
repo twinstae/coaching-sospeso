@@ -1,8 +1,8 @@
 ---
-import { actions } from 'astro:actions';
-import { SospesoList } from '@/components/SospesoList';
-import Layout from '@/layouts/Layout.astro';
-import { Link } from '@/routing';
+import { actions } from "astro:actions";
+import { SospesoList } from "@/components/SospesoList";
+import Layout from "@/layouts/Layout.astro";
+import { Link } from "@/routing";
 
 const { data: sospesoList } = await actions.retrieveSospesoList({});
 ---

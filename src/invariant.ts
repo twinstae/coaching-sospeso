@@ -11,8 +11,7 @@ export default function invariant(
     return;
   }
 
-  const provided: string =
-    typeof message === "function" ? message() : message;
+  const provided: string = typeof message === "function" ? message() : message;
 
   throw new Error(`[Invariant Error] ${provided}`);
 }
