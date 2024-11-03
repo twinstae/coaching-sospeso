@@ -1,35 +1,36 @@
-import { defineWorkspace } from 'vitest/config'
+import { defineWorkspace } from "vitest/config";
 
 export default defineWorkspace([
   {
-    extends: './vitest.config.ts',
+    extends: "./vitest.config.ts",
     test: {
-      setupFiles: './setupTests.ts',
+      setupFiles: "./setupTests.ts",
       include: [
-        'src/components/**/*.test.{ts,tsx}',
-        'src/shared/**/*.test.{ts,tsx}',
-        'src/routing/**/*.test.{ts,tsx}',
+        "src/components/**/*.test.{ts,tsx}",
+        "src/shared/**/*.test.{ts,tsx}",
+        "src/routing/**/*.test.{ts,tsx}",
       ],
-      name: 'browser',
+      name: "browser",
       css: true,
       browser: {
         enabled: true,
-        name: 'chromium',
+        name: "chromium",
         headless: true,
-        provider: 'playwright'
+        provider: "playwright",
       },
     },
   },
   {
-    extends: './vitest.config.ts',
+    extends: "./vitest.config.ts",
     test: {
       include: [
-        'src/actions/**/*.test.ts',
-        'src/sospeso/**/*.test.ts',
-        'src/*.test.ts',
+        "src/actions/**/*.test.ts",
+        "src/sospeso/**/*.test.ts",
+        "src/user/**/*.test.ts",
+        "src/*.test.ts",
       ],
-      name: 'unit',
-      environment: 'node',
+      name: "unit",
+      environment: "node",
     },
   },
-])
+]);
