@@ -3,19 +3,34 @@ import { getViteConfig } from 'astro/config';
 export default getViteConfig({
 	root: './',
 	test: {
-		setupFiles: './setupTests.ts',
-		include: ['src/**/*.test.tsx', 'src/**/*.test.ts'],
-		css: true,
 		pool: 'vmThreads',
 		poolOptions: {
 			useAtomics: true
 		},
-		testTimeout: 3000,
-		browser: {
+		coverage: {
 			enabled: true,
-			name: 'chromium',
-			headless: true,
-			provider: 'playwright'
+			provider: 'istanbul',
+			exclude: ['coverage/**',
+				'dist/**',
+				'**\/[.]**',
+				'packages/*\/test?(s)/**',
+				'**\/*.d.ts',
+				'**\/virtual:*',
+				'**\/__x00__*',
+				'**\/\x00*',
+				'cypress/**',
+				'test?(s)/**',
+				'test?(-*).?(c|m)[jt]s?(x)',
+				'**\/*{.,-}{test,spec}?(-d).?(c|m)[jt]s?(x)',
+				'**\/__tests__/**',
+				'**\/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,astro,playwright}.config.*',
+				'**\/vitest.{workspace,projects}.[jt]s?(on)',
+				'**\/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}',
+				'src/stories/**',
+				'src/siheom/**',
+				'src/pages/**',
+				'src/layouts/**'
+			]
 		},
-	},
+	}
 });
