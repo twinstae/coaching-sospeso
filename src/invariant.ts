@@ -14,5 +14,7 @@ export default function invariant(
   const provided: string =
     typeof message === "function" ? message() : message;
 
-  throw new Error(`[Invariant Error] ${provided}`);
+  const error = new Error(provided)
+  error.name = "Invariant Error"
+  throw error;
 }

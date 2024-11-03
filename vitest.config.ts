@@ -8,7 +8,7 @@ export default getViteConfig({
 			useAtomics: true
 		},
 		coverage: {
-			enabled: true,
+			enabled: false,
 			provider: 'istanbul',
 			exclude: ['coverage/**',
 				'dist/**',
