@@ -1,5 +1,8 @@
 ---
-import { SospesoIssuingFormWithAstroAction } from '@/components/SospesoIssuingForm';
+import Layout from "@/layouts/Layout.astro";
+import { SospesoIssuingFormWithAstroAction } from "@/components/SospesoIssuingForm";
 ---
 
-<SospesoIssuingFormWithAstroAction client:load />
+<Layout title="소스페소 발행하기">
+  <SospesoIssuingFormWithAstroAction client:load />
+</Layout>

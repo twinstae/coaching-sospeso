@@ -188,3 +188,15 @@ export function consumeSospeso(
     },
   };
 }
+
+export function calcStatus(
+  sospeso: Sospeso,
+): "issued" | "pending" | "consumed" {
+  if (isConsumed(sospeso)) {
+    return "consumed";
+  }
+  if (isApplicationLocked(sospeso)) {
+    return "pending";
+  }
+  return "issued";
+}

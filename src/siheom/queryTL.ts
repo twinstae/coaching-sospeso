@@ -16,7 +16,7 @@ export function swapStackAsync(fakeError: Error, error: unknown) {
     const fail = error.stack?.split("\n") ?? [];
     error.stack = [fail, ...lines.slice(2)].join("\n");
     // console.log(error.stack)
-    throw error
+    throw error;
   }
   throw error;
 }
