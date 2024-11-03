@@ -11,14 +11,14 @@ export function SospesoDetail({
   sospeso:
     | {
         id: string;
-        from: { id: string; nickname: string };
+        from: string;
         to: string;
         status: "issued" | "pending";
         consuming: undefined;
       }
     | {
         id: string;
-        from: { id: string; nickname: string };
+        from: string;
         to: string;
         status: "consumed";
         consuming: {
@@ -30,7 +30,7 @@ export function SospesoDetail({
 }) {
   return (
     <div>
-      <p>From. {sospeso.from.nickname}</p>
+      <p>From. {sospeso.from}</p>
       <p>To. {sospeso.to}</p>
       {sospeso.status === "issued" && (
         <Link

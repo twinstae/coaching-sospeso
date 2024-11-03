@@ -9,14 +9,14 @@ type SospesoListItemDto = {
 type SospesoDto =
   | {
       id: string;
-      from: { id: string; nickname: string };
+      from: string;
       to: string;
       status: "issued" | "pending";
       consuming: undefined;
     }
   | {
       id: string;
-      from: { id: string; nickname: string };
+      from: string;
       to: string;
       status: "consumed";
       consuming: {
@@ -58,11 +58,7 @@ export const createFakeRepository = (
       if (status === "consumed") {
         return {
           id: sospeso.id,
-          from: {
-            // TODO! 발행자가 유저 관리와 연결
-            id: "1231",
-            nickname: "423423",
-          },
+          from: sospeso.from,
           status,
           to: sospeso.to,
           consuming: {
@@ -78,11 +74,7 @@ export const createFakeRepository = (
 
       return {
         id: sospeso.id,
-        from: {
-          // TODO! 발행자가 유저 관리와 연결
-          id: "1231",
-          nickname: "423423",
-        },
+        from: sospeso.from,
         status,
         to: sospeso.to,
       };
