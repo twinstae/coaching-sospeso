@@ -8,6 +8,7 @@ import {
   rejectApplication,
   consumeSospeso,
   isApproved,
+  calcStatus,
 } from "./domain.ts";
 
 describe("sospeso", () => {
@@ -16,8 +17,8 @@ describe("sospeso", () => {
   const issuedSospeso = issueSospeso({
     sospesoId: sospesoId,
     issuedAt: now,
-    from: '탐정토끼',
-    to: '퀴어 문화 축제 올 사람'
+    from: "탐정토끼",
+    to: "퀴어 문화 축제 올 사람",
   });
 
   test("소스페소를 발행할 수 있다.", () => {
@@ -101,7 +102,10 @@ describe("sospeso", () => {
       applicationId: secondApplicationId,
     });
 
-    expect(approvedSospeso.applicationList.map(a => a.status)).toEqual(["rejected", "approved"])
+    expect(approvedSospeso.applicationList.map((a) => a.status)).toEqual([
+      "rejected",
+      "approved",
+    ]);
   });
 
   test("두 번 이상 거절할 수도 있다", () => {
@@ -118,18 +122,34 @@ describe("sospeso", () => {
       applicationId: secondApplicationId,
     });
 
-    expect(rejectedAgainSospeso.applicationList.map(a => a.status)).toEqual(["rejected", "rejected"])
+    expect(rejectedAgainSospeso.applicationList.map((a) => a.status)).toEqual([
+      "rejected",
+      "rejected",
+    ]);
+  });
+
+  const consumedSospeso = consumeSospeso(approvedSospeso, {
+    sospesoId: issuedSospeso.id,
+    consumingId: crypto.randomUUID(),
+    consumedAt: new Date(),
   });
 
   test("승인된 소스페소를 사용 처리할 수 있다", () => {
     expect(isConsumed(approvedSospeso)).toBe(false);
 
-    const consumedSospeso = consumeSospeso(approvedSospeso, {
-      sospesoId: issuedSospeso.id,
-      consumingId: crypto.randomUUID(),
-      consumedAt: new Date(),
-    });
-
     expect(isConsumed(consumedSospeso)).toBe(true);
+  });
+
+  // 소스페소 상태 3가지 "issued" | "pending" | "consumed"
+  test("막 발행되었거나, 누군가 신청했지만 거절된 소스페소는 issued 상태다", () => {
+    expect(calcStatus(issuedSospeso)).toBe("issued");
+    expect(calcStatus(rejectedSospeso)).toBe("issued");
+  });
+  test("누가 신청을 했거나, 승인된 소스페소는 pending 상태다", () => {
+    expect(calcStatus(appliedSospeso)).toBe("pending");
+    expect(calcStatus(approvedSospeso)).toBe("pending");
+  });
+  test("누군가 이미 사용한 소스페소는 consumed 상태다", () => {
+    expect(calcStatus(consumedSospeso)).toBe("consumed");
   });
 });
