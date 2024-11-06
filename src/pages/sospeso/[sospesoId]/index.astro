@@ -1,19 +1,23 @@
 ---
-import { actions } from "astro:actions";
-import invariant from "@/invariant";
-import { SospesoDetail } from "@/components/SospesoDetail";
-import Layout from "@/layouts/Layout.astro";
+import { actions } from 'astro:actions';
+import invariant from '@/invariant.ts';
+import { SospesoDetail } from '@/components/SospesoDetail.tsx';
+import Layout from '@/layouts/Layout.astro';
+import { NOT_FOUND_404_RESPONSE } from '@/web.ts';
 
 const { sospesoId } = Astro.params;
 
-// TODO: 404 페이지 정채
-invariant(sospesoId, "404 NOT FOUND");
+invariant(sospesoId, '404 NOT FOUND');
 
 const { data } = await actions.retrieveSospesoDetail({ sospesoId });
+
+if (!data) {
+  return NOT_FOUND_404_RESPONSE;
+}
 ---
 
 <Layout title="소스페소 상세">
   <div>
-    {data && <SospesoDetail sospeso={data} />}
+    <SospesoDetail sospeso={data} />
   </div>
 </Layout>
