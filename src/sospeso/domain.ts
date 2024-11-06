@@ -13,7 +13,7 @@ export type SospesoApplication = {
   appliedAt: Date;
 };
 
-export type SospesoApplicationStatus = SospesoApplication["status"]
+export type SospesoApplicationStatus = SospesoApplication["status"];
 
 export type SospesoConsuming = {
   id: string;
