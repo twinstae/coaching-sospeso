@@ -5,7 +5,8 @@ import {
 import * as domain from "@/sospeso/domain.ts";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
-import invariant from "@/invariant";
+import invariant from "@/invariant.ts";
+import { TEST_APPLICATION_LIST } from '@/sospeso/fixtures.ts';
 
 export function createActionServer(sospesoRepo: SospesoRepositoryI) {
   return {
@@ -19,6 +20,12 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
       input: z.object({ sospesoId: z.string().uuid() }),
       handler: async (input) => {
         return sospesoRepo.retrieveSospesoDetail(input.sospesoId);
+      },
+    }),
+    retrieveSospesoApplicationList: defineAction({
+      input: z.object({}),
+      handler: async (_input) => {
+        return TEST_APPLICATION_LIST
       },
     }),
     issueSospeso: defineAction({

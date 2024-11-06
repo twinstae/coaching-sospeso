@@ -1,19 +1,21 @@
 import invariant from "../invariant";
 
-type SospesoIssuing = {
+export type SospesoIssuing = {
   id: string;
 
   issuedAt: Date;
 };
 
-type SospesoApplication = {
+export type SospesoApplication = {
   id: string;
   status: "applied" | "approved" | "rejected";
 
   appliedAt: Date;
 };
 
-type SospesoConsuming = {
+export type SospesoApplicationStatus = SospesoApplication["status"]
+
+export type SospesoConsuming = {
   id: string;
 
   consumedAt: Date;
