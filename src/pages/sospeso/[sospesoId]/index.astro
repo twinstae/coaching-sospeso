@@ -1,18 +1,20 @@
 ---
-import { actions } from 'astro:actions';
-import invariant from '@/invariant.ts';
-import { SospesoDetail } from '@/components/SospesoDetail.tsx';
-import Layout from '@/layouts/Layout.astro';
-import { NOT_FOUND_404_RESPONSE } from '@/web.ts';
+import { actions } from "astro:actions";
+import invariant from "@/invariant.ts";
+import { SospesoDetail } from "@/components/SospesoDetail.tsx";
+import Layout from "@/layouts/Layout.astro";
 
 const { sospesoId } = Astro.params;
 
-invariant(sospesoId, '404 NOT FOUND');
+invariant(sospesoId, "404 NOT FOUND");
 
 const { data } = await actions.retrieveSospesoDetail({ sospesoId });
 
 if (!data) {
-  return NOT_FOUND_404_RESPONSE;
+  return new Response(null, {
+    status: 404,
+    statusText: "Not found",
+  });
 }
 ---
 
