@@ -69,6 +69,7 @@ export function issueSospeso(command: SospesoIssuingCommand): Sospeso {
 type SospesoApplicationCommand = {
   sospesoId: string;
   applicationId: string;
+  applicationMsg: string;
   appliedAt: Date;
 };
 
