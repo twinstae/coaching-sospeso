@@ -33,6 +33,16 @@ const routes = {
       sospesoId: v.pipe(v.string(), v.uuid()),
     }),
   },
+  어드민: {
+    path: "/admin",
+  },
+  "어드민-소스페소-사용": {
+    path: "/admin/[sospesoId]/consuming/[consumerId]",
+    paramsSchema: v.object({
+      sospesoId: v.pipe(v.string(), v.uuid()),
+      consumerId: v.pipe(v.string(), v.uuid()),
+    }),
+  },
 } satisfies Record<string, Route>;
 
 function resolveRoute(key: RouteKeys) {

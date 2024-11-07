@@ -54,6 +54,19 @@ export const TEST_APPLIED_APPLICATION = {
     "저는 김씨가문 김유신의 52대손으로 태어나 어쩌구... 올해 퀴어 문화 축제에도 다녀왔으며, 모든 성소수자들을 지지합니다.",
 } as const;
 
+export const TEST_APPROVED_APPLICATION = {
+  id: crypto.randomUUID(),
+  sospesoId: crypto.randomUUID(),
+  to: "시각 장애가 있는 분",
+  status: "approved",
+  appliedAt: new Date(TEST_NOW.valueOf() - 1000 * 60 * 60 * 24),
+  applicant: {
+    id: crypto.randomUUID(),
+    nickname: "해적 토끼",
+  },
+  content: "제 왼쪽 눈을 보십시오. 이것이야 말로 증거가 아니겠습니까?ㄷ",
+} as const;
+
 export const TEST_APPLICATION_LIST: {
   id: string;
   sospesoId: string;
@@ -79,16 +92,5 @@ export const TEST_APPLICATION_LIST: {
     },
     content: "저는 소스페소에 이상한 요청을 보낸 나쁜 사람입니다",
   },
-  {
-    id: crypto.randomUUID(),
-    sospesoId: crypto.randomUUID(),
-    to: "시각 장애가 있는 분",
-    status: "approved",
-    appliedAt: new Date(TEST_NOW.valueOf() - 1000 * 60 * 60 * 24),
-    applicant: {
-      id: crypto.randomUUID(),
-      nickname: "해적 토끼",
-    },
-    content: "제 왼쪽 눈을 보십시오. 이것이야 말로 증거가 아니겠습니까?ㄷ",
-  },
+  TEST_APPROVED_APPLICATION,
 ];

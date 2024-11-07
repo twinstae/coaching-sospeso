@@ -1,23 +1,26 @@
+import { Link } from "@/routing";
 import { type SospesoApplicationStatus } from "@/sospeso/domain.ts";
 import { applicationStatusToLabelDict } from "@/sospeso/label.ts";
 import { clsx } from "clsx";
+
+type SospesoApplicationDto = {
+  id: string;
+  sospesoId: string;
+  to: string;
+  status: SospesoApplicationStatus;
+  appliedAt: Date;
+  applicant: {
+    id: string;
+    nickname: string;
+  };
+  content: string;
+};
 
 export function SospesoApplicationDashboard({
   applicationList,
   actions,
 }: {
-  applicationList: {
-    id: string;
-    sospesoId: string;
-    to: string;
-    status: SospesoApplicationStatus;
-    appliedAt: Date;
-    applicant: {
-      id: string;
-      nickname: string;
-    };
-    content: string;
-  }[];
+  applicationList: SospesoApplicationDto[];
   actions: {
     approveApplication: (command: {
       sospesoId: string;
@@ -95,6 +98,19 @@ export function SospesoApplicationDashboard({
                           거절하기
                         </button>
                       </li>
+                      {application.status === "approved" && (
+                        <li>
+                          <Link
+                            routeKey="어드민-소스페소-사용"
+                            params={{
+                              sospesoId: application.sospesoId,
+                              consumerId: application.applicant.id,
+                            }}
+                          >
+                            사용하기
+                          </Link>
+                        </li>
+                      )}
                     </ul>
                   )}
                 </div>
@@ -107,21 +123,11 @@ export function SospesoApplicationDashboard({
   );
 }
 
+
 export function SospesoApplicationDashboardWithActions({
   applicationList,
 }: {
-  applicationList: {
-    id: string;
-    sospesoId: string;
-    to: string;
-    status: SospesoApplicationStatus;
-    appliedAt: Date;
-    applicant: {
-      id: string;
-      nickname: string;
-    };
-    content: string;
-  }[];
+  applicationList: SospesoApplicationDto[];
 }) {
   return (
     <SospesoApplicationDashboard
