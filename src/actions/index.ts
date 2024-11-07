@@ -47,6 +47,28 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         });
       },
     }),
+    applySospeso: defineAction({
+      input: z.object({
+        sospesoId: z.string(),
+        applicationId: z.string(),
+        applicationMsg: z.string(),
+      }),
+      handler: async (input) => {
+        const sospeso = await sospesoRepo.retrieveSospeso(input.sospesoId);
+
+        if (sospeso === undefined)
+          return undefined;
+
+        const command = {...input, appliedAt: new Date()};
+
+        const appliedSospeso = domain.applySospeso(sospeso, command);
+
+        await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
+          invariant(sospeso === undefined, "에러가 발생했습니다.");
+          return appliedSospeso;
+        })
+      },
+    })
   };
 }
 
