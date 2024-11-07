@@ -4,6 +4,8 @@ export const TEST_SOSPESO_LIST_ITEM = {
   id: crypto.randomUUID(),
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
+  status: "issued", // 읽기 모델 "issued" | "pending" | "consumed"
+  consuming: undefined,
 };
 
 export const ISSUED_SOSPESO = {
@@ -36,6 +38,22 @@ export const CONSUMED_SOSPESO = {
   },
 } as const;
 
+const TEST_NOW = new Date("2024-11-06T00:00:00Z")
+
+export const TEST_APPLIED_APPLICATION =  {
+  id: crypto.randomUUID(),
+  sospesoId: crypto.randomUUID(),
+  to: "퀴어 문화 축제 올 사람",
+  status: "applied",
+  appliedAt: TEST_NOW,
+  applicant: {
+    id: crypto.randomUUID(),
+    nickname: "김토끼",
+  },
+  content:
+    "저는 김씨가문 김유신의 52대손으로 태어나 어쩌구... 올해 퀴어 문화 축제에도 다녀왔으며, 모든 성소수자들을 지지합니다.",
+} as const
+
 export const TEST_APPLICATION_LIST: {
   id: string;
   sospesoId: string;
@@ -48,25 +66,13 @@ export const TEST_APPLICATION_LIST: {
   };
   content: string;
 }[] = [
-  {
-    id: crypto.randomUUID(),
-    sospesoId: crypto.randomUUID(),
-    to: "퀴어 문화 축제 올 사람",
-    status: "applied",
-    appliedAt: new Date(),
-    applicant: {
-      id: crypto.randomUUID(),
-      nickname: "김토끼",
-    },
-    content:
-      "저는 김씨가문 김유신의 52대손으로 태어나 어쩌구... 올해 퀴어 문화 축제에도 다녀왔으며, 모든 성소수자들을 지지합니다.",
-  },
+  TEST_APPLIED_APPLICATION,
   {
     id: crypto.randomUUID(),
     sospesoId: crypto.randomUUID(),
     to: "퀴어 문화 축제 올 사람",
     status: "rejected",
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
+    appliedAt: new Date(TEST_NOW.valueOf() - 1000 * 60 * 60 * 24),
     applicant: {
       id: crypto.randomUUID(),
       nickname: "혐오자",
@@ -78,7 +84,7 @@ export const TEST_APPLICATION_LIST: {
     sospesoId: crypto.randomUUID(),
     to: "시각 장애가 있는 분",
     status: "approved",
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
+    appliedAt: new Date(TEST_NOW.valueOf() - 1000 * 60 * 60 * 24),
     applicant: {
       id: crypto.randomUUID(),
       nickname: "해적 토끼",
