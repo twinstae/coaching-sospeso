@@ -6,23 +6,31 @@ import * as v from "valibot";
 
 const consumingSchema = v.object({
   coachId: v.pipe(v.string(), v.minLength(1, "코치를 선택해주세요")),
-  consumedAt: v.pipe(v.string(), v.minLength(1, "코칭 일시를 입력해주세요"), 
-  v.transform((input) => new Date(input))),
+  consumedAt: v.pipe(
+    v.string(),
+    v.minLength(1, "코칭 일시를 입력해주세요"),
+    v.transform((input) => new Date(input)),
+  ),
   content: v.pipe(v.string(), v.minLength(1, "후기를 입력해주세요")),
-  memo:  v.pipe(v.string(), v.minLength(1, "메모를 입력해주세요")),
+  memo: v.pipe(v.string(), v.minLength(1, "메모를 입력해주세요")),
 });
 
 export function SospesoConsumingForm({
   onSubmit,
 }: {
-  onSubmit: (command:  {
+  onSubmit: (command: {
     coachId: string;
     consumedAt: Date;
     content: string;
     memo: string;
-}) => Promise<void>;
+  }) => Promise<void>;
 }) {
-  const [errors, setErrors] = useState<{ coachId?: string; consumedAt?: string; content?: string; memo?: string}>({});
+  const [errors, setErrors] = useState<{
+    coachId?: string;
+    consumedAt?: string;
+    content?: string;
+    memo?: string;
+  }>({});
   return (
     <form
       onSubmit={(event) => {
@@ -30,7 +38,10 @@ export function SospesoConsumingForm({
 
         const formData = new FormData(event.currentTarget);
 
-        const result = v.safeParse(consumingSchema, Object.fromEntries(formData));
+        const result = v.safeParse(
+          consumingSchema,
+          Object.fromEntries(formData),
+        );
         if (result.success) {
           onSubmit(result.output);
         } else {
@@ -74,13 +85,9 @@ export function SospesoConsumingForm({
         </p>
       )}
 
-    <label className="textarea textarea-bordered flex items-center gap-2">
+      <label className="textarea textarea-bordered flex items-center gap-2">
         후기
-        <textarea
-          name="content"
-          className="grow"
-          placeholder=""
-        />
+        <textarea name="content" className="grow" placeholder="" />
       </label>
       {errors.content && (
         <p role="alert" aria-label={errors.content}>
@@ -88,13 +95,9 @@ export function SospesoConsumingForm({
         </p>
       )}
 
-    <label className="textarea textarea-bordered flex items-center gap-2">
+      <label className="textarea textarea-bordered flex items-center gap-2">
         메모
-        <textarea
-          name="memo"
-          className="grow"
-          placeholder=""
-        />
+        <textarea name="memo" className="grow" placeholder="" />
       </label>
       {errors.memo && (
         <p role="alert" aria-label={errors.memo}>

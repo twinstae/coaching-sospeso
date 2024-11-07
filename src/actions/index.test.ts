@@ -1,9 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { createActionServer } from "./index.ts";
 import { createFakeRepository } from "@/sospeso/repository.ts";
-import {
-  TEST_SOSPESO_LIST_ITEM,
-} from "@/sospeso/fixtures.ts";
+import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import { approvedSospeso, issuedSospeso } from "@/sospeso/domain.test.ts";
 
 describe("sospesoActionServer", () => {

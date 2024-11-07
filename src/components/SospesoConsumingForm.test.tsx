@@ -39,11 +39,11 @@ describe("SospesoConsumingForm", () => {
     );
 
     const expected = {
-        coachId: crypto.randomUUID(),
-        consumedAt: new Date("2024-11-07T13:07:34.000Z"),
-        content: "너무 도움이 되었어요!",
-        memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
-      }
+      coachId: crypto.randomUUID(),
+      consumedAt: new Date("2024-11-07T13:07:34.000Z"),
+      content: "너무 도움이 되었어요!",
+      memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
+    };
 
     await queryTL.textbox("코치").fill(expected.coachId); // TODO: select로 나중에 바꿔야 함
     await queryTL.textbox("코칭일시").fill(expected.consumedAt.toString()); // TODO: date picker로 나중에 바꿔야 함
