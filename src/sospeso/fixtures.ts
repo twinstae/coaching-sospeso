@@ -38,9 +38,9 @@ export const CONSUMED_SOSPESO = {
   },
 } as const;
 
-const TEST_NOW = new Date("2024-11-06T00:00:00Z")
+const TEST_NOW = new Date("2024-11-06T00:00:00Z");
 
-export const TEST_APPLIED_APPLICATION =  {
+export const TEST_APPLIED_APPLICATION = {
   id: crypto.randomUUID(),
   sospesoId: crypto.randomUUID(),
   to: "퀴어 문화 축제 올 사람",
@@ -52,7 +52,7 @@ export const TEST_APPLIED_APPLICATION =  {
   },
   content:
     "저는 김씨가문 김유신의 52대손으로 태어나 어쩌구... 올해 퀴어 문화 축제에도 다녀왔으며, 모든 성소수자들을 지지합니다.",
-} as const
+} as const;
 
 export const TEST_APPLICATION_LIST: {
   id: string;

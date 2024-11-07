@@ -11,16 +11,30 @@ import {
   calcStatus,
 } from "./domain.ts";
 
-describe("sospeso", () => {
-  const sospesoId = crypto.randomUUID();
-  const now = new Date();
-  const issuedSospeso = issueSospeso({
-    sospesoId: sospesoId,
-    issuedAt: now,
-    from: "탐정토끼",
-    to: "퀴어 문화 축제 올 사람",
-  });
+const sospesoId = crypto.randomUUID();
+const now = new Date();
+export const issuedSospeso = issueSospeso({
+  sospesoId: sospesoId,
+  issuedAt: now,
+  from: "탐정토끼",
+  to: "퀴어 문화 축제 올 사람",
+});
 
+const firstApplicationId = crypto.randomUUID();
+
+export const appliedSospeso = applySospeso(issuedSospeso, {
+  sospesoId: issuedSospeso.id,
+  applicationId: firstApplicationId,
+  appliedAt: new Date(),
+  applicationMsg: "",
+});
+
+export const approvedSospeso = approveApplication(appliedSospeso, {
+  sospesoId: issuedSospeso.id,
+  applicationId: firstApplicationId,
+});
+
+describe("sospeso", () => {
   test("소스페소를 발행할 수 있다.", () => {
     expect(issuedSospeso.id).toBe(sospesoId);
     expect(issuedSospeso.issuing.id).toBe(sospesoId);
@@ -28,14 +42,6 @@ describe("sospeso", () => {
 
     expect(issuedSospeso.applicationList).toHaveLength(0);
     expect(isConsumed(issuedSospeso)).toBe(false);
-  });
-
-  const firstApplicationId = crypto.randomUUID();
-
-  const appliedSospeso = applySospeso(issuedSospeso, {
-    sospesoId: issuedSospeso.id,
-    applicationId: firstApplicationId,
-    appliedAt: new Date(),
   });
 
   test("소스페소에 신청할 수 있다", () => {
@@ -50,14 +56,11 @@ describe("sospeso", () => {
         sospesoId: issuedSospeso.id,
         applicationId: crypto.randomUUID(),
         appliedAt: new Date(),
+        applicationMsg: "",
       });
     }).toThrowError("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.");
   });
 
-  const approvedSospeso = approveApplication(appliedSospeso, {
-    sospesoId: issuedSospeso.id,
-    applicationId: firstApplicationId,
-  });
   test("소스페소 신청을 승인할 수 있다", () => {
     expect(isApproved(approvedSospeso)).toEqual(true);
   });
@@ -95,6 +98,7 @@ describe("sospeso", () => {
       sospesoId: rejectedSospeso.id,
       applicationId: secondApplicationId,
       appliedAt: new Date(),
+      applicationMsg: "",
     });
 
     const approvedSospeso = approveApplication(appliedSospeso, {
@@ -115,6 +119,7 @@ describe("sospeso", () => {
       sospesoId: rejectedSospeso.id,
       applicationId: secondApplicationId,
       appliedAt: new Date(),
+      applicationMsg: "",
     });
 
     const rejectedAgainSospeso = rejectApplication(appliedSospeso, {
@@ -132,6 +137,10 @@ describe("sospeso", () => {
     sospesoId: issuedSospeso.id,
     consumingId: crypto.randomUUID(),
     consumedAt: new Date(),
+    content: "너무 도움이 되었어요! 덕분에 취직도 잘할듯?",
+    memo: "장소: 약수역, 시간: 2022년 12월 11일, 어찌저찌 큰 도움이 되셨다고.",
+    consumerId: "", // TODO! 실제 user id
+    coachId: "", // TODO! 실제 user id
   });
 
   test("승인된 소스페소를 사용 처리할 수 있다", () => {
