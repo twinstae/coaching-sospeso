@@ -27,6 +27,7 @@ type SospesoDto =
 export interface SospesoRepositoryI {
   retrieveSospesoList(): Promise<SospesoListItemDto[]>;
   retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto | undefined>;
+  retrieveSospeso(sospesoId: string): Promise<Sospeso | undefined>;
   updateOrSave(
     sospesoId: string,
     update: (sospeso: Sospeso | undefined) => Sospeso,
@@ -78,6 +79,9 @@ export const createFakeRepository = (
         status,
         to: sospeso.to,
       };
+    },
+    async retrieveSospeso(sospesoId) {
+      return _fakeState[sospesoId];
     },
     async updateOrSave(
       sospesoId: string,
