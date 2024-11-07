@@ -65,6 +65,26 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         });
       },
     }),
+    consumeSospeso: defineAction({
+      input: z.object({
+        sospesoId: z.string(),
+        consumerId: z.string(),
+        coachId: z.string(),
+        consumingId: z.string(),
+        consumedAt: z.date(),
+        content: z.string(),
+        memo: z.string(),
+      }),
+      handler: async (input) => {
+        await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
+          invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
+
+          const appliedSospeso = domain.consumeSospeso(sospeso, { ...input });
+
+          return appliedSospeso;
+        });
+      },
+    }),
   };
 }
 
