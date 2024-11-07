@@ -1,11 +1,5 @@
 import { calcStatus, type Sospeso } from "./domain";
 
-type SospesoListItemDto = {
-  id: string;
-  from: string;
-  to: string;
-};
-
 type SospesoDto =
   | {
       id: string;
@@ -24,6 +18,9 @@ type SospesoDto =
         content: string;
       };
     };
+
+type SospesoListItemDto = SospesoDto;
+
 export interface SospesoRepositoryI {
   retrieveSospesoList(): Promise<SospesoListItemDto[]>;
   retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto | undefined>;
@@ -40,11 +37,34 @@ export const createFakeRepository = (
 
   return {
     async retrieveSospesoList(): Promise<SospesoListItemDto[]> {
-      return Object.values(_fakeState).map((sospeso) => ({
-        from: sospeso.from,
-        to: sospeso.to,
-        id: sospeso.id,
-      }));
+      return Object.values(_fakeState).map((sospeso) => {
+        const status = calcStatus(sospeso);
+
+        if (status === "consumed") {
+          return {
+            id: sospeso.id,
+            from: sospeso.from,
+            status,
+            to: sospeso.to,
+            consuming: {
+              // TODO: 사용 담당자가 유저 관리와 연결
+              consumer: {
+                id: "3231",
+                nickname: "촛불이",
+              },
+              content: "후기..",
+            },
+          };
+        }
+  
+        return {
+          id: sospeso.id,
+          from: sospeso.from,
+          status,
+          to: sospeso.to,
+          consuming: undefined
+        };
+      });
     },
     async retrieveSospesoDetail(sospesoId) {
       const sospeso = _fakeState[sospesoId];
@@ -77,6 +97,7 @@ export const createFakeRepository = (
         from: sospeso.from,
         status,
         to: sospeso.to,
+        consuming: undefined
       };
     },
     async updateOrSave(

@@ -47,6 +47,24 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         });
       },
     }),
+    applySospeso: defineAction({
+      input: z.object({
+        sospesoId: z.string(),
+        applicationId: z.string(),
+        applicationMsg: z.string(),
+      }),
+      handler: async (input) => {
+        await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
+          invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
+
+          const command = { ...input, appliedAt: new Date() };
+
+          const appliedSospeso = domain.applySospeso(sospeso, command);
+
+          return appliedSospeso;
+        });
+      },
+    }),
   };
 }
 
