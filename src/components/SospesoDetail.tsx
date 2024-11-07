@@ -1,12 +1,9 @@
+import { browserClipboardApi, type ClipboardApiI } from '@/adapters/clipboardApi';
 import { href, Link } from "@/routing";
 
 export function SospesoDetail({
   sospeso,
-  clipboardApi = {
-    copy: (text) => {
-      return navigator.clipboard.writeText(text);
-    },
-  },
+  clipboardApi = browserClipboardApi,
 }: {
   sospeso:
     | {
@@ -26,7 +23,7 @@ export function SospesoDetail({
           content: string;
         };
       };
-  clipboardApi?: { copy: (text: string) => Promise<void> };
+  clipboardApi?: ClipboardApiI;
 }) {
   return (
     <div>
