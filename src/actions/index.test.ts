@@ -21,9 +21,9 @@ describe("sospesoActionServer", () => {
   });
 
   test("applySospeso", async () => {
-    const { data: before } = await actionServer.retrieveSospesoList({});
+    const { data: before } = await actionServer.retrieveSospesoDetail({ sospesoId: TEST_SOSPESO_LIST_ITEM.id });
 
-    expect(before).toStrictEqual([TEST_SOSPESO_LIST_ITEM]);
+    expect(before).toStrictEqual(TEST_SOSPESO_LIST_ITEM);
 
     await actionServer.applySospeso({
       sospesoId: TEST_SOSPESO_LIST_ITEM.id,
@@ -31,12 +31,12 @@ describe("sospesoActionServer", () => {
       applicationMsg: TEST_APPLIED_APPLICATION.content
     });
 
-    const { data: after } = await actionServer.retrieveSospesoList({});
+    const { data: after } = await actionServer.retrieveSospesoDetail({ sospesoId: TEST_SOSPESO_LIST_ITEM.id });
 
-    expect(after).toStrictEqual([{
+    expect(after).toStrictEqual({
       ...TEST_SOSPESO_LIST_ITEM,
       status: "pending"
-    }]);
+    });
   });
   
 });
