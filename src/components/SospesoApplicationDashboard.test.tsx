@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { SospesoApplicationDashboard } from "./SospesoApplicationDashboard.tsx";
-import { TEST_APPLICATION_LIST } from "@/sospeso/fixtures";
+import { TEST_APPLICATION_LIST } from "@/sospeso/fixtures.ts";
 import { tableToMarkdown } from "@/siheom/tableToMarkdown.ts";
 
 describe("SospesoApplicationDashboard", () => {
