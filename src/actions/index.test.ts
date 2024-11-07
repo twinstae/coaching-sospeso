@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vitest";
 import { createActionServer } from "./index.ts";
 import { createFakeRepository } from "@/sospeso/repository.ts";
-import { TEST_APPLIED_APPLICATION, TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
+import {
+  TEST_APPLIED_APPLICATION,
+  TEST_SOSPESO_LIST_ITEM,
+} from "@/sospeso/fixtures.ts";
 
 describe("sospesoActionServer", () => {
   const actionServer = createActionServer(createFakeRepository({}));
@@ -21,22 +24,25 @@ describe("sospesoActionServer", () => {
   });
 
   test("applySospeso", async () => {
-    const { data: before } = await actionServer.retrieveSospesoDetail({ sospesoId: TEST_SOSPESO_LIST_ITEM.id });
+    const { data: before } = await actionServer.retrieveSospesoDetail({
+      sospesoId: TEST_SOSPESO_LIST_ITEM.id,
+    });
 
     expect(before).toStrictEqual(TEST_SOSPESO_LIST_ITEM);
 
     await actionServer.applySospeso({
       sospesoId: TEST_SOSPESO_LIST_ITEM.id,
       applicationId: TEST_APPLIED_APPLICATION.id,
-      applicationMsg: TEST_APPLIED_APPLICATION.content
+      applicationMsg: TEST_APPLIED_APPLICATION.content,
     });
 
-    const { data: after } = await actionServer.retrieveSospesoDetail({ sospesoId: TEST_SOSPESO_LIST_ITEM.id });
+    const { data: after } = await actionServer.retrieveSospesoDetail({
+      sospesoId: TEST_SOSPESO_LIST_ITEM.id,
+    });
 
     expect(after).toStrictEqual({
       ...TEST_SOSPESO_LIST_ITEM,
-      status: "pending"
+      status: "pending",
     });
   });
-  
 });

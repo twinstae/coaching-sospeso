@@ -1,4 +1,7 @@
-import { browserClipboardApi, type ClipboardApiI } from '@/adapters/clipboardApi';
+import {
+  browserClipboardApi,
+  type ClipboardApiI,
+} from "@/adapters/clipboardApi";
 import { href, Link } from "@/routing";
 
 export function SospesoDetail({

@@ -56,13 +56,13 @@ export const createFakeRepository = (
             },
           };
         }
-  
+
         return {
           id: sospeso.id,
           from: sospeso.from,
           status,
           to: sospeso.to,
-          consuming: undefined
+          consuming: undefined,
         };
       });
     },
@@ -97,7 +97,7 @@ export const createFakeRepository = (
         from: sospeso.from,
         status,
         to: sospeso.to,
-        consuming: undefined
+        consuming: undefined,
       };
     },
     async updateOrSave(
