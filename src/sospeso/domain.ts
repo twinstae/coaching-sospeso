@@ -17,6 +17,14 @@ export type SospesoApplicationStatus = SospesoApplication["status"];
 
 export type SospesoConsuming = {
   id: string;
+  // 후기 -> 공개
+  content: string;
+  // 메모 -> 장소, 시간, 내용, 코칭 일지 링크 (markdown? markdown editor?)
+  memo: string; // markdown
+  // 최종적으로 코칭을 받은 사람의 id => userId
+  consumerId: string; // user.id
+  // coachId => userId
+  coachId: string; // user.id
 
   consumedAt: Date;
 };
@@ -24,7 +32,7 @@ export type SospesoConsuming = {
 export type Sospeso = {
   id: string;
   from: string;
-  to: string;
+  to: string; // <- 수혜자 조건
   issuing: SospesoIssuing;
   applicationList: SospesoApplication[];
   consuming: SospesoConsuming | undefined;
@@ -175,6 +183,10 @@ export function consumeSospeso(
     sospesoId: string;
     consumingId: string;
     consumedAt: Date;
+    content: string;
+    memo: string;
+    consumerId: string;
+    coachId: string;
   },
 ): Sospeso {
   invariant(
@@ -188,6 +200,10 @@ export function consumeSospeso(
     consuming: {
       id: command.consumingId,
       consumedAt: command.consumedAt,
+      content: command.content,
+      memo: command.memo,
+      consumerId: command.consumerId,
+      coachId: command.coachId,
     },
   };
 }
