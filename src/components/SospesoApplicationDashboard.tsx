@@ -3,7 +3,7 @@ import { type SospesoApplicationStatus } from "@/sospeso/domain.ts";
 import { applicationStatusToLabelDict } from "@/sospeso/label.ts";
 import { clsx } from "clsx";
 
-type SospesoApplicationDto = {
+export type SospesoApplicationDto = {
   id: string;
   sospesoId: string;
   to: string;
@@ -120,26 +120,5 @@ export function SospesoApplicationDashboard({
         </tbody>
       </table>
     </div>
-  );
-}
-
-
-export function SospesoApplicationDashboardWithActions({
-  applicationList,
-}: {
-  applicationList: SospesoApplicationDto[];
-}) {
-  return (
-    <SospesoApplicationDashboard
-      applicationList={applicationList}
-      actions={{
-        approveApplication: async () => {
-          // TODO! 실제 action 연결해줘야 함
-        },
-        rejectApplication: async () => {
-          // TODO! 실제 action 연결해줘야 함
-        },
-      }}
-    />
   );
 }
