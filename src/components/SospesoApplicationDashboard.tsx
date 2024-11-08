@@ -1,4 +1,4 @@
-import { Link } from "@/routing";
+import { Link } from "@/routing/Link.tsx";
 import { type SospesoApplicationStatus } from "@/sospeso/domain.ts";
 import { applicationStatusToLabelDict } from "@/sospeso/label.ts";
 import { clsx } from "clsx";

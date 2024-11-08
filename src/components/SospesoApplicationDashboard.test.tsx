@@ -8,7 +8,7 @@ import {
 } from "@/sospeso/fixtures.ts";
 import { tableToMarkdown } from "@/siheom/tableToMarkdown.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
-import { href } from "@/routing.tsx";
+import { href } from "@/routing/href.ts";
 
 describe("SospesoApplicationDashboard", () => {
   test("소스페소에 신청한 목록을 볼 수 있다", async () => {

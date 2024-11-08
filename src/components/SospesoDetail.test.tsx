@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
 import { SospesoDetail } from "./SospesoDetail";
-import { href } from "@/routing";
+import { href } from "@/routing/href.ts";
 import {
   CONSUMED_SOSPESO,
   ISSUED_SOSPESO,

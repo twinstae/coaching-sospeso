@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "lint": "astro check src && eslint src",
+    "lint": "astro check --root src && eslint src --ignore-pattern \"storybook-static/**/*\"",
     "format": "prettier src --write",
     "build": "astro build",
     "preview": "astro preview",

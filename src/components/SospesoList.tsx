@@ -1,4 +1,4 @@
-import { Link } from "@/routing";
+import { Link } from "@/routing/Link.tsx";
 
 export function SospesoList({
   sospesoList,

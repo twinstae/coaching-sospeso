@@ -1,6 +1,4 @@
-import { navigate } from "@/routing";
-import { actions } from "astro:actions";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import * as v from "valibot";
 
 const issuingSchema = v.object({
@@ -69,17 +67,3 @@ export function SospesoIssuingForm({
     </form>
   );
 }
-
-export const SospesoIssuingFormWithAstroAction = () => {
-  const sospesoId = useMemo(() => crypto.randomUUID(), []);
-
-  return (
-    <SospesoIssuingForm
-      onSubmit={async (command) => {
-        actions.issueSospeso({ sospesoId, ...command }).then(() => {
-          navigate("소스페소-상세", { sospesoId });
-        });
-      }}
-    />
-  );
-};

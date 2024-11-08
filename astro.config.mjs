@@ -22,5 +22,5 @@ export default defineConfig({
     plugins: [tsconfigPaths()],
   },
   output: "server",
-  adapter: vercel(),
+  adapter: vercel()
 });

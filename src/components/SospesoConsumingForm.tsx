@@ -1,7 +1,4 @@
-// 코치가 수혜자 분과 같이 후기를 작성
-import { navigate } from "@/routing";
-import { actions } from "astro:actions";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import * as v from "valibot";
 
 const consumingSchema = v.object({
@@ -111,30 +108,3 @@ export function SospesoConsumingForm({
     </form>
   );
 }
-
-export const SospesoConsumingFormWithAstroAction = ({
-  consumerId,
-  sospesoId,
-}: {
-  sospesoId: string;
-  consumerId: string;
-}) => {
-  const consumingId = useMemo(() => crypto.randomUUID(), []);
-
-  return (
-    <SospesoConsumingForm
-      onSubmit={async (command) => {
-        actions
-          .consumeSospeso({
-            ...command,
-            consumingId,
-            sospesoId,
-            consumerId,
-          })
-          .then(() => {
-            navigate("소스페소-상세", { sospesoId });
-          });
-      }}
-    />
-  );
-};
