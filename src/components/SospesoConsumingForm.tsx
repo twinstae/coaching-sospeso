@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { Form } from "@/shared/form/Form";
+import { Textarea } from "@/shared/form/Textarea";
+import { TextField } from "@/shared/form/TextField";
 import * as v from "valibot";
 
 const consumingSchema = v.object({
-  coachId: v.pipe(v.string(), v.minLength(1, "코치를 선택해주세요")),
+  coachId: v.string("코치를 선택해주세요"),
   consumedAt: v.pipe(
-    v.string(),
-    v.minLength(1, "코칭 일시를 입력해주세요"),
+    v.string("코칭 일시를 입력해주세요"),
     v.transform((input) => new Date(input)),
   ),
   content: v.pipe(v.string(), v.minLength(1, "후기를 입력해주세요")),
@@ -22,89 +23,31 @@ export function SospesoConsumingForm({
     memo: string;
   }) => Promise<void>;
 }) {
-  const [errors, setErrors] = useState<{
-    coachId?: string;
-    consumedAt?: string;
-    content?: string;
-    memo?: string;
-  }>({});
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-
-        const result = v.safeParse(
-          consumingSchema,
-          Object.fromEntries(formData),
-        );
-        if (result.success) {
-          onSubmit(result.output);
-        } else {
-          setErrors(
-            Object.fromEntries(
-              result.issues.map(
-                (issue) => [issue.path?.[0].key, issue.message] as const,
-              ),
-            ),
-          );
-        }
+    <Form
+      form={{
+        schema: consumingSchema,
+        defaultValues: {
+          content: "",
+          memo: "",
+        },
+        onSubmit,
       }}
     >
-      <label className="input input-bordered flex items-center gap-2">
-        코치
-        <input
-          type="text"
-          name="coachId"
-          className="grow"
-          placeholder="ex) 탐정토끼, 김태희"
-        />
-      </label>
-      {errors.coachId && (
-        <p role="alert" aria-label={errors.coachId}>
-          {errors.coachId}
-        </p>
-      )}
+      <TextField
+        label="코치"
+        name="coachId"
+        placeholder="ex) 탐정토끼, 김태희"
+      />
+      <TextField label="코칭일시" name="consumedAt" placeholder="2024-01-01" />
 
-      <label className="input input-bordered flex items-center gap-2">
-        코칭일시
-        <input
-          type="datetime"
-          name="consumedAt"
-          className="grow"
-          placeholder="2024-01-01"
-        />
-      </label>
-      {errors.consumedAt && (
-        <p role="alert" aria-label={errors.consumedAt}>
-          {errors.consumedAt}
-        </p>
-      )}
+      <Textarea label="후기" name="content" placeholder="" />
 
-      <label className="textarea textarea-bordered flex items-center gap-2">
-        후기
-        <textarea name="content" className="grow" placeholder="" />
-      </label>
-      {errors.content && (
-        <p role="alert" aria-label={errors.content}>
-          {errors.content}
-        </p>
-      )}
-
-      <label className="textarea textarea-bordered flex items-center gap-2">
-        메모
-        <textarea name="memo" className="grow" placeholder="" />
-      </label>
-      {errors.memo && (
-        <p role="alert" aria-label={errors.memo}>
-          {errors.memo}
-        </p>
-      )}
+      <Textarea label="메모" name="memo" placeholder="" />
 
       <button className="btn btn-primary" type="submit">
         소스페소 사용하기
       </button>
-    </form>
+    </Form>
   );
 }

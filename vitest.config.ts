@@ -31,6 +31,9 @@ export default getViteConfig({
         "src/siheom/**",
         "src/pages/**",
         "src/layouts/**",
+        "src/astro/**",
+        "src/routing/navigate.ts",
+        "src/adapters/**"
       ],
     },
   },
