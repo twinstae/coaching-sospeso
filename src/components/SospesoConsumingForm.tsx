@@ -1,4 +1,5 @@
 import { Form } from "@/shared/form/Form";
+import { Textarea } from '@/shared/form/Textarea';
 import { TextField } from "@/shared/form/TextField";
 import * as v from "valibot";
 
@@ -40,9 +41,9 @@ export function SospesoConsumingForm({
       />
       <TextField label="코칭일시" name="consumedAt" placeholder="2024-01-01" />
 
-      <TextField label="후기" name="content" placeholder="" />
+      <Textarea label="후기" name="content" placeholder="" />
 
-      <TextField label="메모" name="memo" placeholder="" />
+      <Textarea label="메모" name="memo" placeholder="" />
 
       <button className="btn btn-primary" type="submit">
         소스페소 사용하기
