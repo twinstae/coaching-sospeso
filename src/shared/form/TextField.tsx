@@ -17,7 +17,7 @@ export function TextField<InputT extends Record<string, any>>({
     field,
     fieldState: {
       error,
-      // invalid, isTouched, isDirty,
+      // isTouched, isDirty,
     },
     // formState: {
     //     touchedFields, dirtyFields
@@ -28,22 +28,24 @@ export function TextField<InputT extends Record<string, any>>({
     rules: { required: true },
   });
   const errorId = useId();
+  const isInvalid = error?.message !== undefined
 
   return (
     <div>
-      <label className="input input-bordered flex items-center gap-2">
+      <label className="flex flex-col items-start">
         {label}
-        <input
+        <input 
           type="text"
           {...props}
           name={field.name} // send down the input name
-          className={clsx("grow", className)}
+          className={clsx("input input-bordered aria-[invalid]:input-error", className)}
           onChange={field.onChange} // send value to hook form
           onBlur={field.onBlur} // notify when input is touched/blur
           value={field.value ?? ""} // input value
           ref={field.ref} // send input ref, so we can focus on input when error appear
-          aria-describedby={error?.message && errorId}
-          aria-errormessage={error?.message && errorId}
+          aria-invalid={isInvalid}
+          aria-describedby={isInvalid ? errorId : undefined}
+          aria-errormessage={isInvalid ? errorId : undefined}
         />
       </label>
       <SimpleErrorMessage id={errorId} error={error} />
