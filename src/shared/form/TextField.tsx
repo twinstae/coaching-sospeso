@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import type { ComponentProps } from "react";
+import { useId, type ComponentProps } from "react";
 import { useController, useFormContext } from "react-hook-form";
+import { SimpleErrorMessage } from "./SimpleErrorMessage";
 
 export function TextField<InputT extends Record<string, any>>({
   label,
@@ -26,6 +27,7 @@ export function TextField<InputT extends Record<string, any>>({
     control,
     rules: { required: true },
   });
+  const errorId = useId();
 
   return (
     <div>
@@ -40,13 +42,11 @@ export function TextField<InputT extends Record<string, any>>({
           onBlur={field.onBlur} // notify when input is touched/blur
           value={field.value ?? ""} // input value
           ref={field.ref} // send input ref, so we can focus on input when error appear
+          aria-describedby={error?.message && errorId}
+          aria-errormessage={error?.message && errorId}
         />
       </label>
-      {error && (
-        <p role="alert" aria-label={error.message}>
-          {error.message}
-        </p>
-      )}
+      <SimpleErrorMessage id={errorId} error={error} />
     </div>
   );
 }
