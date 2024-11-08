@@ -8,6 +8,7 @@
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
-    }
+    },
+    "types": ["vitest/importMeta"]
   }
 }

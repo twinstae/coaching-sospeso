@@ -14,7 +14,9 @@ export default defineConfig({
   integrations: [
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
+        plugins: import.meta.vitest
+          ? [["babel-plugin-react-compiler", ReactCompilerConfig]]
+          : undefined,
       },
     }),
   ],
@@ -22,5 +24,5 @@ export default defineConfig({
     plugins: [tsconfigPaths()],
   },
   output: "server",
-  adapter: vercel()
+  adapter: vercel(),
 });
