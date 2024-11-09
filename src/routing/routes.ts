@@ -40,7 +40,7 @@ export const routes = {
     path: "/admin",
   },
   "어드민-소스페소-사용": {
-    path: "/admin/[sospesoId]/consuming/[consumerId]",
+    path: "/admin/sospeso/[sospesoId]/consuming",
     paramsSchema: v.object({
       sospesoId: v.pipe(v.string(), v.uuid()),
       consumerId: v.pipe(v.string(), v.uuid()),
@@ -48,8 +48,15 @@ export const routes = {
   },
 } satisfies Record<string, Route>;
 
-export function resolveRoute(key: RouteKeys) {
+export function resolveRoute<RouteKey extends RouteKeys>(
+  key: RouteKey,
+): (typeof routes)[RouteKey] {
   return routes[key];
 }
 
 export type RouteKeys = keyof typeof routes;
+
+export type RouteParams<RouteKey extends RouteKeys> =
+  (typeof routes)[RouteKey] extends DynamicRoute
+    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
+    : undefined;

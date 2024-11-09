@@ -1,7 +1,7 @@
 ---
 import { actions } from "astro:actions";
 import Layout from "@/layouts/Layout.astro";
-import { SospesoApplicationDashboardWithActions } from "@/astro/SospesoApplicationDashboardWithActions";
+import { SospesoApplicationDashboard } from "@/components/SospesoApplicationDashboard";
 
 const { data: applicationList } = await actions.retrieveSospesoApplicationList(
   {},
@@ -17,9 +17,25 @@ if (!applicationList) {
 
 <Layout title="소스페소 코치 페이지">
   <main class="p-8 min-h-svh">
-    <SospesoApplicationDashboardWithActions
+    <SospesoApplicationDashboard
       client:load
       applicationList={applicationList}
     />
   </main>
 </Layout>
+
+<script>
+  // import {
+  //   sospesoApproveEventBus,
+  //   sospesoRejectEventBus,
+  // } from '@/components/SospesoApplicationDashboard';
+  // import { actions } from 'astro:actions';
+
+  // sospesoApproveEventBus.on(window.document.body, (command) => {
+  //   actions.approve(command).then(() => {});
+  // });
+
+  // sospesoRejectEventBus.on(window.document.body, (command) => {
+  //   actions.rejectSospeso(command).then(() => {});
+  // });
+</script>

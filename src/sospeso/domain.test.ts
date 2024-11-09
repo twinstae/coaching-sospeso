@@ -26,7 +26,7 @@ export const appliedSospeso = applySospeso(issuedSospeso, {
   sospesoId: issuedSospeso.id,
   applicationId: firstApplicationId,
   appliedAt: new Date(),
-  applicationMsg: "",
+  content: "",
 });
 
 export const approvedSospeso = approveApplication(appliedSospeso, {
@@ -56,7 +56,7 @@ describe("sospeso", () => {
         sospesoId: issuedSospeso.id,
         applicationId: crypto.randomUUID(),
         appliedAt: new Date(),
-        applicationMsg: "",
+        content: "",
       });
     }).toThrowError("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.");
   });
@@ -98,7 +98,7 @@ describe("sospeso", () => {
       sospesoId: rejectedSospeso.id,
       applicationId: secondApplicationId,
       appliedAt: new Date(),
-      applicationMsg: "",
+      content: "",
     });
 
     const approvedSospeso = approveApplication(appliedSospeso, {
@@ -119,7 +119,7 @@ describe("sospeso", () => {
       sospesoId: rejectedSospeso.id,
       applicationId: secondApplicationId,
       appliedAt: new Date(),
-      applicationMsg: "",
+      content: "",
     });
 
     const rejectedAgainSospeso = rejectApplication(appliedSospeso, {

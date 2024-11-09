@@ -2,18 +2,28 @@ import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
-import { SospesoConsumingForm } from "./SospesoConsumingForm.tsx";
+import {
+  sospesoConsumingEventBus,
+  SospesoConsumingForm,
+} from "./SospesoConsumingForm.tsx";
+import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
+import { UUIDGeneratorApi } from "@/adapters/IdGeneratorApi.ts";
+
+const TEST_ID = UUIDGeneratorApi.generateId();
 
 describe("SospesoConsumingForm", () => {
   test("필수 값을 입력하지 않으면 에러가 난다", async () => {
     // given 렌더를 함
     let result = {}; // mock
     render(
-      <SospesoConsumingForm
-        onSubmit={async (command) => {
+      <SafeEventHandler
+        bus={sospesoConsumingEventBus}
+        onEvent={(command) => {
           result = command;
         }}
-      />,
+      >
+        <SospesoConsumingForm />
+      </SafeEventHandler>,
     );
 
     // when 사용자가 클릭이나 입력
@@ -31,15 +41,24 @@ describe("SospesoConsumingForm", () => {
   test("필수 값을 입력하면 폼을 제출할 수 있다", async () => {
     let result = {};
     render(
-      <SospesoConsumingForm
-        onSubmit={async (command) => {
+      <SafeEventHandler
+        bus={sospesoConsumingEventBus}
+        onEvent={(command) => {
           result = command;
         }}
-      />,
+      >
+        <SospesoConsumingForm
+          idGeneratorApi={{
+            generateId() {
+              return TEST_ID;
+            },
+          }}
+        />
+      </SafeEventHandler>,
     );
-
     const expected = {
-      coachId: crypto.randomUUID(),
+      coachId: UUIDGeneratorApi.generateId(),
+      consumingId: TEST_ID,
       consumedAt: new Date("2024-11-07T13:07:34.000Z"),
       content: "너무 도움이 되었어요!",
       memo: "장소 시간 어쩌구 코칭 일지 링크 등등",

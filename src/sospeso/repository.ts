@@ -1,4 +1,8 @@
-import { calcStatus, type Sospeso } from "./domain";
+import {
+  calcStatus,
+  type Sospeso,
+  type SospesoApplicationStatus,
+} from "./domain";
 
 type SospesoDto =
   | {
@@ -27,9 +31,23 @@ type SospesoListItemDto = {
   issuedAt: Date;
 };
 
+type SospesoApplicationListItemDto = {
+  id: string;
+  sospesoId: string;
+  to: string;
+  status: SospesoApplicationStatus;
+  appliedAt: Date;
+  applicant: {
+    id: string;
+    nickname: string;
+  };
+  content: string;
+};
+
 export interface SospesoRepositoryI {
   retrieveSospesoList(): Promise<SospesoListItemDto[]>;
   retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto | undefined>;
+  retrieveApplicationList(): Promise<SospesoApplicationListItemDto[]>;
   updateOrSave(
     sospesoId: string,
     update: (sospeso: Sospeso | undefined) => Sospeso,
@@ -87,6 +105,25 @@ export const createFakeRepository = (
         to: sospeso.to,
         consuming: undefined,
       };
+    },
+    async retrieveApplicationList(): Promise<SospesoApplicationListItemDto[]> {
+      return Object.values(_fakeState).flatMap((sospeso) => {
+        return sospeso.applicationList.map((application) => {
+          return {
+            id: application.id,
+            sospesoId: sospeso.id,
+            to: sospeso.to,
+            status: application.status,
+            appliedAt: application.appliedAt,
+            content: application.content, // TODO! application에 content가 추가되야
+            applicant: {
+              // TODO! user가 만들어져야
+              id: "",
+              nickname: "김토끼",
+            },
+          };
+        });
+      });
     },
     async updateOrSave(
       sospesoId: string,

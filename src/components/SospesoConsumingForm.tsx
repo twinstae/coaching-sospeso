@@ -1,10 +1,17 @@
-import { Form } from "@/shared/form/Form";
-import { Textarea } from "@/shared/form/Textarea";
-import { TextField } from "@/shared/form/TextField";
+import {
+  UUIDGeneratorApi,
+  type IdGeneratorApi,
+} from "@/adapters/IdGeneratorApi";
+import { createSafeEvent } from "@/event/SafeEventBus";
+import { Form } from "@/shared/form/Form.tsx";
+import { Textarea } from "@/shared/form/Textarea.tsx";
+import { TextField } from "@/shared/form/TextField.tsx";
+import { useMemo } from "react";
 import * as v from "valibot";
 
 const consumingSchema = v.object({
   coachId: v.string("코치를 선택해주세요"),
+  consumingId: v.string(),
   consumedAt: v.pipe(
     v.string("코칭 일시를 입력해주세요"),
     v.transform((input) => new Date(input)),
@@ -13,25 +20,28 @@ const consumingSchema = v.object({
   memo: v.pipe(v.string(), v.minLength(1, "메모를 입력해주세요")),
 });
 
+export const sospesoConsumingEventBus = createSafeEvent(
+  "sospeso-consume",
+  consumingSchema,
+);
+
 export function SospesoConsumingForm({
-  onSubmit,
+  idGeneratorApi = UUIDGeneratorApi,
 }: {
-  onSubmit: (command: {
-    coachId: string;
-    consumedAt: Date;
-    content: string;
-    memo: string;
-  }) => Promise<void>;
+  idGeneratorApi?: IdGeneratorApi;
 }) {
+  const consumingId = useMemo(() => idGeneratorApi.generateId(), []);
+
   return (
     <Form
       form={{
         schema: consumingSchema,
+        bus: sospesoConsumingEventBus,
         defaultValues: {
+          consumingId,
           content: "",
           memo: "",
         },
-        onSubmit,
       }}
     >
       <TextField

@@ -1,6 +1,5 @@
-import * as v from "valibot";
 import type { ComponentProps } from "react";
-import type { DynamicRoute, RouteKeys, routes } from "./routes.ts";
+import type { RouteKeys, RouteParams } from "./routes.ts";
 import { href } from "./href.ts";
 
 export function Link<RouteKey extends RouteKeys>({
@@ -9,9 +8,7 @@ export function Link<RouteKey extends RouteKeys>({
   ...props
 }: {
   routeKey: RouteKey;
-  params: (typeof routes)[RouteKey] extends DynamicRoute
-    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
-    : undefined;
+  params: RouteParams<RouteKey>;
 } & Omit<ComponentProps<"a">, "href">) {
   return <a {...props} href={href(routeKey, params)}></a>;
 }
