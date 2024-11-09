@@ -1,6 +1,6 @@
 ---
-import { SospesoIssuingForm } from '@/components/SospesoIssuingForm';
-import Layout from '@/layouts/Layout.astro';
+import { SospesoIssuingForm } from "@/components/SospesoIssuingForm.tsx";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="소스페소 발행하기">
@@ -8,10 +8,13 @@ import Layout from '@/layouts/Layout.astro';
 </Layout>
 
 <script>
-  // import { navigate } from '@/routing/navigate';
-  // import { actions } from 'astro:actions';
+  import { sospesoIssuingEventBus } from "@/components/SospesoIssuingForm";
+  import { navigate } from "@/routing/navigate";
+  import { actions } from "astro:actions";
 
-  // actions.issueSospeso({ command }).then(() => {
-  //           navigate("소스페소-상세", { sospesoId });
-  //         });
+  sospesoIssuingEventBus.on(window.document.body, (command) => {
+    actions.issueSospeso(command).then(() => {
+      navigate("소스페소-상세", { sospesoId: command.sospesoId });
+    });
+  });
 </script>

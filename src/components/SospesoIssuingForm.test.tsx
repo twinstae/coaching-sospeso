@@ -2,8 +2,11 @@ import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
-import { sospesoIssuingEventBus, SospesoIssuingForm } from "./SospesoIssuingForm";
-import { SafeEventHandler } from '@/event/SafeEventHandler';
+import {
+  sospesoIssuingEventBus,
+  SospesoIssuingForm,
+} from "./SospesoIssuingForm";
+import { SafeEventHandler } from "@/event/SafeEventHandler";
 
 const TEST_ID = crypto.randomUUID();
 
@@ -15,12 +18,9 @@ describe("SospesoIssuingForm", () => {
         bus={sospesoIssuingEventBus}
         onEvent={(detail) => {
           result = detail;
-        }}>
-        <SospesoIssuingForm
-        idGeneratorApi={{ generateId() {
-          return TEST_ID
-        },}}
-      />
+        }}
+      >
+        <SospesoIssuingForm />
       </SafeEventHandler>,
     );
 
@@ -37,17 +37,20 @@ describe("SospesoIssuingForm", () => {
         bus={sospesoIssuingEventBus}
         onEvent={(detail) => {
           result = detail;
-        }}>
+        }}
+      >
         <SospesoIssuingForm
-        idGeneratorApi={{ generateId() {
-          return TEST_ID
-        },}}
-      />
+          idGeneratorApi={{
+            generateId() {
+              return TEST_ID;
+            },
+          }}
+        />
       </SafeEventHandler>,
     );
 
     const expected = {
-    sospesoId: TEST_ID,
+      sospesoId: TEST_ID,
       from: "탐정토끼",
       to: "퀴어 문화 축제 올 사람",
     };

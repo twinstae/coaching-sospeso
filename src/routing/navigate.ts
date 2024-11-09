@@ -1,13 +1,10 @@
-import type { DynamicRoute, RouteKeys, routes } from "./routes";
-import * as v from "valibot";
+import type { RouteKeys, RouteParams } from "./routes";
 import { navigate as astroNavigate } from "astro:transitions/client";
 import { href } from "./href";
 
 export function navigate<RouteKey extends RouteKeys>(
   routeKey: RouteKey,
-  params: (typeof routes)[RouteKey] extends DynamicRoute
-    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
-    : undefined,
+  params: RouteParams<RouteKey>,
 ) {
   return astroNavigate(href(routeKey, params));
 }

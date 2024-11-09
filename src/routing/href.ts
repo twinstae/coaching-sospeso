@@ -1,16 +1,13 @@
 import * as v from "valibot";
 import {
   resolveRoute,
-  routes,
-  type DynamicRoute,
   type RouteKeys,
+  type RouteParams,
 } from "./routes";
 
 export function href<RouteKey extends RouteKeys>(
   routeKey: RouteKey,
-  params: (typeof routes)[RouteKey] extends DynamicRoute
-    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
-    : undefined,
+  params: RouteParams<RouteKey>,
 ) {
   const route = resolveRoute(routeKey);
 

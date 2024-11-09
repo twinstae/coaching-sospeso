@@ -33,9 +33,12 @@ export function createSafeEvent<
       callback: (detail: DetailT) => void | Promise<void>,
     ) {
       element.addEventListener(name, (event: Event) => {
-        if (event instanceof CustomEvent && event.type === name) {
-          callback(event.detail);
-        }
+        invariant(
+          event instanceof CustomEvent && event.type === name,
+          "잘못된 이벤트로 호출되었습니다.",
+        );
+
+        callback(event.detail);
       });
     },
   };

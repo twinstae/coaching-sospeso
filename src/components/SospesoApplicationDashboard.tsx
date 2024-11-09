@@ -1,7 +1,9 @@
+import { createSafeEvent } from "@/event/SafeEventBus";
 import { Link } from "@/routing/Link.tsx";
 import { type SospesoApplicationStatus } from "@/sospeso/domain.ts";
 import { applicationStatusToLabelDict } from "@/sospeso/label.ts";
 import { clsx } from "clsx";
+import * as v from "valibot";
 
 export type SospesoApplicationDto = {
   id: string;
@@ -16,21 +18,24 @@ export type SospesoApplicationDto = {
   content: string;
 };
 
+const detailSchema = v.object({
+  sospesoId: v.string(),
+  applicationId: v.string(),
+});
+
+export const sospesoApproveEventBus = createSafeEvent(
+  "sospeso-approve",
+  detailSchema,
+);
+export const sospesoRejectEventBus = createSafeEvent(
+  "sospeso-reject",
+  detailSchema,
+);
+
 export function SospesoApplicationDashboard({
   applicationList,
-  actions,
 }: {
   applicationList: SospesoApplicationDto[];
-  actions: {
-    approveApplication: (command: {
-      sospesoId: string;
-      applicationId: string;
-    }) => Promise<void>;
-    rejectApplication: (command: {
-      sospesoId: string;
-      applicationId: string;
-    }) => Promise<void>;
-  };
 }) {
   return (
     <div className="overflow-x-auto card shadow-lg min-h-96">
@@ -75,11 +80,14 @@ export function SospesoApplicationDashboard({
                         <li>
                           <button
                             type="button"
-                            onClick={() => {
-                              actions.approveApplication({
-                                sospesoId: application.sospesoId,
-                                applicationId: application.id,
-                              });
+                            onClick={(event) => {
+                              sospesoApproveEventBus.dispatch(
+                                event.currentTarget,
+                                {
+                                  sospesoId: application.sospesoId,
+                                  applicationId: application.id,
+                                },
+                              );
                             }}
                           >
                             승인하기
@@ -88,11 +96,14 @@ export function SospesoApplicationDashboard({
                       )}
                       <li>
                         <button
-                          onClick={() => {
-                            actions.rejectApplication({
-                              sospesoId: application.sospesoId,
-                              applicationId: application.id,
-                            });
+                          onClick={(event) => {
+                            sospesoRejectEventBus.dispatch(
+                              event.currentTarget,
+                              {
+                                sospesoId: application.sospesoId,
+                                applicationId: application.id,
+                              },
+                            );
                           }}
                         >
                           거절하기

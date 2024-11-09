@@ -1,7 +1,11 @@
 import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
-import { SospesoApplicationDashboard } from "./SospesoApplicationDashboard.tsx";
+import {
+  SospesoApplicationDashboard,
+  sospesoApproveEventBus,
+  sospesoRejectEventBus,
+} from "./SospesoApplicationDashboard.tsx";
 import {
   TEST_APPLICATION_LIST,
   TEST_APPROVED_APPLICATION,
@@ -9,17 +13,12 @@ import {
 import { tableToMarkdown } from "@/siheom/tableToMarkdown.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
 import { href } from "@/routing/href.ts";
+import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
 describe("SospesoApplicationDashboard", () => {
   test("소스페소에 신청한 목록을 볼 수 있다", async () => {
     render(
-      <SospesoApplicationDashboard
-        applicationList={TEST_APPLICATION_LIST}
-        actions={{
-          async approveApplication(_command) {},
-          async rejectApplication(_command) {},
-        }}
-      />,
+      <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />,
     );
 
     expect(tableToMarkdown(queryTL.table("").get())).toMatchInlineSnapshot(`
@@ -36,15 +35,14 @@ describe("SospesoApplicationDashboard", () => {
     let approved = {};
 
     render(
-      <SospesoApplicationDashboard
-        applicationList={TEST_APPLICATION_LIST}
-        actions={{
-          async approveApplication(command) {
-            approved = command;
-          },
-          async rejectApplication(_command) {},
+      <SafeEventHandler
+        bus={sospesoApproveEventBus}
+        onEvent={(detail) => {
+          approved = detail;
         }}
-      />,
+      >
+        <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />
+      </SafeEventHandler>,
     );
 
     await queryTL.button("신청함").click();
@@ -58,15 +56,14 @@ describe("SospesoApplicationDashboard", () => {
     let rejected = {};
 
     render(
-      <SospesoApplicationDashboard
-        applicationList={TEST_APPLICATION_LIST}
-        actions={{
-          async approveApplication(_command) {},
-          async rejectApplication(command) {
-            rejected = command;
-          },
+      <SafeEventHandler
+        bus={sospesoRejectEventBus}
+        onEvent={(detail) => {
+          rejected = detail;
         }}
-      />,
+      >
+        <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />
+      </SafeEventHandler>,
     );
 
     await queryTL.button("신청함").click();
@@ -80,15 +77,14 @@ describe("SospesoApplicationDashboard", () => {
     let rejected = {};
 
     render(
-      <SospesoApplicationDashboard
-        applicationList={TEST_APPLICATION_LIST}
-        actions={{
-          async approveApplication(_command) {},
-          async rejectApplication(command) {
-            rejected = command;
-          },
+      <SafeEventHandler
+        bus={sospesoRejectEventBus}
+        onEvent={(detail) => {
+          rejected = detail;
         }}
-      />,
+      >
+        <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />
+      </SafeEventHandler>,
     );
 
     await queryTL.button("승인됨").click();
@@ -100,13 +96,7 @@ describe("SospesoApplicationDashboard", () => {
 
   test("승인한 소스페소에서 사용하기 폼 페이지로 이동할 수 있다", async () => {
     render(
-      <SospesoApplicationDashboard
-        applicationList={TEST_APPLICATION_LIST}
-        actions={{
-          async approveApplication(_command) {},
-          async rejectApplication(_command) {},
-        }}
-      />,
+      <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />,
     );
 
     await queryTL.button("승인됨").click();
