@@ -46,6 +46,12 @@ export const routes = {
       consumerId: v.pipe(v.string(), v.uuid()),
     }),
   },
+  "가짜-이메일-인박스": {
+    path: "/admin/email/inbox",
+    paramsSchema: v.object({
+      emailAddress: v.pipe(v.string(), v.email()),
+    }),
+  },
 } satisfies Record<string, Route>;
 
 export function resolveRoute<RouteKey extends RouteKeys>(

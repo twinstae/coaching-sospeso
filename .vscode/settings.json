@@ -5,10 +5,12 @@
     "clsx",
     "daisyui",
     "hookform",
+    "libsql",
     "lofi",
     "siheom",
     "Sospeso",
     "tailwindcss",
+    "TURSO",
     "valibot",
     "vitest"
   ]

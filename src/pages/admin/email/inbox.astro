@@ -1,0 +1,15 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import * as fakeEmailApi from "@/adapters/emailApi.ts";
+import { getParsedParams } from "@/routing/parseRouteParams";
+
+const { emailAddress } = getParsedParams("가짜-이메일-인박스");
+
+const inbox = fakeEmailApi.readInbox(emailAddress);
+---
+
+<Layout title="email inbox">
+  <h1>가짜 인박스</h1>
+
+  {JSON.stringify(inbox)}
+</Layout>
