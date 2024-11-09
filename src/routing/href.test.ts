@@ -23,8 +23,6 @@ describe("href", () => {
   });
 
   test("path에 없는 파라미터는 query string으로 붙는다", () => {
-    expect(href("홈", { page: 1 })).toBe(
-      "/?page=1",
-    );
+    expect(href("홈", { page: 1 })).toBe("/?page=1");
   });
 });
