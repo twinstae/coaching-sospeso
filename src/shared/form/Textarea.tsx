@@ -29,7 +29,7 @@ export function Textarea<InputT extends Record<string, any>>({
   });
 
   const errorId = useId();
-  const isInvalid = error?.message !== undefined
+  const isInvalid = error?.message !== undefined;
 
   return (
     <div className="w-full">
@@ -38,7 +38,10 @@ export function Textarea<InputT extends Record<string, any>>({
         <textarea
           {...props}
           name={field.name} // send down the input name
-          className={clsx("textarea textarea-bordered aria-[invalid]:textarea-error w-full", className)}
+          className={clsx(
+            "textarea textarea-bordered aria-[invalid]:textarea-error w-full",
+            className,
+          )}
           onChange={field.onChange} // send value to hook form
           onBlur={field.onBlur} // notify when input is touched/blur
           value={field.value ?? ""} // input value
