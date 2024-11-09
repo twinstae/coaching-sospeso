@@ -208,11 +208,9 @@ export function consumeSospeso(
   };
 }
 
-export type SospesoStatus = "issued" | "pending" | "consumed"
+export type SospesoStatus = "issued" | "pending" | "consumed";
 
-export function calcStatus(
-  sospeso: Sospeso,
-): SospesoStatus {
+export function calcStatus(sospeso: Sospeso): SospesoStatus {
   if (isConsumed(sospeso)) {
     return "consumed";
   }

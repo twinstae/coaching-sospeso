@@ -1,7 +1,7 @@
-import { formatDate } from '@/adapters/dateApi';
+import { formatDate } from "@/adapters/dateApi";
 import { Link } from "@/routing/Link.tsx";
-import type { SospesoStatus } from '@/sospeso/domain';
-import { sospesoStatusToLabelDict } from '@/sospeso/label';
+import type { SospesoStatus } from "@/sospeso/domain";
+import { sospesoStatusToLabelDict } from "@/sospeso/label";
 
 export function SospesoList({
   sospesoList,
@@ -11,7 +11,7 @@ export function SospesoList({
     from: string;
     to: string;
     issuedAt: Date;
-    status: SospesoStatus
+    status: SospesoStatus;
   }[];
 }) {
   return (
@@ -23,10 +23,9 @@ export function SospesoList({
             routeKey="소스페소-상세"
             params={{ sospesoId: sospeso.id }}
           >
-            From. {sospeso.from}
-            {" "}To. {sospeso.to}
-            {" "}발행일 {formatDate(sospeso.issuedAt, "yyyy년 M월 d일")}
-            {" " + sospesoStatusToLabelDict[sospeso.status]} 
+            From. {sospeso.from} To. {sospeso.to} 발행일{" "}
+            {formatDate(sospeso.issuedAt, "yyyy년 M월 d일")}
+            {" " + sospesoStatusToLabelDict[sospeso.status]}
           </Link>
         </li>
       ))}

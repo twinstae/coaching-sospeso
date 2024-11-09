@@ -10,5 +10,6 @@ type Story = StoryObj<typeof Pagination>;
 
 export const Base: Story = {
   args: {
+    current: 2,
   },
 };

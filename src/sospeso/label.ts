@@ -9,10 +9,7 @@ export const applicationStatusToLabelDict: Record<
   rejected: "거절됨",
 };
 
-export const sospesoStatusToLabelDict: Record<
-  SospesoStatus,
-  string
-> = {
+export const sospesoStatusToLabelDict: Record<SospesoStatus, string> = {
   issued: "발행됨",
   pending: "대기중",
   consumed: "사용됨",
