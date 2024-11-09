@@ -6,6 +6,7 @@ import * as domain from "@/sospeso/domain.ts";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import invariant from "@/invariant.ts";
+import { SOSPESO_PRICE } from "@/sospeso/constants";
 
 export function createActionServer(sospesoRepo: SospesoRepositoryI) {
   return {
@@ -31,6 +32,7 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
       input: z.object({
         sospesoId: z.string(),
         issuedAt: z.coerce.date(),
+        issuerId: z.string(),
         from: z.string(),
         to: z.string(),
       }),
@@ -38,7 +40,10 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         await sospesoRepo.updateOrSave(input.sospesoId, (existed) => {
           invariant(existed === undefined, "이미 소스페소가 생성되었어요!");
 
-          const issuedSospeso = domain.issueSospeso(input);
+          const issuedSospeso = domain.issueSospeso({
+            ...input,
+            paidAmount: SOSPESO_PRICE,
+          });
 
           return issuedSospeso;
         });

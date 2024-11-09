@@ -21,8 +21,10 @@ export const sospesoIssuingEventBus = createSafeEvent(
 
 export function SospesoIssuingForm({
   idGeneratorApi = UUIDGeneratorApi,
+  userNickname,
 }: {
   idGeneratorApi?: IdGeneratorApi;
+  userNickname: string;
 }) {
   const id = useMemo(() => idGeneratorApi.generateId(), [idGeneratorApi]);
 
@@ -30,7 +32,7 @@ export function SospesoIssuingForm({
     <Form
       form={{
         schema: issuingSchema,
-        defaultValues: { sospesoId: id, from: "", to: "" },
+        defaultValues: { sospesoId: id, from: userNickname, to: "" },
         bus: sospesoIssuingEventBus,
       }}
     >

@@ -14,6 +14,7 @@ describe("sospesoActionServer", () => {
 
     await actionServer.issueSospeso({
       sospesoId: TEST_SOSPESO_LIST_ITEM.id,
+      issuerId: "", // TODO! 로그인 구현하면 채워줌
       ...TEST_SOSPESO_LIST_ITEM,
     });
 
@@ -91,8 +92,6 @@ describe("sospesoActionServer", () => {
   });
 });
 
-
-
 function createTestActionServer(initState: Record<string, Sospeso>) {
   const actionServer = createActionServer(createFakeRepository(initState));
 
@@ -103,11 +102,10 @@ function createTestActionServer(initState: Record<string, Sospeso>) {
         input: any,
       ) => Promise<{ data: any; error: any }>;
       if (run instanceof Function) {
-        return function (input: any) {
+        return async function (input: any) {
           return run(JSON.parse(JSON.stringify(input))).then((result) => {
-
-            if (result.error){
-              throw result.error
+            if (result.error) {
+              throw result.error;
             }
             return { data: result.data && result.data, error: result.error };
           });
