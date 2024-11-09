@@ -9,9 +9,5 @@ export default meta;
 type Story = StoryObj<typeof SospesoIssuingForm>;
 
 export const Base: Story = {
-  args: {
-    onSubmit: async (command) => {
-      alert(JSON.stringify(command));
-    },
-  },
+  args: {},
 };
