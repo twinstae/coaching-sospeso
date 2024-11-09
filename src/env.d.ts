@@ -1,9 +1,9 @@
 /// <reference path="../.astro/types.d.ts" />
 
 declare namespace App {
-	interface Locals {
-        session?: {
-
-        }
-    }
+  interface Locals {
+    session?: {
+      name: string;
+    };
+  }
 }

@@ -1,0 +1,48 @@
+---
+import { Link } from "@/routing/Link.tsx";
+
+const session = Astro.locals.session;
+---
+
+<div class="navbar bg-base-100">
+  <div class="flex-1">
+    <Link className="btn btn-ghost text-xl" routeKey="홈" params={{ page: 1 }}
+      >Coaching Sospeso</Link
+    >
+  </div>
+  <div class="flex-none">
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="inline-block h-5 w-5 stroke-current"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+          ></path>
+        </svg>
+      </div>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+      >
+        <li>
+          {
+            session ? (
+              <button>{session.name} 로그아웃</button>
+            ) : (
+              <Link routeKey="로그인" params={undefined}>
+                로그인
+              </Link>
+            )
+          }
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

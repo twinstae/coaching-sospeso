@@ -1,11 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import * as fakeEmailApi from "@/adapters/emailApi.ts";
-import { getParsedParams } from "@/routing/parseRouteParams";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
+import { actions } from "astro:actions";
 
-const { emailAddress } = getParsedParams("가짜-이메일-인박스");
+const { emailAddress } = parseRouteParamsFromUrl(
+  "가짜-이메일-인박스",
+  new URL(Astro.request.url),
+);
 
-const inbox = fakeEmailApi.readInbox(emailAddress);
+const { data: inbox } = await actions.readInbox({ email: emailAddress });
 ---
 
 <Layout title="email inbox">

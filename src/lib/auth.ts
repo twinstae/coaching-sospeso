@@ -12,6 +12,21 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendVerificationEmail: async (
+      user: { email: string },
+      url: string,
+      token: string,
+    ) => {
+      emailApi.send({
+        to: [user.email],
+        from: LIFE_LIFTER_ADMIN_EMAIL,
+        subject: "코칭 소스페소에 가입하기",
+        html: `${token} ${url}`,
+      });
+    },
   },
   plugins: [
     phoneNumber({
@@ -30,7 +45,7 @@ export const auth = betterAuth({
         emailApi.send({
           to: [email],
           from: LIFE_LIFTER_ADMIN_EMAIL,
-          subject: "코칭 소스페소에 가입하기",
+          subject: "코칭 소스페소에 로그인",
           html: `${token} ${url}`,
         });
       },

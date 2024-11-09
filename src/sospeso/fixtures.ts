@@ -96,3 +96,6 @@ export const TEST_APPLICATION_LIST: {
   },
   TEST_APPROVED_APPLICATION,
 ];
+
+// test db에 임시로 저장한 user
+export const TEST_USER_ID = "PLKKa6BZL2d0uPf8Cm0z_";

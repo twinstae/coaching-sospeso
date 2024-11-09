@@ -19,12 +19,13 @@ export async function readInbox(
 
 export const fakeEmailApi = {
   send: async (email) => {
+    console.log("email", email);
     for (const to of email.to) {
       const inbox = fakeEmailInbox[to];
       if (inbox) {
         inbox.push(email);
       } else {
-        fakeEmailInbox[to] = [];
+        fakeEmailInbox[to] = [email];
       }
     }
   },

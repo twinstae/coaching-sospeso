@@ -11,6 +11,7 @@ import {
   calcStatus,
 } from "./domain.ts";
 import { SOSPESO_PRICE } from "./constants.ts";
+import { TEST_USER_ID } from "./fixtures.ts";
 
 const sospesoId = crypto.randomUUID();
 const now = new Date();
@@ -21,7 +22,7 @@ export const issuedSospeso = issueSospeso({
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   paidAmount: SOSPESO_PRICE,
-  issuerId: "", // TODO! user.id 로 바꿔줘야 함
+  issuerId: TEST_USER_ID,
 });
 
 const firstApplicationId = crypto.randomUUID();

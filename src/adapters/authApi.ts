@@ -1,11 +1,13 @@
 import { createAuthClient } from "better-auth/react";
 import { phoneNumberClient, magicLinkClient } from "better-auth/client/plugins";
+import { href } from "@/routing/href";
 
 const authClient = createAuthClient({
   plugins: [phoneNumberClient(), magicLinkClient()],
 });
 
 export type AuthApi = {
+  sendEmailVerification: (command: { email: string }) => Promise<void>;
   signUp: {
     email: (command: {
       email: string;
@@ -15,12 +17,18 @@ export type AuthApi = {
       nickname: string;
     }) => Promise<void>;
   };
-  signIn: {
+  login: {
     magicLink: (command: { email: string }) => Promise<void>;
   };
 };
 
 export const authApi: AuthApi = {
+  async sendEmailVerification({ email }) {
+    await authClient.sendVerificationEmail({
+      email,
+      callbackURL: href("홈", { page: 1 }), // The redirect URL after verification
+    });
+  },
   signUp: {
     async email({ email, password, name }) {
       const { data, error } = await authClient.signUp.email({
@@ -31,7 +39,7 @@ export const authApi: AuthApi = {
       console.log("email sign up", data, error);
     },
   },
-  signIn: {
+  login: {
     async magicLink({ email }) {
       const { data, error } = await authClient.signIn.magicLink({
         email,

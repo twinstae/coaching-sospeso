@@ -1,18 +1,25 @@
 ---
-import { SospesoIssuingForm } from '@/components/SospesoIssuingForm.tsx';
-import Layout from '@/layouts/Layout.astro';
+import { SospesoIssuingForm } from "@/components/SospesoIssuingForm.tsx";
+import Layout from "@/layouts/Layout.astro";
+import { href } from "@/routing/href.ts";
 
-const session = { id: crypto.randomUUID(), nickname: '탐정토끼' }; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
+const session = Astro.locals.session; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
+
+if (!session) {
+  // TODO! 로그인 페이지로 리다이렉트 시키기
+  //  https://docs.astro.build/en/guides/routing/#dynamic-redirects
+  return Astro.redirect(href("로그인", undefined));
+}
 ---
 
 <Layout title="소스페소 발행하기">
-  <SospesoIssuingForm client:load userNickname={session.nickname} />
+  <SospesoIssuingForm client:load userNickname={session.name} />
 </Layout>
 
 <script>
-  import { sospesoIssuingEventBus } from '@/components/SospesoIssuingForm';
-  import { navigate } from '@/routing/navigate';
-  import { actions } from 'astro:actions';
+  import { sospesoIssuingEventBus } from "@/components/SospesoIssuingForm";
+  import { navigate } from "@/routing/navigate";
+  import { actions } from "astro:actions";
 
   const session = { id: crypto.randomUUID() }; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
 
@@ -24,7 +31,7 @@ const session = { id: crypto.randomUUID(), nickname: '탐정토끼' }; // TODO! 
           return console.error(result.error);
         }
 
-        navigate('소스페소-상세', { sospesoId: command.sospesoId });
+        navigate("소스페소-상세", { sospesoId: command.sospesoId });
       });
   });
 </script>

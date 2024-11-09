@@ -7,6 +7,7 @@ import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import invariant from "@/invariant.ts";
 import { SOSPESO_PRICE } from "@/sospeso/constants";
+import { readInbox } from "@/adapters/emailApi";
 
 export function createActionServer(sospesoRepo: SospesoRepositoryI) {
   return {
@@ -26,6 +27,14 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
       input: z.object({}),
       handler: async (_input) => {
         return sospesoRepo.retrieveApplicationList();
+      },
+    }),
+    readInbox: defineAction({
+      input: z.object({
+        email: z.string().email(),
+      }),
+      handler: async (input) => {
+        return readInbox(input.email);
       },
     }),
     issueSospeso: defineAction({
