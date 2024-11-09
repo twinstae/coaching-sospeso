@@ -148,6 +148,16 @@ async function createDrizzleTestRepository(initState: Record<string, Sospeso>) {
   await testDb.delete(schema.sospesoIssuing).all();
   await testDb.delete(schema.sospeso).all();
 
+  await testDb.insert(schema.user).values({
+    id: TEST_USER_ID,
+    name: "김토끼",
+    email: "test@test.com",
+    emailVerified: true,
+    image: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }).onConflictDoNothing()
+
   for (const sospeso of Object.values(initState)) {
     await repo.updateOrSave(sospeso.id, () => sospeso);
   }
@@ -159,4 +169,4 @@ runSospesoActionsTest("fake", async (initState) =>
   createFakeRepository(initState),
 );
 
-// runSospesoActionsTest("drizzle sqlite", createDrizzleTestRepository);
+runSospesoActionsTest("drizzle sqlite", createDrizzleTestRepository);
