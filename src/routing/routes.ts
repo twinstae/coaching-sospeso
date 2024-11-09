@@ -15,6 +15,9 @@ type Route = StaticRoute | DynamicRoute;
 export const routes = {
   홈: {
     path: "/",
+    paramsSchema: v.object({
+      page: v.pipe(v.number(), v.integer(), v.minValue(0))
+    }),
   },
   "소스페소-발행": {
     path: "/sospeso/issuing",
