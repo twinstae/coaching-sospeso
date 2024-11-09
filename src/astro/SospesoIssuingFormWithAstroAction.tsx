@@ -9,9 +9,11 @@ export const SospesoIssuingFormWithAstroAction = () => {
   return (
     <SospesoIssuingForm
       onSubmit={async (command) => {
-        actions.issueSospeso({ sospesoId, ...command }).then(() => {
-          navigate("소스페소-상세", { sospesoId });
-        });
+        actions
+          .issueSospeso({ sospesoId, issuedAt: new Date(), ...command })
+          .then(() => {
+            navigate("소스페소-상세", { sospesoId });
+          });
       }}
     />
   );

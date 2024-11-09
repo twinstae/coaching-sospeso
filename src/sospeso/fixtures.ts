@@ -8,7 +8,6 @@ export const TEST_SOSPESO_LIST_ITEM = {
   to: "퀴어 문화 축제 올 사람",
   issuedAt: TEST_ISSUED_AT,
   status: "issued", // 읽기 모델 "issued" | "pending" | "consumed"
-  consuming: undefined,
 } as const;
 
 export const ISSUED_SOSPESO = {

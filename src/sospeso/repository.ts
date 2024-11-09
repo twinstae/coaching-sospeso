@@ -19,14 +19,13 @@ type SospesoDto =
       };
     };
 
-type SospesoListItemDto = 
-| {
-    id: string;
-    from: string;
-    to: string;
-    status: "issued" | "pending" | "consumed";
-    issuedAt: Date;
-  }
+type SospesoListItemDto = {
+  id: string;
+  from: string;
+  to: string;
+  status: "issued" | "pending" | "consumed";
+  issuedAt: Date;
+};
 
 export interface SospesoRepositoryI {
   retrieveSospesoList(): Promise<SospesoListItemDto[]>;
@@ -51,7 +50,7 @@ export const createFakeRepository = (
           from: sospeso.from,
           status,
           to: sospeso.to,
-          issuedAt: sospeso.issuing.issuedAt
+          issuedAt: sospeso.issuing.issuedAt,
         };
       });
     },
