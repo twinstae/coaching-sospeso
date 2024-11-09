@@ -3,10 +3,11 @@ import { createActionServer } from "./index.ts";
 import { createFakeRepository } from "@/sospeso/repository.ts";
 import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import { approvedSospeso, issuedSospeso } from "@/sospeso/domain.test.ts";
+import type { Sospeso } from "@/sospeso/domain.ts";
 
 describe("sospesoActionServer", () => {
   test("issueSospeso", async () => {
-    const actionServer = createActionServer(createFakeRepository({}));
+    const actionServer = createTestActionServer({});
     const { data: before } = await actionServer.retrieveSospesoList({});
 
     expect(before).toStrictEqual([]);
@@ -22,11 +23,9 @@ describe("sospesoActionServer", () => {
   });
 
   test("applySospeso", async () => {
-    const actionServer = createActionServer(
-      createFakeRepository({
-        [issuedSospeso.id]: issuedSospeso,
-      }),
-    );
+    const actionServer = createTestActionServer({
+      [issuedSospeso.id]: issuedSospeso,
+    });
     const { data: before } = await actionServer.retrieveSospesoApplicationList(
       {},
     );
@@ -64,11 +63,9 @@ describe("sospesoActionServer", () => {
 
   test("consumeSospeso", async () => {
     // 기존에 이미 승인된 소스페소가 있었음
-    const actionServer = createActionServer(
-      createFakeRepository({
-        [approvedSospeso.id]: approvedSospeso,
-      }),
-    );
+    const actionServer = createTestActionServer({
+      [approvedSospeso.id]: approvedSospeso,
+    });
 
     const { data: before } = await actionServer.retrieveSospesoDetail({
       sospesoId: approvedSospeso.id,
@@ -93,3 +90,32 @@ describe("sospesoActionServer", () => {
     expect(after?.status).toBe("consumed");
   });
 });
+
+
+
+function createTestActionServer(initState: Record<string, Sospeso>) {
+  const actionServer = createActionServer(createFakeRepository(initState));
+
+  // 실제로는 JSON으로 직렬화된 값이 가기 때문에, Date 등은 문자열로 받는 걸 테스트
+  const proxy = new Proxy(actionServer, {
+    get(target: any, prop, _receiver) {
+      const run = target[prop as any] as (
+        input: any,
+      ) => Promise<{ data: any; error: any }>;
+      if (run instanceof Function) {
+        return function (input: any) {
+          return run(JSON.parse(JSON.stringify(input))).then((result) => {
+
+            if (result.error){
+              throw result.error
+            }
+            return { data: result.data && result.data, error: result.error };
+          });
+        };
+      }
+      return run;
+    },
+  });
+
+  return proxy as typeof actionServer;
+}
