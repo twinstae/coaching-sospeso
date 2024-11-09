@@ -1,9 +1,5 @@
 import * as v from "valibot";
-import {
-  resolveRoute,
-  type RouteKeys,
-  type RouteParams,
-} from "./routes";
+import { resolveRoute, type RouteKeys, type RouteParams } from "./routes";
 
 export function href<RouteKey extends RouteKeys>(
   routeKey: RouteKey,
@@ -19,8 +15,8 @@ export function href<RouteKey extends RouteKeys>(
 
       const result = Object.entries(parsedParams).reduce(
         (path, [key, value]) => {
-          if (new RegExp("[" + key + "]").exec(path)) {
-            return path.replaceAll("[" + key + "]", value);
+          if (new RegExp("\\[" + key + "\\]").exec(path)) {
+            return path.replace("[" + key + "]", value);
           }
 
           searchParams.set(key, value);

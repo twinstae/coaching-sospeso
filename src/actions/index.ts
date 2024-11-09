@@ -6,7 +6,6 @@ import * as domain from "@/sospeso/domain.ts";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import invariant from "@/invariant.ts";
-import { TEST_APPLICATION_LIST } from "@/sospeso/fixtures.ts";
 
 export function createActionServer(sospesoRepo: SospesoRepositoryI) {
   return {
@@ -25,21 +24,21 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
     retrieveSospesoApplicationList: defineAction({
       input: z.object({}),
       handler: async (_input) => {
-        return TEST_APPLICATION_LIST;
+        return sospesoRepo.retrieveApplicationList();
       },
     }),
     issueSospeso: defineAction({
       input: z.object({
         sospesoId: z.string(),
-        issuedAt: z.date(),
+        issuedAt: z.coerce.date(),
         from: z.string(),
         to: z.string(),
       }),
       handler: async (input) => {
-        const issuedSospeso = domain.issueSospeso(input);
-
         await sospesoRepo.updateOrSave(input.sospesoId, (existed) => {
           invariant(existed === undefined, "이미 소스페소가 생성되었어요!");
+
+          const issuedSospeso = domain.issueSospeso(input);
 
           return issuedSospeso;
         });
@@ -48,16 +47,15 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
     applySospeso: defineAction({
       input: z.object({
         sospesoId: z.string(),
+        appliedAt: z.coerce.date(),
         applicationId: z.string(),
-        applicationMsg: z.string(),
+        content: z.string(),
       }),
       handler: async (input) => {
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
 
-          const command = { ...input, appliedAt: new Date() };
-
-          const appliedSospeso = domain.applySospeso(sospeso, command);
+          const appliedSospeso = domain.applySospeso(sospeso, input);
 
           return appliedSospeso;
         });
@@ -69,7 +67,7 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         consumerId: z.string(),
         coachId: z.string(),
         consumingId: z.string(),
-        consumedAt: z.date(),
+        consumedAt: z.coerce.date(),
         content: z.string(),
         memo: z.string(),
       }),

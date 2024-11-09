@@ -8,7 +8,7 @@ export function Link<RouteKey extends RouteKeys>({
   ...props
 }: {
   routeKey: RouteKey;
-  params: RouteParams<RouteKey>,
+  params: RouteParams<RouteKey>;
 } & Omit<ComponentProps<"a">, "href">) {
   return <a {...props} href={href(routeKey, params)}></a>;
 }

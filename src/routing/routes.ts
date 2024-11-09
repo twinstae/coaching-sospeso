@@ -48,13 +48,15 @@ export const routes = {
   },
 } satisfies Record<string, Route>;
 
-export function resolveRoute<RouteKey extends RouteKeys>(key: RouteKey): (typeof routes)[RouteKey]{
+export function resolveRoute<RouteKey extends RouteKeys>(
+  key: RouteKey,
+): (typeof routes)[RouteKey] {
   return routes[key];
 }
 
 export type RouteKeys = keyof typeof routes;
 
-
-export type RouteParams<RouteKey extends RouteKeys> = (typeof routes)[RouteKey] extends DynamicRoute
-? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
-: undefined
+export type RouteParams<RouteKey extends RouteKeys> =
+  (typeof routes)[RouteKey] extends DynamicRoute
+    ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
+    : undefined;

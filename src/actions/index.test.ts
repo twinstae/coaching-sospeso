@@ -27,35 +27,39 @@ describe("sospesoActionServer", () => {
         [issuedSospeso.id]: issuedSospeso,
       }),
     );
-    const { data: before } = await actionServer.retrieveSospesoDetail({
-      sospesoId: issuedSospeso.id,
-    });
+    const { data: before } = await actionServer.retrieveSospesoApplicationList(
+      {},
+    );
 
-    expect(before).toStrictEqual({
-      consuming: undefined,
-      from: "탐정토끼",
-      id: issuedSospeso.id,
-      status: "issued",
-      to: "퀴어 문화 축제 올 사람",
-    });
+    expect(before).toStrictEqual([]);
 
+    const TEST_APPLICATION_ID = crypto.randomUUID();
+    const TEST_NOW = new Date();
     await actionServer.applySospeso({
       sospesoId: issuedSospeso.id,
-      applicationId: crypto.randomUUID(),
-      applicationMsg: "저 퀴어 문화 축제 갔다 왔어요",
+      applicationId: TEST_APPLICATION_ID,
+      content: "저 퀴어 문화 축제 갔다 왔어요",
+      appliedAt: TEST_NOW,
     });
 
-    const { data: after } = await actionServer.retrieveSospesoDetail({
-      sospesoId: issuedSospeso.id,
-    });
+    const { data: after } = await actionServer.retrieveSospesoApplicationList(
+      {},
+    );
 
-    expect(after).toStrictEqual({
-      consuming: undefined,
-      from: "탐정토끼",
-      id: issuedSospeso.id,
-      status: "pending",
-      to: "퀴어 문화 축제 올 사람",
-    });
+    expect(after).toStrictEqual([
+      {
+        applicant: {
+          id: "",
+          nickname: "김토끼",
+        },
+        appliedAt: TEST_NOW,
+        content: "저 퀴어 문화 축제 갔다 왔어요",
+        id: TEST_APPLICATION_ID,
+        sospesoId: issuedSospeso.id,
+        status: "applied",
+        to: "퀴어 문화 축제 올 사람",
+      },
+    ]);
   });
 
   test("consumeSospeso", async () => {

@@ -51,7 +51,7 @@ export function SospesoApplicationDashboard({
         </thead>
         <tbody>
           {applicationList.map((application) => (
-            <tr>
+            <tr key={application.id}>
               <td>{application.to}</td>
               <td>{application.appliedAt.toDateString()}</td>
               <td>{application.applicant.nickname}</td>

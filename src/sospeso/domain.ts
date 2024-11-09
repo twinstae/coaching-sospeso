@@ -9,7 +9,7 @@ export type SospesoIssuing = {
 export type SospesoApplication = {
   id: string;
   status: "applied" | "approved" | "rejected";
-
+  content: string;
   appliedAt: Date;
 };
 
@@ -77,7 +77,7 @@ export function issueSospeso(command: SospesoIssuingCommand): Sospeso {
 type SospesoApplicationCommand = {
   sospesoId: string;
   applicationId: string;
-  applicationMsg: string;
+  content: string;
   appliedAt: Date;
 };
 
@@ -108,6 +108,7 @@ export function applySospeso(
       {
         id: command.applicationId,
         appliedAt: command.appliedAt,
+        content: command.content,
         status: "applied",
       },
     ],

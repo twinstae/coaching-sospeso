@@ -13,8 +13,15 @@ import Layout from "@/layouts/Layout.astro";
   import { actions } from "astro:actions";
 
   sospesoIssuingEventBus.on(window.document.body, (command) => {
-    actions.issueSospeso(command).then(() => {
-      navigate("소스페소-상세", { sospesoId: command.sospesoId });
-    });
+    actions
+      .issueSospeso({ ...command, issuedAt: new Date() })
+      .then((result) => {
+        if (result.error) {
+          return console.error(result.error);
+        }
+
+        console.log({ ...command, issuedAt: new Date() });
+        navigate("소스페소-상세", { sospesoId: command.sospesoId });
+      });
   });
 </script>
