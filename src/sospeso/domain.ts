@@ -1,8 +1,15 @@
-import invariant from "../invariant";
+import invariant from "@/invariant.ts";
+
+// 발행
+// 가격은 설정 가능. 사용자가 정하는 게 아니기 때문에 서버에서 정해야...
+// 발행한 사람 userId
+// from -> 발행한 사람의 이름을 복사해서 넣기
+// to -> 소스페소
 
 export type SospesoIssuing = {
   id: string;
-
+  paidAmount: number;
+  issuerId: string;
   issuedAt: Date;
 };
 
@@ -20,12 +27,9 @@ export type SospesoConsuming = {
   // 후기 -> 공개
   content: string;
   // 메모 -> 장소, 시간, 내용, 코칭 일지 링크 (markdown? markdown editor?)
-  memo: string; // markdown
-  // 최종적으로 코칭을 받은 사람의 id => userId
+  memo: string; // markdownr
   consumerId: string; // user.id
-  // coachId => userId
   coachId: string; // user.id
-
   consumedAt: Date;
 };
 
@@ -53,6 +57,8 @@ type SospesoIssuingCommand = {
   issuedAt: Date;
   from: string;
   to: string;
+  issuerId: string;
+  paidAmount: number;
 };
 
 /**
@@ -68,6 +74,8 @@ export function issueSospeso(command: SospesoIssuingCommand): Sospeso {
     issuing: {
       id: command.sospesoId,
       issuedAt: command.issuedAt,
+      issuerId: command.issuerId,
+      paidAmount: command.paidAmount,
     },
     applicationList: [],
     consuming: undefined,

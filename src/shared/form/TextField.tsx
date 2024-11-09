@@ -15,13 +15,7 @@ export function TextField<InputT extends Record<string, any>>({
   const { control } = useFormContext();
   const {
     field,
-    fieldState: {
-      error,
-      // isTouched, isDirty,
-    },
-    // formState: {
-    //     touchedFields, dirtyFields
-    // }
+    fieldState: { error },
   } = useController({
     name,
     control,

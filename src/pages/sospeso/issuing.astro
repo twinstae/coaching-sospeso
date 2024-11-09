@@ -1,10 +1,12 @@
 ---
 import { SospesoIssuingForm } from "@/components/SospesoIssuingForm.tsx";
 import Layout from "@/layouts/Layout.astro";
+
+const session = { id: crypto.randomUUID(), nickname: "탐정토끼" }; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
 ---
 
 <Layout title="소스페소 발행하기">
-  <SospesoIssuingForm client:load />
+  <SospesoIssuingForm client:load userNickname={session.nickname} />
 </Layout>
 
 <script>
@@ -12,15 +14,15 @@ import Layout from "@/layouts/Layout.astro";
   import { navigate } from "@/routing/navigate";
   import { actions } from "astro:actions";
 
+  const session = { id: crypto.randomUUID() }; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
+
   sospesoIssuingEventBus.on(window.document.body, (command) => {
     actions
-      .issueSospeso({ ...command, issuedAt: new Date() })
+      .issueSospeso({ ...command, issuedAt: new Date(), issuerId: session.id })
       .then((result) => {
         if (result.error) {
           return console.error(result.error);
         }
-
-        console.log({ ...command, issuedAt: new Date() });
         navigate("소스페소-상세", { sospesoId: command.sospesoId });
       });
   });

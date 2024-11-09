@@ -10,14 +10,18 @@ import {
   isApproved,
   calcStatus,
 } from "./domain.ts";
+import { SOSPESO_PRICE } from "./constants.ts";
 
 const sospesoId = crypto.randomUUID();
 const now = new Date();
+
 export const issuedSospeso = issueSospeso({
   sospesoId: sospesoId,
   issuedAt: now,
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
+  paidAmount: SOSPESO_PRICE,
+  issuerId: "", // TODO! user.id 로 바꿔줘야 함
 });
 
 const firstApplicationId = crypto.randomUUID();
@@ -37,8 +41,10 @@ export const approvedSospeso = approveApplication(appliedSospeso, {
 describe("sospeso", () => {
   test("소스페소를 발행할 수 있다.", () => {
     expect(issuedSospeso.id).toBe(sospesoId);
+
     expect(issuedSospeso.issuing.id).toBe(sospesoId);
     expect(issuedSospeso.issuing.issuedAt).toBe(now);
+    expect(issuedSospeso.issuing.paidAmount).toBe(80000);
 
     expect(issuedSospeso.applicationList).toHaveLength(0);
     expect(isConsumed(issuedSospeso)).toBe(false);

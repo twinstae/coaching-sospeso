@@ -9,5 +9,7 @@ export default meta;
 type Story = StoryObj<typeof SospesoIssuingForm>;
 
 export const Base: Story = {
-  args: {},
+  args: {
+    userNickname: "김토끼",
+  },
 };
