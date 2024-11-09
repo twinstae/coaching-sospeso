@@ -12,9 +12,14 @@ export type DynamicRoute = {
 
 type Route = StaticRoute | DynamicRoute;
 
+const pageSchema = v.pipe(v.number(), v.integer(), v.minValue(0));
+
 export const routes = {
   홈: {
     path: "/",
+    paramsSchema: v.object({
+      page: pageSchema,
+    }),
   },
   "소스페소-발행": {
     path: "/sospeso/issuing",

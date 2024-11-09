@@ -18,9 +18,23 @@ export function href<RouteKey extends RouteKeys>(
     try {
       const parsedParams = v.parse(route.paramsSchema, params);
 
-      return Object.entries(parsedParams).reduce((path, [key, value]) => {
-        return path.replaceAll("[" + key + "]", value);
-      }, route.path);
+      const searchParams = new URLSearchParams();
+
+      const result = Object.entries(parsedParams).reduce(
+        (path, [key, value]) => {
+          if (new RegExp("[" + key + "]").exec(path)) {
+            return path.replaceAll("[" + key + "]", value);
+          }
+
+          searchParams.set(key, value);
+          return path;
+        },
+        route.path,
+      );
+
+      return (
+        result + (searchParams.size > 0 ? "?" + searchParams.toString() : "")
+      );
     } catch (error) {
       throw new Error("[invalid route params] " + (error as Error).message);
     }

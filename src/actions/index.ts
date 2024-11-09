@@ -31,14 +31,12 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
     issueSospeso: defineAction({
       input: z.object({
         sospesoId: z.string(),
+        issuedAt: z.date(),
         from: z.string(),
         to: z.string(),
       }),
       handler: async (input) => {
-        const issuedSospeso = domain.issueSospeso({
-          ...input,
-          issuedAt: new Date(),
-        });
+        const issuedSospeso = domain.issueSospeso(input);
 
         await sospesoRepo.updateOrSave(input.sospesoId, (existed) => {
           invariant(existed === undefined, "이미 소스페소가 생성되었어요!");

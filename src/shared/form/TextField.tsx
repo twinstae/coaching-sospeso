@@ -28,17 +28,20 @@ export function TextField<InputT extends Record<string, any>>({
     rules: { required: true },
   });
   const errorId = useId();
-  const isInvalid = error?.message !== undefined
+  const isInvalid = error?.message !== undefined;
 
   return (
     <div>
       <label className="flex flex-col items-start">
         {label}
-        <input 
+        <input
           type="text"
           {...props}
           name={field.name} // send down the input name
-          className={clsx("input input-bordered aria-[invalid]:input-error", className)}
+          className={clsx(
+            "input input-bordered aria-[invalid=true]:input-error",
+            className,
+          )}
           onChange={field.onChange} // send value to hook form
           onBlur={field.onBlur} // notify when input is touched/blur
           value={field.value ?? ""} // input value

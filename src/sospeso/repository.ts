@@ -19,7 +19,13 @@ type SospesoDto =
       };
     };
 
-type SospesoListItemDto = SospesoDto;
+type SospesoListItemDto = {
+  id: string;
+  from: string;
+  to: string;
+  status: "issued" | "pending" | "consumed";
+  issuedAt: Date;
+};
 
 export interface SospesoRepositoryI {
   retrieveSospesoList(): Promise<SospesoListItemDto[]>;
@@ -39,30 +45,12 @@ export const createFakeRepository = (
     async retrieveSospesoList(): Promise<SospesoListItemDto[]> {
       return Object.values(_fakeState).map((sospeso) => {
         const status = calcStatus(sospeso);
-
-        if (status === "consumed") {
-          return {
-            id: sospeso.id,
-            from: sospeso.from,
-            status,
-            to: sospeso.to,
-            consuming: {
-              // TODO: 사용 담당자가 유저 관리와 연결
-              consumer: {
-                id: "3231",
-                nickname: "촛불이",
-              },
-              content: "후기..",
-            },
-          };
-        }
-
         return {
           id: sospeso.id,
           from: sospeso.from,
           status,
           to: sospeso.to,
-          consuming: undefined,
+          issuedAt: sospeso.issuing.issuedAt,
         };
       });
     },
