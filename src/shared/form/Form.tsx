@@ -2,6 +2,8 @@ import type { ComponentProps } from "react";
 import { FormProvider, useForm, type DefaultValues } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import type { BaseIssue, BaseSchema, ObjectSchema, InferOutput } from "valibot";
+import type { SafeEventBus } from "@/event/SafeEventBus";
+import type React from 'react';
 
 export function Form<
   SchemaT extends ObjectSchema<
@@ -10,7 +12,7 @@ export function Form<
     },
     undefined
   >,
-  InputT extends Record<string, any> = InferOutput<SchemaT>,
+  InputT extends InferOutput<SchemaT>,
 >({
   form,
   ...props
@@ -18,7 +20,8 @@ export function Form<
   form: {
     schema: SchemaT;
     defaultValues: DefaultValues<InputT>;
-    onSubmit: (input: InputT) => Promise<void>;
+    bus?: SafeEventBus<InputT>;
+    onSubmit?: (data: InputT, event?: React.BaseSyntheticEvent) => (Promise<void> | void)
   };
 } & Omit<ComponentProps<"form">, "onSubmit">) {
   const methods = useForm({
@@ -28,7 +31,13 @@ export function Form<
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(form.onSubmit)} {...props} />
+      <form
+        onSubmit={methods.handleSubmit((data, event) => {
+          form.bus?.dispatch(event?.target, data);
+          form.onSubmit?.(data, event)
+        })}
+        {...props}
+      />
     </FormProvider>
   );
 }

@@ -1,6 +1,7 @@
-import { Form } from "@/shared/form/Form";
-import { Textarea } from "@/shared/form/Textarea";
-import { TextField } from "@/shared/form/TextField";
+import { createSafeEvent } from "@/event/SafeEventBus";
+import { Form } from "@/shared/form/Form.tsx";
+import { Textarea } from "@/shared/form/Textarea.tsx";
+import { TextField } from "@/shared/form/TextField.tsx";
 import * as v from "valibot";
 
 const consumingSchema = v.object({
@@ -13,25 +14,21 @@ const consumingSchema = v.object({
   memo: v.pipe(v.string(), v.minLength(1, "메모를 입력해주세요")),
 });
 
-export function SospesoConsumingForm({
-  onSubmit,
-}: {
-  onSubmit: (command: {
-    coachId: string;
-    consumedAt: Date;
-    content: string;
-    memo: string;
-  }) => Promise<void>;
-}) {
+export const sospesoConsumingEventBus = createSafeEvent(
+  "sospeso-consume",
+  consumingSchema,
+);
+
+export function SospesoConsumingForm() {
   return (
     <Form
       form={{
         schema: consumingSchema,
+        bus: sospesoConsumingEventBus,
         defaultValues: {
           content: "",
           memo: "",
         },
-        onSubmit,
       }}
     >
       <TextField

@@ -2,18 +2,25 @@ import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
-import { SospesoConsumingForm } from "./SospesoConsumingForm.tsx";
+import {
+  sospesoConsumingEventBus,
+  SospesoConsumingForm,
+} from "./SospesoConsumingForm.tsx";
+import { SafeEventHandler } from '@/event/SafeEventHandler.tsx';
 
 describe("SospesoConsumingForm", () => {
   test("필수 값을 입력하지 않으면 에러가 난다", async () => {
     // given 렌더를 함
     let result = {}; // mock
     render(
-      <SospesoConsumingForm
-        onSubmit={async (command) => {
+      <SafeEventHandler
+        bus={sospesoConsumingEventBus}
+        onEvent={(command) => {
           result = command;
         }}
-      />,
+      >
+        <SospesoConsumingForm />
+      </SafeEventHandler>,
     );
 
     // when 사용자가 클릭이나 입력
@@ -31,13 +38,15 @@ describe("SospesoConsumingForm", () => {
   test("필수 값을 입력하면 폼을 제출할 수 있다", async () => {
     let result = {};
     render(
-      <SospesoConsumingForm
-        onSubmit={async (command) => {
+      <SafeEventHandler
+        bus={sospesoConsumingEventBus}
+        onEvent={(command) => {
           result = command;
         }}
-      />,
+      >
+        <SospesoConsumingForm />
+      </SafeEventHandler>,
     );
-
     const expected = {
       coachId: crypto.randomUUID(),
       consumedAt: new Date("2024-11-07T13:07:34.000Z"),
