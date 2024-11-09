@@ -39,7 +39,7 @@ export function TextField<InputT extends Record<string, any>>({
           {...props}
           name={field.name} // send down the input name
           className={clsx(
-            "input input-bordered aria-[invalid]:input-error",
+            "input input-bordered aria-[invalid=true]:input-error",
             className,
           )}
           onChange={field.onChange} // send value to hook form

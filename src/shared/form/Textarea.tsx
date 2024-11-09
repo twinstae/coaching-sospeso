@@ -39,7 +39,7 @@ export function Textarea<InputT extends Record<string, any>>({
           {...props}
           name={field.name} // send down the input name
           className={clsx(
-            "textarea textarea-bordered aria-[invalid]:textarea-error w-full",
+            "textarea textarea-bordered aria-[invalid=true]:textarea-error w-full",
             className,
           )}
           onChange={field.onChange} // send value to hook form
