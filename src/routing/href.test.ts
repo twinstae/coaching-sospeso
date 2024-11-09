@@ -4,7 +4,6 @@ import { describe, expect, test } from "vitest";
 const testSospesoID = "08c08822-aa80-4ea3-8959-bed518802920";
 describe("href", () => {
   test("정적인 루트의 path를 생성할 수 있다", () => {
-    expect(href("홈", undefined)).toBe("/");
     expect(href("소스페소-발행", undefined)).toBe("/sospeso/issuing");
   });
 
@@ -21,5 +20,11 @@ describe("href", () => {
     expect(() =>
       href("소스페소-상세", { sospesoId: "1123241243123" }),
     ).toThrowError("[invalid route params]");
+  });
+
+  test("path에 없는 파라미터는 query string으로 붙는다", () => {
+    expect(href("홈", { page: 1 })).toBe(
+      "/?page=1",
+    );
   });
 });

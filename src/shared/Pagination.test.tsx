@@ -3,11 +3,15 @@ import { describe, test } from "vitest";
 import { Pagination } from "./Pagination";
 import { expectTL } from "@/siheom/expectTL";
 import { queryTL } from "@/siheom/queryTL";
+import { href } from '@/routing/href';
 
 describe("Pagination", () => {
   test("각 페이지로 가는 링크들이 있다", async () => {
     render(<Pagination current={2} />);
-    // 링크가 잘 만들어졌으면
+    
+    await expectTL(queryTL.link("1")).toHaveAttribute("href",
+        href("홈", { page: 1 })
+    )
   });
 
   test("현재 페이지를 알 수 있다", async () => {
