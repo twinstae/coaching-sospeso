@@ -5,10 +5,14 @@
     "clsx",
     "daisyui",
     "hookform",
+    "libsql",
     "lofi",
+    "picklist",
     "siheom",
     "Sospeso",
     "tailwindcss",
+    "TURSO",
+    "undefinedable",
     "valibot",
     "vitest"
   ]

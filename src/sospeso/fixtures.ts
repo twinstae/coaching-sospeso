@@ -1,6 +1,6 @@
 import type { SospesoApplicationStatus } from "./domain.ts";
 
-export const TEST_ISSUED_AT = new Date();
+export const TEST_ISSUED_AT = new Date("2024-11-09T00:00:00Z");
 
 export const TEST_SOSPESO_LIST_ITEM = {
   id: crypto.randomUUID(),

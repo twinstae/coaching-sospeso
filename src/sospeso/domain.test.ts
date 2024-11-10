@@ -11,6 +11,7 @@ import {
   calcStatus,
 } from "./domain.ts";
 import { SOSPESO_PRICE } from "./constants.ts";
+import { TEST_USER_ID } from "@/auth/fixtures.ts";
 
 const sospesoId = crypto.randomUUID();
 const now = new Date();
@@ -21,7 +22,7 @@ export const issuedSospeso = issueSospeso({
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   paidAmount: SOSPESO_PRICE,
-  issuerId: "", // TODO! user.id 로 바꿔줘야 함
+  issuerId: TEST_USER_ID,
 });
 
 const firstApplicationId = crypto.randomUUID();
@@ -30,6 +31,7 @@ export const appliedSospeso = applySospeso(issuedSospeso, {
   sospesoId: issuedSospeso.id,
   applicationId: firstApplicationId,
   appliedAt: new Date(),
+  applicantId: TEST_USER_ID,
   content: "",
 });
 
@@ -62,6 +64,7 @@ describe("sospeso", () => {
         sospesoId: issuedSospeso.id,
         applicationId: crypto.randomUUID(),
         appliedAt: new Date(),
+        applicantId: TEST_USER_ID,
         content: "",
       });
     }).toThrowError("[Conflict Error] 소스페소를 이미 신청한 사람이 있습니다.");
@@ -104,6 +107,7 @@ describe("sospeso", () => {
       sospesoId: rejectedSospeso.id,
       applicationId: secondApplicationId,
       appliedAt: new Date(),
+      applicantId: TEST_USER_ID,
       content: "",
     });
 
@@ -124,6 +128,7 @@ describe("sospeso", () => {
     const appliedSospeso = applySospeso(rejectedSospeso, {
       sospesoId: rejectedSospeso.id,
       applicationId: secondApplicationId,
+      applicantId: TEST_USER_ID,
       appliedAt: new Date(),
       content: "",
     });

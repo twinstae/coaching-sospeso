@@ -27,6 +27,7 @@ export default getViteConfig({
         "**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,astro,playwright}.config.*",
         "**/vitest.{workspace,projects}.[jt]s?(on)",
         "**/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
+        "drizzle.config.ts",
         "src/stories/**",
         "src/siheom/**",
         "src/pages/**",

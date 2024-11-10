@@ -1,0 +1,18 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
+import { actions } from "astro:actions";
+
+const { emailAddress } = parseRouteParamsFromUrl(
+  "가짜-이메일-인박스",
+  new URL(Astro.request.url),
+);
+
+const { data: inbox } = await actions.readInbox({ email: emailAddress });
+---
+
+<Layout title="email inbox">
+  <h1>가짜 인박스</h1>
+
+  {JSON.stringify(inbox)}
+</Layout>
