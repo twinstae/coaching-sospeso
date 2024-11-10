@@ -50,31 +50,33 @@ export default function SimpleSelect({
   );
 
   return (
-    <SelectProvider
-      defaultValue=""
-      setValue={field.onChange} // send value to hook form
-      value={field.value ?? ""} // input value
-    >
-      <SelectLabel className="label label-text">{label}</SelectLabel>
-      <Select
-        className="select select-bordered aria-[invalid=true]:select-error"
-        name={field.name} // send down the input name
-        onBlur={field.onBlur} // notify when input is touched/blur
-        ref={field.ref} // send input ref, so we can focus on input when error appear
-        aria-invalid={isInvalid}
-        aria-describedby={isInvalid ? errorId : undefined}
-        aria-errormessage={isInvalid ? errorId : undefined}
+    <div>
+      <SelectProvider
+        defaultValue=""
+        setValue={field.onChange} // send value to hook form
+        value={field.value ?? ""} // input value
       >
-        <SelectValue fallback={placeholder}>{renderValue}</SelectValue>
-      </Select>
-      <SelectPopover gutter={4} sameWidth className="popover">
-        {optionList.map(({ value, label }) => (
-          <SelectItem key={value} className="select-item" value={value}>
-            {label}
-          </SelectItem>
-        ))}
-      </SelectPopover>
-      <SimpleErrorMessage id={errorId} error={error} />
-    </SelectProvider>
+        <SelectLabel className="label label-text">{label}</SelectLabel>
+        <Select
+          className="select select-bordered aria-[invalid=true]:select-error w-full"
+          name={field.name} // send down the input name
+          onBlur={field.onBlur} // notify when input is touched/blur
+          ref={field.ref} // send input ref, so we can focus on input when error appear
+          aria-invalid={isInvalid}
+          aria-describedby={isInvalid ? errorId : undefined}
+          aria-errormessage={isInvalid ? errorId : undefined}
+        >
+          <SelectValue fallback={placeholder}>{renderValue}</SelectValue>
+        </Select>
+        <SelectPopover gutter={4} sameWidth className="popover">
+          {optionList.map(({ value, label }) => (
+            <SelectItem key={value} className="select-item" value={value}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectPopover>
+        <SimpleErrorMessage id={errorId} error={error} />
+      </SelectProvider>
+    </div>
   );
 }

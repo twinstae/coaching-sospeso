@@ -27,6 +27,8 @@ describe("SospesoConsumingForm", () => {
       </SafeEventHandler>,
     );
 
+    await queryTL.textbox("코칭일시").clear();
+
     // when 사용자가 클릭이나 입력
     await queryTL.button("소스페소 사용하기").click();
 
@@ -57,6 +59,7 @@ describe("SospesoConsumingForm", () => {
         }}
       >
         <SospesoConsumingForm
+          today={new Date("2024-11-07T00:00:00.000Z")}
           generateId={() => TEST_ID}
           coachList={TEST_COACH_LIST}
         />
@@ -66,7 +69,7 @@ describe("SospesoConsumingForm", () => {
     const expected = {
       coachId: 김태희_코치.id,
       consumingId: TEST_ID,
-      consumedAt: new Date("2024-11-07T13:07:34.000Z"),
+      consumedAt: new Date("2024-11-03T00:00:00.000Z"),
       content: "너무 도움이 되었어요!",
       memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
     };
@@ -74,12 +77,13 @@ describe("SospesoConsumingForm", () => {
     await queryTL.combobox("코치").click();
     await queryTL.option("김태희").click();
 
-    await queryTL.textbox("코칭일시").fill(expected.consumedAt.toString()); // TODO: date picker로 나중에 바꿔야 함
+    await queryTL.textbox("코칭일시").fill("2024-11-03"); // TODO: date picker로 나중에 바꿔야 함
     await queryTL.textbox("후기").fill(expected.content);
     await queryTL.textbox("메모").fill(expected.memo); // TODO: markdown editor로 나중에 바꿔야 함
 
     await queryTL.button("소스페소 사용하기").click();
 
+    await expectTL(queryTL.alert(new RegExp(""))).not.toBeVisible();
     expect(result).toEqual(expected);
   });
 });
