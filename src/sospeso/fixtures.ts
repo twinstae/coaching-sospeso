@@ -101,3 +101,11 @@ export const TEST_APPLICATION_LIST: {
   },
   TEST_APPROVED_APPLICATION,
 ];
+
+export const 김태희_코치 = { id: "f1VCrUCPV62mNI", name: "김태희" };
+
+export const TEST_COACH_LIST = [
+  김태희_코치,
+  { id: "33EeO_yWM00LvM", name: "김태형" },
+  { id: "xTAEl4sxg-NwX-", name: "이시은" },
+];

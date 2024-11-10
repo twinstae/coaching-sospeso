@@ -1,6 +1,7 @@
 import { generateNanoId, type generateIdI } from "@/adapters/generateId";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { Form } from "@/shared/form/Form.tsx";
+import SimpleSelect from "@/shared/form/Select";
 import { Textarea } from "@/shared/form/Textarea.tsx";
 import { TextField } from "@/shared/form/TextField.tsx";
 import { useMemo } from "react";
@@ -24,8 +25,13 @@ export const sospesoConsumingEventBus = createSafeEvent(
 
 export function SospesoConsumingForm({
   generateId = generateNanoId,
+  coachList,
 }: {
   generateId?: generateIdI;
+  coachList: {
+    id: string;
+    name: string;
+  }[];
 }) {
   const consumingId = useMemo(() => generateId(), []);
 
@@ -41,11 +47,16 @@ export function SospesoConsumingForm({
         },
       }}
     >
-      <TextField
+      <SimpleSelect
+        optionList={coachList.map(({ id, name }) => ({
+          value: id,
+          label: name,
+        }))}
         label="코치"
         name="coachId"
-        placeholder="ex) 탐정토끼, 김태희"
+        placeholder={"선택하기"}
       />
+
       <TextField label="코칭일시" name="consumedAt" placeholder="2024-01-01" />
 
       <Textarea label="후기" name="content" placeholder="" />

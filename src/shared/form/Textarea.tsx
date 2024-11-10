@@ -50,8 +50,8 @@ export function Textarea<InputT extends Record<string, any>>({
           aria-describedby={isInvalid ? errorId : undefined}
           aria-errormessage={isInvalid ? errorId : undefined}
         />
-        <SimpleErrorMessage id={errorId} error={error} />
       </label>
+      <SimpleErrorMessage id={errorId} error={error} />
     </div>
   );
 }
