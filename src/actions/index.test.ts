@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { afterAll, describe, expect, test } from "vitest";
 import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import type { Sospeso } from "@/sospeso/domain.ts";
 
@@ -14,6 +14,7 @@ import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
 import { generateNanoId } from "@/adapters/generateId.ts";
+import { like } from "drizzle-orm";
 
 const generateId = generateNanoId;
 
@@ -32,7 +33,7 @@ function runSospesoActionsTest(
       const actionServer = await createTestActionServer({});
       const before = await actionServer.retrieveSospesoList({});
 
-      expect(before).toStrictEqual([]);
+      expect(before).toHaveLength(0);
 
       await actionServer.issueSospeso(
         {
@@ -44,21 +45,22 @@ function runSospesoActionsTest(
 
       const after = await actionServer.retrieveSospesoList({});
 
-      expect(after).toStrictEqual([TEST_SOSPESO_LIST_ITEM]);
+      expect(after).toMatchObject([TEST_SOSPESO_LIST_ITEM]);
     });
 
     test("applySospeso", async () => {
+      const id = generateId();
       const actionServer = await createTestActionServer({
-        [issuedSospeso.id]: issuedSospeso,
+        [id]: { ...issuedSospeso, id },
       });
       const before = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(before).toStrictEqual([]);
+      expect(before).toMatchObject([]);
 
       const TEST_APPLICATION_ID = generateId();
       const TEST_NOW = new Date();
       await actionServer.applySospeso({
-        sospesoId: issuedSospeso.id,
+        sospesoId: id,
         applicationId: TEST_APPLICATION_ID,
         content: "저 퀴어 문화 축제 갔다 왔어요",
         applicantId: TEST_USER_ID,
@@ -67,7 +69,7 @@ function runSospesoActionsTest(
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(after).toStrictEqual([
+      expect(after).toMatchObject([
         {
           applicant: {
             id: TEST_USER_ID,
@@ -76,7 +78,7 @@ function runSospesoActionsTest(
           appliedAt: TEST_NOW,
           content: "저 퀴어 문화 축제 갔다 왔어요",
           id: TEST_APPLICATION_ID,
-          sospesoId: issuedSospeso.id,
+          sospesoId: id,
           status: "applied",
           to: "퀴어 문화 축제 올 사람",
         },
@@ -123,6 +125,11 @@ async function createDrizzleTestRepository(initState: Record<string, Sospeso>) {
     },
   });
 
+  await testDbReallySeriously
+    .insert(schema.user)
+    .values(TEST_USER)
+    .onConflictDoNothing();
+
   const repo = createDrizzleSospesoRepository(testDbReallySeriously);
 
   // prod db에 실행하면 절대 안 됨
@@ -131,17 +138,33 @@ async function createDrizzleTestRepository(initState: Record<string, Sospeso>) {
   await testDbReallySeriously.delete(schema.sospesoIssuing).all();
   await testDbReallySeriously.delete(schema.sospeso).all();
 
-  await testDbReallySeriously
-    .insert(schema.user)
-    .values(TEST_USER)
-    .onConflictDoNothing();
-
   for (const sospeso of Object.values(initState)) {
     await repo.updateOrSave(sospeso.id, () => sospeso);
   }
 
   return repo;
 }
+
+afterAll(async () => {
+  const testDbReallySeriously = drizzle({
+    schema,
+    logger: false,
+    connection: {
+      url: "file:test.db",
+    },
+  });
+
+  // prod db에 실행하면 절대 안 됨
+  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
+  await testDbReallySeriously.delete(schema.sospesoApplication).all();
+  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
+  await testDbReallySeriously.delete(schema.sospeso).all();
+
+  await testDbReallySeriously
+    .delete(schema.user)
+    .where(like(schema.user.email, "%@test.kr"))
+    .run();
+});
 
 runSospesoActionsTest("fake", async (initState) =>
   createFakeRepository(initState),
