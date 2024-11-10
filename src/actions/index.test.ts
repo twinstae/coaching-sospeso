@@ -1,10 +1,15 @@
 import { afterAll, describe, expect, test } from "vitest";
-import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
-import type { Sospeso } from "@/sospeso/domain.ts";
+import { drizzle } from "drizzle-orm/libsql";
+import { like } from "drizzle-orm";
 
 import * as schema from "@/adapters/drizzle/schema.ts";
-import { drizzle } from "drizzle-orm/libsql";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
+import { generateNanoId } from "@/adapters/generateId.ts";
+
+import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
+
+import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
+import type { Sospeso } from "@/sospeso/domain.ts";
 import {
   appliedSospeso,
   approvedSospeso,
@@ -14,11 +19,9 @@ import {
   createFakeRepository,
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
-import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
+
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
-import { generateNanoId } from "@/adapters/generateId.ts";
-import { like } from "drizzle-orm";
 
 const generateId = generateNanoId;
 
