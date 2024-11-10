@@ -5,3 +5,64 @@
 body {
   font-family: "SUIT Variable", sans-serif;
 }
+
+@layer components {
+  .btn.btn-twitter {
+    color: white;
+    background-color: rgb(29, 155, 240, 0.8);
+
+    &:hover {
+      background-color: rgba(29, 156, 240);
+    }
+  }
+
+  .popover {
+    z-index: 50;
+    display: flex;
+    max-height: min(var(--popover-available-height, 300px), 300px);
+    flex-direction: column;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: hsl(204 20% 88%);
+    background-color: white;
+    padding: 0.5rem;
+    color: black;
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .popover:focus-visible,
+  .popover[data-focus-visible] {
+    outline: 2px solid hsl(204 100% 40%);
+    outline-offset: -1px;
+  }
+
+  .select-item {
+    display: flex;
+    cursor: default;
+    scroll-margin: 0.5rem;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    outline: none !important;
+
+    transition-property: background-color, color;
+    transition-duration: 0.125s;
+    transition-timing-function: ease-in-out;
+  }
+
+  .select-item[aria-disabled="true"] {
+    opacity: 0.5;
+  }
+
+  .select-item[data-active-item] {
+    --tw-bg-opacity: 1;
+    background-color: oklch(var(--p, var(--b2)) / var(--tw-bg-opacity));
+    color: white;
+  }
+}

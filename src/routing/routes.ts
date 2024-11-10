@@ -55,9 +55,6 @@ export const routes = {
   로그인: {
     path: "/auth/login",
   },
-  회원가입: {
-    path: "/auth/signup",
-  },
 } satisfies Record<string, Route>;
 
 export function resolveRoute<RouteKey extends RouteKeys>(

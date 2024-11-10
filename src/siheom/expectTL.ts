@@ -18,6 +18,7 @@ export function expectTL(tLocator: TLocator): {
   toHaveText: (text: string) => Promise<void>;
   toHaveValue: (value: string) => Promise<void>;
   toHaveTextContents: (value: string[]) => Promise<void>;
+  toHaveErrorMessage: (value: string) => Promise<void>;
   toHaveCount: (count: number) => Promise<void>;
   toHaveAttribute: (attribute: string, value: unknown) => Promise<void>;
   toBeFocused: () => Promise<void>;
@@ -34,6 +35,7 @@ export function expectTL(tLocator: TLocator): {
     toHaveText: (text: string) => Promise<void>;
     toHaveValue: (value: string) => Promise<void>;
     toHaveTextContents: (value: string[]) => Promise<void>;
+    toHaveErrorMessage: (value: string) => Promise<void>;
     toHaveCount: (count: number) => Promise<void>;
     toHaveAttribute: (attribute: string, value: unknown) => Promise<void>;
     toBeFocused: () => Promise<void>;
@@ -140,6 +142,18 @@ export function expectTL(tLocator: TLocator): {
         return swapStackAsync(fakeError, error);
       }
     },
+
+    async toHaveErrorMessage(value) {
+      const fakeError = new Error();
+      try {
+        return await waitFor(async () => {
+          expect(tLocator.get()).toHaveAccessibleErrorMessage(value);
+        });
+      } catch (error) {
+        return swapStackAsync(fakeError, error);
+      }
+    },
+
     async toHaveAttribute(attribute, value) {
       const fakeError = new Error();
       try {
@@ -279,6 +293,16 @@ export function expectTL(tLocator: TLocator): {
             expect(tLocator.getAll().map((el) => el.textContent)).not.toEqual(
               value,
             );
+          });
+        } catch (error) {
+          return swapStackAsync(fakeError, error);
+        }
+      },
+      async toHaveErrorMessage(value) {
+        const fakeError = new Error();
+        try {
+          return waitFor(async () => {
+            expect(tLocator.get()).not.toHaveAccessibleErrorMessage(value);
           });
         } catch (error) {
           return swapStackAsync(fakeError, error);
