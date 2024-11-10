@@ -1,4 +1,4 @@
-# 스토리북 : Storybook
+# 인증 : better-auth
 
 상태 : proposed
 

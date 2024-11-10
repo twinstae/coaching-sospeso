@@ -1,13 +1,37 @@
-# 영속성
+# 영속성 : Drizzle + Turso SQLite
 
-상태 : proposed | rejected | accepted | deprecated
+상태 : proposed
 
 ## 역사
 
-### yyyy년 MM월 dd일 어쩌구 저쩌구
+### 2024년 11월 9일 탐정토끼가 일단 Drizzle + Turso로 결정함
 
 ## 맥락과 이유
 
+Query Builder, ORM, DB... 는 어떻게 보면 당연하면서도 어려운 주제입니다. 나날이 새로운 DB들이 쏟아져 나오고 있기도 하고. PostgreSQL이나 MySQL, SQLite 같은 기존의 강자들도 계속 새로운 클라우드 서비스들로 변모하고 있기 때문이기도 합니다.
+
+SQL DB를 쓸 이유는 많아 보입니다. 쓰기에서는 어차피 도메인 모델이 무결성을 보장해줄 것이지만. 읽기에서는 정규화된 데이터를 join하는 것이 다양한 용도로 응용하기에 더 편하기 때문입니다.
+
+저희는 서버리스이기 때문에 파일에 저장되는 SQLite를 원래 쓸 수 없습니다. 하지만 요즘 Cloudflare D1이나 Turso, 최근에는 Astro DB에 이르기까지 SQLite 기반으로 된 클라우드 DB들이 다양하게 있습니다.
+
+Postgres와 MySQL 기반의 Supabase, Neon, PlanetScale 같은 serverless DB 도 좋은 선택지일지 모르지만, SQLite와 달리 로컬 테스트가 쉽지 않습니다. docker를 띄워서 테스트를 할 수야 있지만요.
+
+다만 SQL 날 쿼리를 쓰는 것은 또 나름 까다로운 일이기도 합니다만. 특히 table이 2개 3개 씩 join되면 더욱 그렇습니다.
+
+그렇다고 ORM을 쓰자니 TypeORM이나 MicroORM처럼 침투적이고 클래스를 강요하며, 데이터를 직접 변경할 것이라 가정하는 경우가 많습니다. ORM에 발등 찍힌 사람은 또 얼마나 많던가요.
+
+저희는 함수형 불변으로 도메인 모델링을 하고 있습니다. 따라서 쿼리를 타입안전하고 쉽게 짤 수 있게 해주는 kysley나 DrizzleORM 등을 우선으로 생각했습니다.
+
 ## 결정
 
+일단 Drizzle ORM을 선택했습니다. Drizzle은 typescript 지원이 잘 되고, 다양한 SQL 기반 데이터베이스를 지원합니다. 에러 메세지가 좀 불친절하긴 하지만, 테스트와 함께 하면 나쁘지 않고요. 무엇보다 SQL 스타일이 아닌 중첩된 쿼리를 쉽게 작성할 수 있습니다.
+
+Drizzle은 Date나 boolean처럼 SQLite가 직접 지원하지 않는 값들도 알아서 매핑해주기 때문에 편리하기도 합니다.
+
+SQLite는 쉽게 로컬에 백업하거나 덤프하고, 테스트도 할 수 있습니다.
+
+여러 SQLite 서버리스 DB 중에 Turso를 선택한 이유는 그리 대단하지 않습니다. 14번 auth 결정에서 선택한 better-auth와 astro가 turso 연동 가이드를 제공하고 있었기 때문입니다.
+
 ## 유보
+
+저희는 도메인 중심으로 개발하고 repository 구현체를 분리하고 있고, 특정 DB에 특수한 기술을 거의 사용하지 않습니다. 이 구현체도 하루만에 만들었기 때문에, 나중에 DB의 데이터를 덤프해서 마이그레이션한다고 해도 엄청난 비용이 들지는 않을 겁니다.

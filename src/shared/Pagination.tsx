@@ -1,7 +1,6 @@
 import invariant from "@/invariant.ts";
 import { Link } from "@/routing/Link";
-import type { DynamicRoute, RouteKeys, routes } from "@/routing/routes";
-import type * as v from "valibot";
+import type { RouteKeys, RouteParams } from "@/routing/routes";
 
 function range(start: number, end: number) {
   return Array.from({ length: end - 1 }).map((_, index) => index + start);
@@ -16,9 +15,7 @@ export function Pagination<RouteKey extends RouteKeys>({
   current: number;
   end: number;
   routeKey: RouteKey;
-  params: (typeof routes)[RouteKey] extends DynamicRoute
-    ? Omit<v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>, "page">
-    : undefined;
+  params: RouteParams<RouteKey>
 }) {
   invariant(current >= 1, "페이지는 양의 정수여야 합니다!");
   invariant(current <= end, "마지막 페이지를 넘어섰습니다!");
