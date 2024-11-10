@@ -5,3 +5,12 @@
 body {
   font-family: "SUIT Variable", sans-serif;
 }
+
+.btn.btn-twitter {
+  color: white;
+  background-color: rgb(29, 155, 240, 0.8);
+
+  &:hover {
+    background-color: rgba(29, 156, 240);
+  }
+}
