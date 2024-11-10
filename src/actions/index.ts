@@ -33,6 +33,38 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
         return sospesoRepo.retrieveApplicationList();
       },
     }),
+    approveSospesoApplication: definePureAction({
+      input: z.object({
+        sospesoId: z.string(),
+        applicationId: z.string(),
+      }),
+      handler: async (input) => {
+        // TODO! 승인 권한 체크
+
+        return sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
+          invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
+
+          const approvedSospeso = domain.approveApplication(sospeso, input);
+          return approvedSospeso;
+        });
+      },
+    }),
+    rejectSospesoApplication: definePureAction({
+      input: z.object({
+        sospesoId: z.string(),
+        applicationId: z.string(),
+      }),
+      handler: async (input) => {
+        // TODO! 거절 권한 체크
+
+        return sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
+          invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
+
+          const rejectedSospeso = domain.rejectApplication(sospeso, input);
+          return rejectedSospeso;
+        });
+      },
+    }),
     readInbox: definePureAction({
       input: z.object({
         email: z.string().email(),

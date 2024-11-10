@@ -5,7 +5,7 @@ import type { Sospeso } from "@/sospeso/domain.ts";
 import * as schema from "@/adapters/drizzle/schema.ts";
 import { drizzle } from "drizzle-orm/libsql";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
-import { approvedSospeso, issuedSospeso } from "@/sospeso/domain.test.ts";
+import { appliedSospeso, approvedSospeso, issuedSospeso } from "@/sospeso/domain.test.ts";
 import {
   createFakeRepository,
   type SospesoRepositoryI,
@@ -83,6 +83,42 @@ function runSospesoActionsTest(
           to: "퀴어 문화 축제 올 사람",
         },
       ]);
+    });
+
+    test("approveSospesoApplication", async () => {
+      const actionServer = await createTestActionServer({
+        [appliedSospeso.id]: appliedSospeso,
+      });
+      const before = await actionServer.retrieveSospesoApplicationList({});
+
+      expect(before[0]?.status).toBe("applied");
+
+      await actionServer.approveSospesoApplication({
+        sospesoId: appliedSospeso.id,
+        applicationId: appliedSospeso.applicationList[0]!.id,
+      });
+
+      const after = await actionServer.retrieveSospesoApplicationList({});
+
+      expect(after[0]?.status).toBe("approved");
+    });
+
+    test("rejectSospesoApplication", async () => {
+      const actionServer = await createTestActionServer({
+        [appliedSospeso.id]: appliedSospeso,
+      });
+      const before = await actionServer.retrieveSospesoApplicationList({});
+
+      expect(before[0]?.status).toBe("applied");
+
+      await actionServer.rejectSospesoApplication({
+        sospesoId: appliedSospeso.id,
+        applicationId: appliedSospeso.applicationList[0]!.id,
+      });
+
+      const after = await actionServer.retrieveSospesoApplicationList({});
+
+      expect(after[0]?.status).toBe("rejected");
     });
 
     test("consumeSospeso", async () => {
