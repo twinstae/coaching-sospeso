@@ -4,7 +4,7 @@ import { env, isProd } from "./env.ts";
 
 export const db = drizzle({
   schema,
-  connection: true
+  connection: isProd
     ? {
         url: env.TURSO_CONNECTION_URL,
         authToken: env.TURSO_AUTH_TOKEN,
