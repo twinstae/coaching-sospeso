@@ -9,10 +9,11 @@ export function TextField<InputT extends Record<string, any>>({
   type = "text",
   className,
   ...props
-}: { label: string; name: keyof InputT & string, type?: "text" | "email" | "password" | "tel" } & Omit<
-  ComponentProps<"input">,
-  "onChange" | "onBlur" | "value"
->) {
+}: {
+  label: string;
+  name: keyof InputT & string;
+  type?: "text" | "email" | "password" | "tel";
+} & Omit<ComponentProps<"input">, "onChange" | "onBlur" | "value">) {
   const { control } = useFormContext();
   const {
     field,
