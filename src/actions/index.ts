@@ -61,8 +61,9 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
     applySospeso: defineAction({
       input: z.object({
         sospesoId: z.string(),
-        appliedAt: z.coerce.date(),
         applicationId: z.string(),
+        appliedAt: z.coerce.date(),
+        applicantId: z.string(),
         content: z.string(),
       }),
       handler: async (input) => {

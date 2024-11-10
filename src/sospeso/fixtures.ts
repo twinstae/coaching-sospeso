@@ -1,6 +1,6 @@
 import type { SospesoApplicationStatus } from "./domain.ts";
 
-export const TEST_ISSUED_AT = new Date();
+export const TEST_ISSUED_AT = new Date("2024-11-09T00:00:00Z");
 
 export const TEST_SOSPESO_LIST_ITEM = {
   id: crypto.randomUUID(),
@@ -96,6 +96,3 @@ export const TEST_APPLICATION_LIST: {
   },
   TEST_APPROVED_APPLICATION,
 ];
-
-// test db에 임시로 저장한 user
-export const TEST_USER_ID = "PLKKa6BZL2d0uPf8Cm0z_";

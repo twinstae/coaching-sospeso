@@ -5,6 +5,7 @@ import { calcStatus, type Sospeso } from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
 import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
+import { TEST_USER_ID } from '@/user/fixtures.ts';
 
 const sospesoSchema = v.object({
   id: v.string(),
@@ -21,6 +22,7 @@ const sospesoSchema = v.object({
       id: v.string(),
       status: v.picklist(["applied", "approved", "rejected"]),
       appliedAt: v.date(),
+      applicantId: v.string(),
       content: v.string(),
     }),
   ),
@@ -50,12 +52,12 @@ function dbModelToDomainModel(dbModel: {
     id: string;
     status: string;
     appliedAt: Date;
+    applicantId: string;
     content: string;
   }[];
   consuming: {
     id: string;
     sospesoId: string | null;
-
     consumedAt: Date;
     content: string;
     memo: string;
@@ -104,7 +106,11 @@ export function createDrizzleSospesoRepository(
         where: eq(schema.sospeso.id, sospesoId),
         with: {
           applicationList: true,
-          consuming: true,
+          consuming: {
+            with: {
+              consumer: true
+            },
+          },
           issuing: true,
         },
       });
@@ -114,22 +120,26 @@ export function createDrizzleSospesoRepository(
       if (sospeso === undefined) {
         return undefined;
       }
+      invariant(result, "소스페소가 있으면 result가 있었다는 뜻입니다")
 
       const status = calcStatus(sospeso);
 
       if (status === "consumed") {
+        const consuming = sospeso.consuming;
+        invariant(consuming, "사용되었으면 사용 기록이 있어야 합니다!")
+        const consumer = result.consuming?.consumer;
+        invariant(consumer, "사용되었으면 사용자가 있어야 합니다!")
         return {
           id: sospeso.id,
           from: sospeso.from,
-          status,
+          status: "consumed",
           to: sospeso.to,
           consuming: {
-            // TODO: 사용 담당자가 유저 관리와 연결
             consumer: {
-              id: "3231",
-              nickname: "촛불이",
+              id: consumer.id,
+              nickname: consumer.nickname
             },
-            content: "후기..",
+            content: consuming.content,
           },
         };
       }
@@ -161,10 +171,9 @@ export function createDrizzleSospesoRepository(
             to: sospeso.to,
             status: application.status,
             appliedAt: application.appliedAt,
-            content: application.content, // TODO! application에 content가 추가되야
+            content: application.content,
             applicant: {
-              // TODO! user가 만들어져야
-              id: "",
+              id: TEST_USER_ID,
               nickname: "김토끼",
             },
           };
@@ -217,6 +226,7 @@ export function createDrizzleSospesoRepository(
                 id: application.id,
                 status: application.status,
                 appliedAt: application.appliedAt,
+                applicantId: application.applicantId,
                 content: application.content,
               })
               .onConflictDoUpdate({
@@ -266,6 +276,7 @@ export function createDrizzleSospesoRepository(
               id: application.id,
               status: application.status,
               appliedAt: application.appliedAt,
+              applicantId: application.applicantId,
               sospesoId,
               content: application.content,
             });

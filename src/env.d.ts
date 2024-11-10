@@ -7,3 +7,11 @@ declare namespace App {
     };
   }
 }
+
+interface ImportMetaEnv {
+
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

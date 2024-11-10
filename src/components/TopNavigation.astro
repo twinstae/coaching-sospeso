@@ -6,13 +6,13 @@ const session = Astro.locals.session;
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <Link className="btn btn-ghost text-xl" routeKey="홈" params={{ page: 1 }}
-      >Coaching Sospeso</Link
-    >
+    <Link className="btn btn-ghost text-xl" routeKey="홈" params={{ page: 1 }}>
+      Coaching Sospeso
+    </Link>
   </div>
   <div class="flex-none">
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+      <button class="btn btn-ghost btn-circle avatar" aria-label="메뉴">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -26,9 +26,8 @@ const session = Astro.locals.session;
             d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
           ></path>
         </svg>
-      </div>
+      </button>
       <ul
-        tabindex="0"
         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
       >
         <li>

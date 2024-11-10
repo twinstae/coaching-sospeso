@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { createActionServer } from "./index.ts";
-import { TEST_SOSPESO_LIST_ITEM, TEST_USER_ID } from "@/sospeso/fixtures.ts";
+import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import type { Sospeso } from "@/sospeso/domain.ts";
 
 import * as schema from "@/adapters/drizzle/schema.ts";
@@ -11,14 +11,7 @@ import {
   createFakeRepository,
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
-
-const testDb = drizzle({
-  schema,
-  logger: false,
-  connection: {
-    url: "file:test.db",
-  },
-});
+import { TEST_USER, TEST_USER_ID } from "@/user/fixtures.ts";
 
 function runSospesoActionsTest(
   name: string,
@@ -86,6 +79,7 @@ function runSospesoActionsTest(
         sospesoId: issuedSospeso.id,
         applicationId: TEST_APPLICATION_ID,
         content: "저 퀴어 문화 축제 갔다 왔어요",
+        applicantId: TEST_USER_ID,
         appliedAt: TEST_NOW,
       });
 
@@ -96,7 +90,7 @@ function runSospesoActionsTest(
       expect(after).toStrictEqual([
         {
           applicant: {
-            id: "",
+            id: TEST_USER_ID,
             nickname: "김토끼",
           },
           appliedAt: TEST_NOW,
@@ -141,22 +135,26 @@ function runSospesoActionsTest(
 }
 
 async function createDrizzleTestRepository(initState: Record<string, Sospeso>) {
-  const repo = createDrizzleSospesoRepository(testDb);
+  const testDbReallySeriously = drizzle({
+    schema,
+    logger: false,
+    connection: {
+      url: "file:test.db",
+    },
+  });
 
-  await testDb.delete(schema.sospesoConsuming).all();
-  await testDb.delete(schema.sospesoApplication).all();
-  await testDb.delete(schema.sospesoIssuing).all();
-  await testDb.delete(schema.sospeso).all();
+  const repo = createDrizzleSospesoRepository(testDbReallySeriously);
 
-  await testDb.insert(schema.user).values({
-    id: TEST_USER_ID,
-    name: "김토끼",
-    email: "test@test.com",
-    emailVerified: true,
-    image: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }).onConflictDoNothing()
+  // prod db에 실행하면 절대 안 됨
+  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
+  await testDbReallySeriously.delete(schema.sospesoApplication).all();
+  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
+  await testDbReallySeriously.delete(schema.sospeso).all();
+
+  await testDbReallySeriously
+    .insert(schema.user)
+    .values(TEST_USER)
+    .onConflictDoNothing();
 
   for (const sospeso of Object.values(initState)) {
     await repo.updateOrSave(sospeso.id, () => sospeso);

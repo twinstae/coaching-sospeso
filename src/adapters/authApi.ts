@@ -1,9 +1,9 @@
 import { createAuthClient } from "better-auth/react";
-import { phoneNumberClient, magicLinkClient } from "better-auth/client/plugins";
+import { magicLinkClient } from "better-auth/client/plugins";
 import { href } from "@/routing/href";
 
 const authClient = createAuthClient({
-  plugins: [phoneNumberClient(), magicLinkClient()],
+  plugins: [magicLinkClient()],
 });
 
 export type AuthApi = {

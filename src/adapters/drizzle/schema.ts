@@ -5,6 +5,7 @@ import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  nickname: text("nickname").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: integer("emailVerified", {
     mode: "boolean",
@@ -94,7 +95,7 @@ export const sospesoApplication = sqliteTable("sospeso_application", {
     .notNull(),
   status: text("status").notNull(),
   content: text("content").notNull(),
-  // applicantId: text("applicant_id").references(() => user.id).notNull(),
+  applicantId: text("applicant_id").references(() => user.id).notNull(),
   appliedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
 });
 
@@ -105,10 +106,10 @@ export const sospesoApplicationRelations = relations(
       fields: [sospesoApplication.sospesoId],
       references: [sospeso.id],
     }),
-    // applicant: one(user, {
-    //   fields: [sospesoApplication.applicantId],
-    //   references: [user.id],
-    // })
+    applicant: one(user, {
+      fields: [sospesoApplication.applicantId],
+      references: [user.id],
+    })
   }),
 );
 
@@ -133,5 +134,9 @@ export const sospesoConsumingRelations = relations(
       fields: [sospesoConsuming.sospesoId],
       references: [sospeso.id],
     }),
+    consumer: one(user, {
+      fields: [sospesoConsuming.consumerId],
+      references: [user.id],
+    })
   }),
 );

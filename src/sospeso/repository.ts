@@ -1,3 +1,4 @@
+import { TEST_USER } from "@/user/fixtures";
 import {
   calcStatus,
   type Sospeso,
@@ -88,10 +89,9 @@ export const createFakeRepository = (
           status,
           to: sospeso.to,
           consuming: {
-            // TODO: 사용 담당자가 유저 관리와 연결
             consumer: {
-              id: "3231",
-              nickname: "촛불이",
+              id: TEST_USER.id,
+              nickname: TEST_USER.nickname,
             },
             content: "후기..",
           },
@@ -115,11 +115,11 @@ export const createFakeRepository = (
             to: sospeso.to,
             status: application.status,
             appliedAt: application.appliedAt,
-            content: application.content, // TODO! application에 content가 추가되야
+            content: application.content,
             applicant: {
               // TODO! user가 만들어져야
-              id: "",
-              nickname: "김토끼",
+              id: TEST_USER.id,
+              nickname: TEST_USER.nickname,
             },
           };
         });

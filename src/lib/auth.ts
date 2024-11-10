@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { phoneNumber, magicLink } from "better-auth/plugins";
+import { magicLink } from "better-auth/plugins";
 import { db } from "@/adapters/db.ts";
 import { fakeEmailApi } from "@/adapters/emailApi";
 
@@ -29,9 +29,6 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    phoneNumber({
-      sendOTP: (phoneNumber, code) => {},
-    }),
     magicLink({
       sendMagicLink: async ({
         email,

@@ -1,14 +1,13 @@
 ---
 import { SospesoIssuingForm } from "@/components/SospesoIssuingForm.tsx";
 import Layout from "@/layouts/Layout.astro";
-import { href } from "@/routing/href.ts";
 
-const session = Astro.locals.session; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
+const session = Astro.locals.session;
 
 if (!session) {
   // TODO! 로그인 페이지로 리다이렉트 시키기
   //  https://docs.astro.build/en/guides/routing/#dynamic-redirects
-  return Astro.redirect(href("로그인", undefined));
+  return Astro.redirect("/auth/login");
 }
 ---
 

@@ -17,6 +17,7 @@ export type SospesoApplication = {
   id: string;
   status: "applied" | "approved" | "rejected";
   content: string;
+  applicantId: string;
   appliedAt: Date;
 };
 
@@ -48,7 +49,9 @@ export function isApproved(sospeso: Sospeso) {
   );
 }
 
-export function isConsumed(sospeso: Sospeso) {
+export function isConsumed(
+  sospeso: Sospeso,
+): sospeso is Sospeso & { consuming: SospesoConsuming } {
   return sospeso.consuming !== undefined;
 }
 
@@ -86,6 +89,7 @@ type SospesoApplicationCommand = {
   sospesoId: string;
   applicationId: string;
   content: string;
+  applicantId: string;
   appliedAt: Date;
 };
 
@@ -116,6 +120,7 @@ export function applySospeso(
       {
         id: command.applicationId,
         appliedAt: command.appliedAt,
+        applicantId: command.applicantId,
         content: command.content,
         status: "applied",
       },
