@@ -95,7 +95,9 @@ export const sospesoApplication = sqliteTable("sospeso_application", {
     .notNull(),
   status: text("status").notNull(),
   content: text("content").notNull(),
-  applicantId: text("applicant_id").references(() => user.id).notNull(),
+  applicantId: text("applicant_id")
+    .references(() => user.id)
+    .notNull(),
   appliedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
 });
 
@@ -109,7 +111,7 @@ export const sospesoApplicationRelations = relations(
     applicant: one(user, {
       fields: [sospesoApplication.applicantId],
       references: [user.id],
-    })
+    }),
   }),
 );
 
@@ -137,6 +139,6 @@ export const sospesoConsumingRelations = relations(
     consumer: one(user, {
       fields: [sospesoConsuming.consumerId],
       references: [user.id],
-    })
+    }),
   }),
 );

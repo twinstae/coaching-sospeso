@@ -15,7 +15,7 @@ export function Pagination<RouteKey extends RouteKeys>({
   current: number;
   end: number;
   routeKey: RouteKey;
-  params: RouteParams<RouteKey>
+  params: RouteParams<RouteKey>;
 }) {
   invariant(current >= 1, "페이지는 양의 정수여야 합니다!");
   invariant(current <= end, "마지막 페이지를 넘어섰습니다!");

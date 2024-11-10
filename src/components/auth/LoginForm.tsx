@@ -13,8 +13,9 @@ export function LoginForm() {
               email: "test@test.com",
             })
             .then(() => {
-              navigate("가짜-이메일-인박스", { 
-                emailAddress: "test@test.com", });
+              navigate("가짜-이메일-인박스", {
+                emailAddress: "test@test.com",
+              });
             });
         }}
       >
