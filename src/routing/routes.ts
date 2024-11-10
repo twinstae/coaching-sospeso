@@ -27,13 +27,13 @@ export const routes = {
   "소스페소-상세": {
     path: "/sospeso/[sospesoId]",
     paramsSchema: v.object({
-      sospesoId: v.pipe(v.string(), v.uuid()),
+      sospesoId: v.pipe(v.string(), v.nanoid()),
     }),
   },
   "소스페소-신청": {
     path: "/sospeso/[sospesoId]/application",
     paramsSchema: v.object({
-      sospesoId: v.pipe(v.string(), v.uuid()),
+      sospesoId: v.string(),
     }),
   },
   어드민: {
@@ -42,8 +42,8 @@ export const routes = {
   "어드민-소스페소-사용": {
     path: "/admin/sospeso/[sospesoId]/consuming",
     paramsSchema: v.object({
-      sospesoId: v.pipe(v.string(), v.uuid()),
-      consumerId: v.pipe(v.string(), v.uuid()),
+      sospesoId: v.string(),
+      consumerId: v.string(),
     }),
   },
   "가짜-이메일-인박스": {

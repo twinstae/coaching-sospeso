@@ -7,9 +7,9 @@ import {
   SospesoConsumingForm,
 } from "./SospesoConsumingForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
-import { UUIDGeneratorApi } from "@/adapters/IdGeneratorApi.ts";
+import { generateNanoId } from "@/adapters/generateId.ts";
 
-const TEST_ID = UUIDGeneratorApi.generateId();
+const TEST_ID = generateNanoId();
 
 describe("SospesoConsumingForm", () => {
   test("필수 값을 입력하지 않으면 에러가 난다", async () => {
@@ -47,17 +47,11 @@ describe("SospesoConsumingForm", () => {
           result = command;
         }}
       >
-        <SospesoConsumingForm
-          idGeneratorApi={{
-            generateId() {
-              return TEST_ID;
-            },
-          }}
-        />
+        <SospesoConsumingForm generateId={() => TEST_ID} />
       </SafeEventHandler>,
     );
     const expected = {
-      coachId: UUIDGeneratorApi.generateId(),
+      coachId: generateNanoId(),
       consumingId: TEST_ID,
       consumedAt: new Date("2024-11-07T13:07:34.000Z"),
       content: "너무 도움이 되었어요!",

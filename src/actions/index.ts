@@ -22,7 +22,7 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
       },
     }),
     retrieveSospesoDetail: definePureAction({
-      input: z.object({ sospesoId: z.string().uuid() }),
+      input: z.object({ sospesoId: z.string() }),
       handler: async (input) => {
         return sospesoRepo.retrieveSospesoDetail(input.sospesoId);
       },

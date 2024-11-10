@@ -12,8 +12,11 @@ import {
 } from "./domain.ts";
 import { SOSPESO_PRICE } from "./constants.ts";
 import { TEST_USER_ID } from "@/auth/fixtures.ts";
+import { generateNanoId } from "@/adapters/generateId.ts";
 
-const sospesoId = crypto.randomUUID();
+const generateId = generateNanoId;
+
+const sospesoId = generateId();
 const now = new Date();
 
 export const issuedSospeso = issueSospeso({
@@ -25,7 +28,7 @@ export const issuedSospeso = issueSospeso({
   issuerId: TEST_USER_ID,
 });
 
-const firstApplicationId = crypto.randomUUID();
+const firstApplicationId = generateId();
 
 export const appliedSospeso = applySospeso(issuedSospeso, {
   sospesoId: issuedSospeso.id,
@@ -62,7 +65,7 @@ describe("sospeso", () => {
     expect(() => {
       applySospeso(appliedSospeso, {
         sospesoId: issuedSospeso.id,
-        applicationId: crypto.randomUUID(),
+        applicationId: generateNanoId(),
         appliedAt: new Date(),
         applicantId: TEST_USER_ID,
         content: "",
@@ -101,7 +104,7 @@ describe("sospeso", () => {
   test("거절한 소스페소는 다시 신청할 수 있다", () => {
     expect(isApplicationLocked(rejectedSospeso)).toBe(false);
 
-    const secondApplicationId = crypto.randomUUID();
+    const secondApplicationId = generateId();
 
     const appliedSospeso = applySospeso(rejectedSospeso, {
       sospesoId: rejectedSospeso.id,
@@ -123,7 +126,7 @@ describe("sospeso", () => {
   });
 
   test("두 번 이상 거절할 수도 있다", () => {
-    const secondApplicationId = crypto.randomUUID();
+    const secondApplicationId = generateId();
 
     const appliedSospeso = applySospeso(rejectedSospeso, {
       sospesoId: rejectedSospeso.id,
@@ -146,7 +149,7 @@ describe("sospeso", () => {
 
   const consumedSospeso = consumeSospeso(approvedSospeso, {
     sospesoId: issuedSospeso.id,
-    consumingId: crypto.randomUUID(),
+    consumingId: generateNanoId(),
     consumedAt: new Date(),
     content: "너무 도움이 되었어요! 덕분에 취직도 잘할듯?",
     memo: "장소: 약수역, 시간: 2022년 12월 11일, 어찌저찌 큰 도움이 되셨다고.",
