@@ -37,10 +37,23 @@ pnpm exec playwright install
 # pnpm exec playwright install --with-deps
 ```
 
-### 로컬 테스트 DB
+### 보안
 
 저희는 오픈소스이고 프로덕션 DB 크레덴셜은 보안을 위해 공개하지 않고, 로컬 디비로 개발을 해야 합니다. 그러한 이유로 모든 개발을 로컬에서 테스트할 수 있게 셋업을 했습니다.
 
+일단 .env 파일을 만드시고 가짜 값을 설정합니다.
+
+```bash
+# .env
+TURSO_CONNECTION_URL=libsql://coaching-sospeso-db-taehee-kim.turso.io
+TURSO_AUTH_TOKEN=abcd
+BETTER_AUTH_SECRET=abcdefg
+BETTER_AUTH_URL=http://localhost:4321
+```
+
+자세한 설명은 [drizzle turso 설정 문서](https://orm.drizzle.team/docs/tutorials/drizzle-with-turso#update-environment-variables)와 [better-auth 문서](https://www.better-auth.com/docs/installation#set-environment-variables)를 참고하시면 됩니다.
+
+### 로컬 DB
 먼저 SQLite 로 로컬 테스트 DB를 만들고 마이그레이션을 해줘야, actions를 drizzle orm으로 통합 테스트를 할 수 있습니다. [drizzle-kit](https://orm.drizzle.team/docs/tutorials/drizzle-with-turso#applying-changes-to-the-database) 이 로컬 db를 바라보게 설정되어 있습니다.
 
 ```bash
