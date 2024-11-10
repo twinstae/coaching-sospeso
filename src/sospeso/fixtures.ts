@@ -1,9 +1,14 @@
+import { generateNanoId } from "@/adapters/generateId.ts";
 import type { SospesoApplicationStatus } from "./domain.ts";
+
+const generateId = generateNanoId;
+
+export const TEST_SOSPESO_ID = "DaLNnQs8nfVgs0";
 
 export const TEST_ISSUED_AT = new Date("2024-11-09T00:00:00Z");
 
 export const TEST_SOSPESO_LIST_ITEM = {
-  id: crypto.randomUUID(),
+  id: generateId(),
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   issuedAt: TEST_ISSUED_AT,
@@ -11,7 +16,7 @@ export const TEST_SOSPESO_LIST_ITEM = {
 } as const;
 
 export const ISSUED_SOSPESO = {
-  id: "2a88cac2-c021-48c6-9288-ecf0464d5bc2",
+  id: TEST_SOSPESO_ID,
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   status: "issued", // 읽기 모델 "issued" | "pending" | "consumed"
@@ -19,7 +24,7 @@ export const ISSUED_SOSPESO = {
 } as const;
 
 export const PENDING_SOSPESO = {
-  id: "2a88cac2-c021-48c6-9288-ecf0464d5bc2",
+  id: TEST_SOSPESO_ID,
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   status: "pending", // 읽기 모델 "issued" | "pending" | "consumed"
@@ -27,7 +32,7 @@ export const PENDING_SOSPESO = {
 } as const;
 
 export const CONSUMED_SOSPESO = {
-  id: "2a88cac2-c021-48c6-9288-ecf0464d5bc2",
+  id: TEST_SOSPESO_ID,
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   status: "consumed", // 읽기 모델 "issued" | "pending" | "consumed"
@@ -43,13 +48,13 @@ export const CONSUMED_SOSPESO = {
 const TEST_NOW = new Date("2024-11-06T00:00:00Z");
 
 export const TEST_APPLIED_APPLICATION = {
-  id: crypto.randomUUID(),
-  sospesoId: crypto.randomUUID(),
+  id: generateId(),
+  sospesoId: generateId(),
   to: "퀴어 문화 축제 올 사람",
   status: "applied",
   appliedAt: TEST_NOW,
   applicant: {
-    id: crypto.randomUUID(),
+    id: generateId(),
     nickname: "김토끼",
   },
   content:
@@ -57,13 +62,13 @@ export const TEST_APPLIED_APPLICATION = {
 } as const;
 
 export const TEST_APPROVED_APPLICATION = {
-  id: crypto.randomUUID(),
-  sospesoId: crypto.randomUUID(),
+  id: generateId(),
+  sospesoId: generateId(),
   to: "시각 장애가 있는 분",
   status: "approved",
   appliedAt: new Date(TEST_NOW.valueOf() - 1000 * 60 * 60 * 24),
   applicant: {
-    id: crypto.randomUUID(),
+    id: generateId(),
     nickname: "해적 토끼",
   },
   content: "제 왼쪽 눈을 보십시오. 이것이야 말로 증거가 아니겠습니까?ㄷ",
@@ -83,13 +88,13 @@ export const TEST_APPLICATION_LIST: {
 }[] = [
   TEST_APPLIED_APPLICATION,
   {
-    id: crypto.randomUUID(),
-    sospesoId: crypto.randomUUID(),
+    id: generateId(),
+    sospesoId: generateId(),
     to: "퀴어 문화 축제 올 사람",
     status: "rejected",
     appliedAt: new Date(TEST_NOW.valueOf() - 1000 * 60 * 60 * 24),
     applicant: {
-      id: crypto.randomUUID(),
+      id: generateId(),
       nickname: "혐오자",
     },
     content: "저는 소스페소에 이상한 요청을 보낸 나쁜 사람입니다",

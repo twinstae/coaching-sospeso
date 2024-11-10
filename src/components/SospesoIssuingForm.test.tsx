@@ -7,8 +7,9 @@ import {
   SospesoIssuingForm,
 } from "./SospesoIssuingForm";
 import { SafeEventHandler } from "@/event/SafeEventHandler";
+import { generateNanoId } from "@/adapters/generateId";
 
-const TEST_ID = crypto.randomUUID();
+const TEST_ID = generateNanoId();
 
 describe("SospesoIssuingForm", () => {
   test("필수 값을 입력하지 않으면 에러가 난다", async () => {
@@ -55,11 +56,7 @@ describe("SospesoIssuingForm", () => {
         }}
       >
         <SospesoIssuingForm
-          idGeneratorApi={{
-            generateId() {
-              return TEST_ID;
-            },
-          }}
+          generateId={() => TEST_ID}
           userNickname={expected.from}
         />
       </SafeEventHandler>,

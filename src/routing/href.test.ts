@@ -1,7 +1,7 @@
+import { TEST_SOSPESO_ID } from "@/sospeso/fixtures.ts";
 import { href } from "./href.ts";
 import { describe, expect, test } from "vitest";
 
-const TEST_SOSPESO_ID = "08c08822-aa80-4ea3-8959-bed518802920";
 describe("href", () => {
   test("정적인 루트의 path를 생성할 수 있다", () => {
     expect(href("소스페소-발행", undefined)).toBe("/sospeso/issuing");
@@ -18,11 +18,11 @@ describe("href", () => {
 
   test("파라미터가 잘못되면 에러를 던진다", () => {
     expect(() =>
-      href("소스페소-상세", { sospesoId: "1123241243123" }),
+      href("소스페소-상세", { sospesoId: "한글id에 공백까지 들어가?" }),
     ).toThrowError("[invalid route params]");
   });
 
-  const TEST_CONSUMER_ID = "08c08822-aa80-4ea3-8959-bed518802920";
+  const TEST_CONSUMER_ID = "uugVC5lsmlBOHu";
   test("path에 없는 파라미터는 query string으로 붙는다", () => {
     expect(href("홈", { page: 1 })).toBe("/?page=1");
 
@@ -32,7 +32,7 @@ describe("href", () => {
         consumerId: TEST_CONSUMER_ID,
       }),
     ).toBe(
-      "/admin/sospeso/08c08822-aa80-4ea3-8959-bed518802920/consuming?consumerId=08c08822-aa80-4ea3-8959-bed518802920",
+      `/admin/sospeso/${TEST_SOSPESO_ID}/consuming?consumerId=${TEST_CONSUMER_ID}`,
     );
   });
 });

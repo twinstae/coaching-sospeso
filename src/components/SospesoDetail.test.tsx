@@ -62,9 +62,7 @@ describe("SospesoDetail", () => {
     await queryTL.button("공유 링크 복사하기").click();
 
     // then 클립보드에 링크가 복사된다
-    expect(result).toBe(
-      "http://localhost:63315/sospeso/2a88cac2-c021-48c6-9288-ecf0464d5bc2",
-    );
+    expect(result).toBe("http://localhost:63315/sospeso/" + ISSUED_SOSPESO.id);
   });
 
   test("소스페소를 사용한 후기를 볼 수 있다.", async () => {

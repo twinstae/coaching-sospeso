@@ -1,7 +1,4 @@
-import {
-  UUIDGeneratorApi,
-  type IdGeneratorApi,
-} from "@/adapters/IdGeneratorApi";
+import { generateNanoId, type generateIdI } from "@/adapters/generateId";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { Form } from "@/shared/form/Form.tsx";
 import { Textarea } from "@/shared/form/Textarea.tsx";
@@ -26,11 +23,11 @@ export const sospesoConsumingEventBus = createSafeEvent(
 );
 
 export function SospesoConsumingForm({
-  idGeneratorApi = UUIDGeneratorApi,
+  generateId = generateNanoId,
 }: {
-  idGeneratorApi?: IdGeneratorApi;
+  generateId?: generateIdI;
 }) {
-  const consumingId = useMemo(() => idGeneratorApi.generateId(), []);
+  const consumingId = useMemo(() => generateId(), []);
 
   return (
     <Form

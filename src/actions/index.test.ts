@@ -13,6 +13,9 @@ import {
 import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
+import { generateNanoId } from "@/adapters/generateId.ts";
+
+const generateId = generateNanoId;
 
 function runSospesoActionsTest(
   name: string,
@@ -52,7 +55,7 @@ function runSospesoActionsTest(
 
       expect(before).toStrictEqual([]);
 
-      const TEST_APPLICATION_ID = crypto.randomUUID();
+      const TEST_APPLICATION_ID = generateId();
       const TEST_NOW = new Date();
       await actionServer.applySospeso({
         sospesoId: issuedSospeso.id,
@@ -96,7 +99,7 @@ function runSospesoActionsTest(
         sospesoId: approvedSospeso.id,
         consumerId: TEST_USER_ID, // TODO user.id
         coachId: TEST_USER_ID, // user.id
-        consumingId: crypto.randomUUID(),
+        consumingId: generateId(),
         consumedAt: new Date(),
         content: "너무 도움이 되었어요!",
         memo: "장소 시간 어쩌구 코칭 일지 링크 등등",

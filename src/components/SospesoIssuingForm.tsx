@@ -1,7 +1,4 @@
-import {
-  UUIDGeneratorApi,
-  type IdGeneratorApi,
-} from "@/adapters/IdGeneratorApi";
+import { generateNanoId, type generateIdI } from "@/adapters/generateId";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { Form } from "@/shared/form/Form";
 import { TextField } from "@/shared/form/TextField";
@@ -20,13 +17,13 @@ export const sospesoIssuingEventBus = createSafeEvent(
 );
 
 export function SospesoIssuingForm({
-  idGeneratorApi = UUIDGeneratorApi,
+  generateId = generateNanoId,
   userNickname,
 }: {
-  idGeneratorApi?: IdGeneratorApi;
+  generateId?: generateIdI;
   userNickname: string;
 }) {
-  const id = useMemo(() => idGeneratorApi.generateId(), [idGeneratorApi]);
+  const id = useMemo(() => generateId(), [generateId]);
 
   return (
     <Form
