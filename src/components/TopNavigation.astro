@@ -33,7 +33,7 @@ const session = Astro.locals.session;
         <li>
           {
             session ? (
-              <button>{session.name} 로그아웃</button>
+              <button id="logout-button">{session.nickname} 로그아웃</button>
             ) : (
               <Link routeKey="로그인" params={undefined}>
                 로그인
@@ -45,3 +45,11 @@ const session = Astro.locals.session;
     </div>
   </div>
 </div>
+
+<script>
+  import { authApi } from "@/adapters/authApi.ts";
+
+  document.getElementById("logout-button")?.addEventListener("click", () => {
+    authApi.logout();
+  });
+</script>

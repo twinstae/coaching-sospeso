@@ -3,14 +3,13 @@
 declare namespace App {
   interface Locals {
     session?: {
-      name: string;
+      id: string;
+      nickname: string;
     };
   }
 }
 
-interface ImportMetaEnv {
-
-}
+interface ImportMetaEnv {}
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;

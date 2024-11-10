@@ -5,7 +5,7 @@ import { calcStatus, type Sospeso } from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
 import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
-import { TEST_USER_ID } from '@/user/fixtures.ts';
+import { TEST_USER_ID } from "@/auth/fixtures.ts";
 
 const sospesoSchema = v.object({
   id: v.string(),
@@ -108,7 +108,7 @@ export function createDrizzleSospesoRepository(
           applicationList: true,
           consuming: {
             with: {
-              consumer: true
+              consumer: true,
             },
           },
           issuing: true,
@@ -120,15 +120,15 @@ export function createDrizzleSospesoRepository(
       if (sospeso === undefined) {
         return undefined;
       }
-      invariant(result, "소스페소가 있으면 result가 있었다는 뜻입니다")
+      invariant(result, "소스페소가 있으면 result가 있었다는 뜻입니다");
 
       const status = calcStatus(sospeso);
 
       if (status === "consumed") {
         const consuming = sospeso.consuming;
-        invariant(consuming, "사용되었으면 사용 기록이 있어야 합니다!")
+        invariant(consuming, "사용되었으면 사용 기록이 있어야 합니다!");
         const consumer = result.consuming?.consumer;
-        invariant(consumer, "사용되었으면 사용자가 있어야 합니다!")
+        invariant(consumer, "사용되었으면 사용자가 있어야 합니다!");
         return {
           id: sospeso.id,
           from: sospeso.from,
@@ -137,7 +137,7 @@ export function createDrizzleSospesoRepository(
           consuming: {
             consumer: {
               id: consumer.id,
-              nickname: consumer.nickname
+              nickname: consumer.nickname,
             },
             content: consuming.content,
           },

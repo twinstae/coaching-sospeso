@@ -11,7 +11,7 @@ import {
   calcStatus,
 } from "./domain.ts";
 import { SOSPESO_PRICE } from "./constants.ts";
-import { TEST_USER_ID } from "@/user/fixtures.ts";
+import { TEST_USER_ID } from "@/auth/fixtures.ts";
 
 const sospesoId = crypto.randomUUID();
 const now = new Date();

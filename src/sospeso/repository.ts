@@ -1,4 +1,4 @@
-import { TEST_USER } from "@/user/fixtures";
+import { TEST_USER } from "@/auth/fixtures";
 import {
   calcStatus,
   type Sospeso,

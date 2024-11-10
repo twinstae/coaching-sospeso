@@ -6,14 +6,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
     headers: context.request.headers,
   });
 
-  console.log("session", result);
   if (result) {
     const { user } = result;
     context.locals.session = {
-      name: user.name,
+      id: user.id,
+      nickname: user.nickname,
     };
 
-    return context.rewrite("/");
+    return next();
   }
 
   return next();

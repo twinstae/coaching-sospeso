@@ -3,33 +3,37 @@ import {
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
 import * as domain from "@/sospeso/domain.ts";
-import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import invariant from "@/invariant.ts";
 import { SOSPESO_PRICE } from "@/sospeso/constants";
 import { readInbox } from "@/adapters/emailApi";
+import {
+  buildActionServer,
+  definePureAction,
+  type ActionDefinition,
+} from "./buildActionServer";
 
-export function createActionServer(sospesoRepo: SospesoRepositoryI) {
+export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
   return {
-    retrieveSospesoList: defineAction({
+    retrieveSospesoList: definePureAction({
       input: z.object({}),
       handler: async (_input) => {
         return sospesoRepo.retrieveSospesoList();
       },
     }),
-    retrieveSospesoDetail: defineAction({
+    retrieveSospesoDetail: definePureAction({
       input: z.object({ sospesoId: z.string().uuid() }),
       handler: async (input) => {
         return sospesoRepo.retrieveSospesoDetail(input.sospesoId);
       },
     }),
-    retrieveSospesoApplicationList: defineAction({
+    retrieveSospesoApplicationList: definePureAction({
       input: z.object({}),
       handler: async (_input) => {
         return sospesoRepo.retrieveApplicationList();
       },
     }),
-    readInbox: defineAction({
+    readInbox: definePureAction({
       input: z.object({
         email: z.string().email(),
       }),
@@ -37,20 +41,24 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         return readInbox(input.email);
       },
     }),
-    issueSospeso: defineAction({
+    issueSospeso: definePureAction({
       input: z.object({
         sospesoId: z.string(),
         issuedAt: z.coerce.date(),
-        issuerId: z.string(),
         from: z.string(),
         to: z.string(),
       }),
-      handler: async (input) => {
+      handler: async (input, context) => {
+        const issuerId = context.locals.session?.id;
+
+        invariant(issuerId, "로그인해야 소스페소를 발급할 수 있어요!");
+
         await sospesoRepo.updateOrSave(input.sospesoId, (existed) => {
           invariant(existed === undefined, "이미 소스페소가 생성되었어요!");
 
           const issuedSospeso = domain.issueSospeso({
             ...input,
+            issuerId,
             paidAmount: SOSPESO_PRICE,
           });
 
@@ -58,7 +66,7 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         });
       },
     }),
-    applySospeso: defineAction({
+    applySospeso: definePureAction({
       input: z.object({
         sospesoId: z.string(),
         applicationId: z.string(),
@@ -76,7 +84,7 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         });
       },
     }),
-    consumeSospeso: defineAction({
+    consumeSospeso: definePureAction({
       input: z.object({
         sospesoId: z.string(),
         consumerId: z.string(),
@@ -96,7 +104,9 @@ export function createActionServer(sospesoRepo: SospesoRepositoryI) {
         });
       },
     }),
-  };
+  } satisfies Record<string, ActionDefinition>;
 }
 
-export const server = createActionServer(createFakeRepository());
+export const server = buildActionServer(
+  buildSospesoActions(createFakeRepository({})),
+);

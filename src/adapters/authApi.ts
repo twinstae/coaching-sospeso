@@ -1,9 +1,13 @@
 import { createAuthClient } from "better-auth/react";
-import { magicLinkClient } from "better-auth/client/plugins";
+import {
+  inferAdditionalFields,
+  magicLinkClient,
+} from "better-auth/client/plugins";
 import { href } from "@/routing/href";
+import type { auth } from "@/lib/auth";
 
 const authClient = createAuthClient({
-  plugins: [magicLinkClient()],
+  plugins: [magicLinkClient(), inferAdditionalFields<typeof auth>()],
 });
 
 export type AuthApi = {
@@ -20,6 +24,7 @@ export type AuthApi = {
   login: {
     magicLink: (command: { email: string }) => Promise<void>;
   };
+  logout: () => Promise<void>;
 };
 
 export const authApi: AuthApi = {
@@ -30,13 +35,18 @@ export const authApi: AuthApi = {
     });
   },
   signUp: {
-    async email({ email, password, name }) {
+    async email({ email, password, name, nickname }) {
       const { data, error } = await authClient.signUp.email({
         email,
         password,
         name,
+        nickname,
       });
       console.log("email sign up", data, error);
+
+      if (error) {
+        alert("email sign up failed" + error.message);
+      }
     },
   },
   login: {
@@ -46,6 +56,19 @@ export const authApi: AuthApi = {
         callbackURL: "/",
       });
       console.log("magicLink sign in", data, error);
+
+      if (error) {
+        alert("magicLink sign in failed" + error.message);
+      }
     },
+  },
+  async logout() {
+    const { data, error } = await authClient.signOut();
+
+    console.log("magicLink sign in", data, error);
+
+    if (error) {
+      alert("logout failed" + error.message);
+    }
   },
 };

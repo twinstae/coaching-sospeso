@@ -12,7 +12,7 @@ if (!session) {
 ---
 
 <Layout title="소스페소 발행하기">
-  <SospesoIssuingForm client:load userNickname={session.name} />
+  <SospesoIssuingForm client:load userNickname={session.nickname} />
 </Layout>
 
 <script>
@@ -20,11 +20,9 @@ if (!session) {
   import { navigate } from "@/routing/navigate";
   import { actions } from "astro:actions";
 
-  const session = { id: crypto.randomUUID() }; // TODO! user 로그인 세션 구현하면 넣어줘야 함!
-
   sospesoIssuingEventBus.on(window.document.body, (command) => {
     actions
-      .issueSospeso({ ...command, issuedAt: new Date(), issuerId: session.id })
+      .issueSospeso({ ...command, issuedAt: new Date() })
       .then((result) => {
         if (result.error) {
           return console.error(result.error);

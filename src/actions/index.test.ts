@@ -1,5 +1,4 @@
 import { describe, expect, test } from "vitest";
-import { createActionServer } from "./index.ts";
 import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import type { Sospeso } from "@/sospeso/domain.ts";
 
@@ -11,7 +10,9 @@ import {
   createFakeRepository,
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
-import { TEST_USER, TEST_USER_ID } from "@/user/fixtures.ts";
+import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
+import { buildTestActionServer } from "./createTestActionServer.ts";
+import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
 
 function runSospesoActionsTest(
   name: string,
@@ -19,47 +20,26 @@ function runSospesoActionsTest(
     initState: Record<string, Sospeso>,
   ) => Promise<SospesoRepositoryI>,
 ) {
-  async function createTestActionServer(initState: Record<string, Sospeso>) {
-    const repo = await createRepository(initState);
-    const actionServer = createActionServer(repo);
-
-    // 실제로는 JSON으로 직렬화된 값이 가기 때문에, Date 등은 문자열로 받는 걸 테스트
-    const proxy = new Proxy(actionServer, {
-      get(target: any, prop, _receiver) {
-        const run = target[prop as any] as (
-          input: any,
-        ) => Promise<{ data: any; error: any }>;
-        if (run instanceof Function) {
-          return async function (input: any) {
-            return run(JSON.parse(JSON.stringify(input))).then((result) => {
-              if (result.error) {
-                throw result.error;
-              }
-              return { data: result.data && result.data, error: result.error };
-            });
-          };
-        }
-        return run;
-      },
-    });
-
-    return proxy as typeof actionServer;
+  function createTestActionServer(initState: Record<string, Sospeso>) {
+    return buildTestActionServer(createRepository, initState);
   }
 
   describe("sospesoActionServer: " + name, () => {
     test("issueSospeso", async () => {
       const actionServer = await createTestActionServer({});
-      const { data: before } = await actionServer.retrieveSospesoList({});
+      const before = await actionServer.retrieveSospesoList({});
 
       expect(before).toStrictEqual([]);
 
-      await actionServer.issueSospeso({
-        sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-        issuerId: TEST_USER_ID,
-        ...TEST_SOSPESO_LIST_ITEM,
-      });
+      await actionServer.issueSospeso(
+        {
+          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
+          ...TEST_SOSPESO_LIST_ITEM,
+        },
+        LOGGED_IN_CONTEXT,
+      );
 
-      const { data: after } = await actionServer.retrieveSospesoList({});
+      const after = await actionServer.retrieveSospesoList({});
 
       expect(after).toStrictEqual([TEST_SOSPESO_LIST_ITEM]);
     });
@@ -68,8 +48,7 @@ function runSospesoActionsTest(
       const actionServer = await createTestActionServer({
         [issuedSospeso.id]: issuedSospeso,
       });
-      const { data: before } =
-        await actionServer.retrieveSospesoApplicationList({});
+      const before = await actionServer.retrieveSospesoApplicationList({});
 
       expect(before).toStrictEqual([]);
 
@@ -83,9 +62,7 @@ function runSospesoActionsTest(
         appliedAt: TEST_NOW,
       });
 
-      const { data: after } = await actionServer.retrieveSospesoApplicationList(
-        {},
-      );
+      const after = await actionServer.retrieveSospesoApplicationList({});
 
       expect(after).toStrictEqual([
         {
@@ -109,7 +86,7 @@ function runSospesoActionsTest(
         [approvedSospeso.id]: approvedSospeso,
       });
 
-      const { data: before } = await actionServer.retrieveSospesoDetail({
+      const before = await actionServer.retrieveSospesoDetail({
         sospesoId: approvedSospeso.id,
       });
 
@@ -125,7 +102,7 @@ function runSospesoActionsTest(
         memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
       });
 
-      const { data: after } = await actionServer.retrieveSospesoDetail({
+      const after = await actionServer.retrieveSospesoDetail({
         sospesoId: approvedSospeso.id,
       });
 
