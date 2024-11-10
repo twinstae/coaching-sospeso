@@ -89,36 +89,40 @@ function runSospesoActionsTest(
       const actionServer = await createTestActionServer({
         [appliedSospeso.id]: appliedSospeso,
       });
+      const applicationId = appliedSospeso.applicationList[0]!.id;
+
       const before = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(before[0]?.status).toBe("applied");
+      expect(before.find((item) => item.id === applicationId)?.status).toBe("applied");
 
       await actionServer.approveSospesoApplication({
         sospesoId: appliedSospeso.id,
-        applicationId: appliedSospeso.applicationList[0]!.id,
+        applicationId: applicationId,
       });
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(after[0]?.status).toBe("approved");
+      expect(after.find((item) => item.id === applicationId)?.status).toBe("approved");
     });
 
     test("rejectSospesoApplication", async () => {
       const actionServer = await createTestActionServer({
         [appliedSospeso.id]: appliedSospeso,
       });
+      const applicationId = appliedSospeso.applicationList[0]!.id;
+
       const before = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(before[0]?.status).toBe("applied");
+      expect(before.find((item) => item.id === applicationId)?.status).toBe("applied");
 
       await actionServer.rejectSospesoApplication({
         sospesoId: appliedSospeso.id,
-        applicationId: appliedSospeso.applicationList[0]!.id,
+        applicationId: applicationId,
       });
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(after[0]?.status).toBe("rejected");
+      expect(after.find((item) => item.id === applicationId)?.status).toBe("rejected");
     });
 
     test("consumeSospeso", async () => {
