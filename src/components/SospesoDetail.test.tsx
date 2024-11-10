@@ -65,6 +65,27 @@ describe("SospesoDetail", () => {
     expect(result).toBe("http://localhost:63315/sospeso/" + ISSUED_SOSPESO.id);
   });
 
+  test("소스페소 링크를 복사하면 토스트 메세지를 보여준다.", async () => {
+    let toastMessage = "";
+    const toastApi = {
+      toast: (text: string) => {
+        toastMessage = text;
+      },
+    };
+
+    render(
+      <SospesoDetail
+        sospeso={ISSUED_SOSPESO}
+        toastApi={toastApi}
+        clipboardApi={{ copy: async () => {} }}
+      />,
+    );
+
+    await queryTL.button("공유 링크 복사하기").click();
+
+    expect(toastMessage).toBe("Copied!");
+  });
+
   test("소스페소를 사용한 후기를 볼 수 있다.", async () => {
     // given 렌더
     render(<SospesoDetail sospeso={CONSUMED_SOSPESO} />);
