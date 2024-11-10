@@ -13,5 +13,10 @@ export default {
   daisyui: {
     themes: ["lofi"],
   },
+  safelist: [
+    {
+      pattern: /alert-(info|success|warning|error)/,
+    },
+  ],
   plugins: [daisyui],
 };
