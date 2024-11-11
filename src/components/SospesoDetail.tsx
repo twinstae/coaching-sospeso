@@ -2,7 +2,7 @@ import {
   browserClipboardApi,
   type ClipboardApiI,
 } from "@/adapters/clipboardApi";
-import { toastifyToastApi, type ToastApiI } from "@/adapters/toastApi";
+import { toastifyToastApi, type ToastApiI } from "@/adapters/toastApi.tsx";
 import { href } from "@/routing/href.ts";
 import { Link } from "@/routing/Link.tsx";
 

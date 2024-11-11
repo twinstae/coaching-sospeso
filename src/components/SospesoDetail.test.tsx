@@ -9,6 +9,7 @@ import {
   ISSUED_SOSPESO,
   PENDING_SOSPESO,
 } from "@/sospeso/fixtures";
+import { ToastifyToastContainer, toastifyToastApi } from "@/adapters/toastApi";
 
 const STAMP_ALT = "사용됨";
 
@@ -45,6 +46,58 @@ describe("SospesoDetail", () => {
     await expectTL(queryTL.button("대기중")).toHaveAttribute("disabled", "");
   });
 
+  test("소스페소 링크를 복사하면 성공했다는 토스트 메세지를 보여준다.", async () => {
+    render(
+      <SospesoDetail
+        sospeso={ISSUED_SOSPESO}
+        toastApi={toastifyToastApi}
+        clipboardApi={{ copy: async () => {} }}
+      />,
+      {
+        wrapper: ({ children }) => (
+          <>
+            {children}
+            <ToastifyToastContainer />
+          </>
+        ),
+      },
+    );
+
+    await queryTL.button("공유 링크 복사하기").click();
+
+    await expectTL(queryTL.alert("alert-success")).toHaveText(
+      "소스페소 링크를 복사했어요!",
+    );
+  });
+
+  test("소스페소 링크를 복사에 실패하면 실패했다는 토스트 메세지를 보여준다.", async () => {
+    render(
+      <SospesoDetail
+        sospeso={ISSUED_SOSPESO}
+        toastApi={toastifyToastApi}
+        clipboardApi={{
+          copy: async () => {
+            throw new Error("복사 실패");
+          },
+        }}
+      />,
+      {
+        wrapper: ({ children }) => (
+          <>
+            {children}
+            <ToastifyToastContainer />
+          </>
+        ),
+      },
+    );
+
+    await queryTL.button("공유 링크 복사하기").click();
+
+    await expectTL(queryTL.alert("alert-error")).toHaveText(
+      "복사 권한을 허용했는지 확인해 주세요.",
+    );
+  });
+
   // 소스페소 링크를 공유할 수 있다 → 나와 비슷한 사람에게 이 기회를 공유하고 싶다
   test("공유할 링크를 복사할 수 있다.", async () => {
     let result = "";
@@ -63,27 +116,6 @@ describe("SospesoDetail", () => {
 
     // then 클립보드에 링크가 복사된다
     expect(result).toBe("http://localhost:63315/sospeso/" + ISSUED_SOSPESO.id);
-  });
-
-  test("소스페소 링크를 복사하면 토스트 메세지를 보여준다.", async () => {
-    let toastMessage = "";
-    const toastApi = {
-      toast: (text: string) => {
-        toastMessage = text;
-      },
-    };
-
-    render(
-      <SospesoDetail
-        sospeso={ISSUED_SOSPESO}
-        toastApi={toastApi}
-        clipboardApi={{ copy: async () => {} }}
-      />,
-    );
-
-    await queryTL.button("공유 링크 복사하기").click();
-
-    expect(toastMessage).toBe("Copied!");
   });
 
   test("소스페소를 사용한 후기를 볼 수 있다.", async () => {
