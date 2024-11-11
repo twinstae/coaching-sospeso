@@ -2,12 +2,17 @@ import {
   browserClipboardApi,
   type ClipboardApiI,
 } from "@/adapters/clipboardApi";
+import {
+  toastApi as defaultToastApi,
+  type ToastApiI,
+} from "@/adapters/toastApi";
 import { href } from "@/routing/href.ts";
 import { Link } from "@/routing/Link.tsx";
 
 export function SospesoDetail({
   sospeso,
   clipboardApi = browserClipboardApi,
+  toastApi = defaultToastApi,
 }: {
   sospeso:
     | {
@@ -28,6 +33,7 @@ export function SospesoDetail({
         };
       };
   clipboardApi?: ClipboardApiI;
+  toastApi?: ToastApiI;
 }) {
   return (
     <div>
@@ -60,10 +66,15 @@ export function SospesoDetail({
 
       <button
         className="btn btn-primary"
-        onClick={() => {
-          clipboardApi.copy(
-            window.origin + href("소스페소-상세", { sospesoId: sospeso.id }),
-          );
+        onClick={async () => {
+          try {
+            await clipboardApi.copy(
+              window.origin + href("소스페소-상세", { sospesoId: sospeso.id }),
+            );
+            toastApi.toast("Copied!", "success");
+          } catch {
+            toastApi.toast("Failed to copy", "error");
+          }
         }}
       >
         공유 링크 복사하기
