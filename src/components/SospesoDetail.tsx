@@ -2,17 +2,14 @@ import {
   browserClipboardApi,
   type ClipboardApiI,
 } from "@/adapters/clipboardApi";
-import {
-  toastApi as defaultToastApi,
-  type ToastApiI,
-} from "@/adapters/toastApi";
+import { toastifyToastApi, type ToastApiI } from "@/adapters/toastApi";
 import { href } from "@/routing/href.ts";
 import { Link } from "@/routing/Link.tsx";
 
 export function SospesoDetail({
   sospeso,
   clipboardApi = browserClipboardApi,
-  toastApi = defaultToastApi,
+  toastApi = toastifyToastApi,
 }: {
   sospeso:
     | {
@@ -71,9 +68,9 @@ export function SospesoDetail({
             await clipboardApi.copy(
               window.origin + href("소스페소-상세", { sospesoId: sospeso.id }),
             );
-            toastApi.toast("Copied!", "success");
+            toastApi.toast("소스페소 링크를 복사했어요!", "success");
           } catch {
-            toastApi.toast("Failed to copy", "error");
+            toastApi.toast("복사 권한을 허용했는지 확인해 주세요.", "error");
           }
         }}
       >

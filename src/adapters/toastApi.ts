@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-export { ToastContainer as Toaster } from "react-toastify";
+export { ToastContainer as ToastifyToastContainer } from "react-toastify";
 
 export type ToastApiI = {
   toast: (
@@ -15,7 +15,7 @@ const alertVariantDict = {
   error: "alert-error",
 };
 
-export const toastApi: ToastApiI = {
+export const toastifyToastApi: ToastApiI = {
   toast: (text, type = "info") => {
     return toast(text, { className: `alert ${alertVariantDict[type]}` });
   },
