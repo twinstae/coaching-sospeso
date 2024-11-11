@@ -8,8 +8,15 @@ export type ToastApiI = {
   ) => void;
 };
 
+const alertVariantDict = {
+  info: "alert-info",
+  success: "alert-success",
+  warning: "alert-warning",
+  error: "alert-error",
+};
+
 export const toastApi: ToastApiI = {
   toast: (text, type = "info") => {
-    return toast(text, { className: `alert alert-${type}` });
+    return toast(text, { className: `alert ${alertVariantDict[type]}` });
   },
 };
