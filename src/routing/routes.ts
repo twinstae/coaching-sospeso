@@ -55,6 +55,9 @@ export const routes = {
   로그인: {
     path: "/auth/login",
   },
+  "소스페소-신청완료": {
+    path: "/sospeso/applicationSuccess",
+  },
 } satisfies Record<string, Route>;
 
 export function resolveRoute<RouteKey extends RouteKeys>(

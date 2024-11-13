@@ -103,14 +103,17 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
         sospesoId: z.string(),
         applicationId: z.string(),
         appliedAt: z.coerce.date(),
-        applicantId: z.string(),
         content: z.string(),
       }),
-      handler: async (input) => {
+      handler: async (input, context) => {
+        const applicantId = context.locals.session?.id;
+
+        invariant(applicantId, "로그인해야 소스페소를 발급할 수 있어요!");
+
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
 
-          const appliedSospeso = domain.applySospeso(sospeso, input);
+          const appliedSospeso = domain.applySospeso(sospeso, { ...input, applicantId });
 
           return appliedSospeso;
         });

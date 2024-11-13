@@ -5,7 +5,11 @@ import type { Sospeso } from "@/sospeso/domain.ts";
 import * as schema from "@/adapters/drizzle/schema.ts";
 import { drizzle } from "drizzle-orm/libsql";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
-import { appliedSospeso, approvedSospeso, issuedSospeso } from "@/sospeso/domain.test.ts";
+import {
+  appliedSospeso,
+  approvedSospeso,
+  issuedSospeso,
+} from "@/sospeso/domain.test.ts";
 import {
   createFakeRepository,
   type SospesoRepositoryI,
@@ -63,9 +67,9 @@ function runSospesoActionsTest(
         sospesoId: id,
         applicationId: TEST_APPLICATION_ID,
         content: "저 퀴어 문화 축제 갔다 왔어요",
-        applicantId: TEST_USER_ID,
         appliedAt: TEST_NOW,
-      });
+      }, 
+      LOGGED_IN_CONTEXT);
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
@@ -93,7 +97,9 @@ function runSospesoActionsTest(
 
       const before = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(before.find((item) => item.id === applicationId)?.status).toBe("applied");
+      expect(before.find((item) => item.id === applicationId)?.status).toBe(
+        "applied",
+      );
 
       await actionServer.approveSospesoApplication({
         sospesoId: appliedSospeso.id,
@@ -102,7 +108,9 @@ function runSospesoActionsTest(
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(after.find((item) => item.id === applicationId)?.status).toBe("approved");
+      expect(after.find((item) => item.id === applicationId)?.status).toBe(
+        "approved",
+      );
     });
 
     test("rejectSospesoApplication", async () => {
@@ -113,7 +121,9 @@ function runSospesoActionsTest(
 
       const before = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(before.find((item) => item.id === applicationId)?.status).toBe("applied");
+      expect(before.find((item) => item.id === applicationId)?.status).toBe(
+        "applied",
+      );
 
       await actionServer.rejectSospesoApplication({
         sospesoId: appliedSospeso.id,
@@ -122,7 +132,9 @@ function runSospesoActionsTest(
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
-      expect(after.find((item) => item.id === applicationId)?.status).toBe("rejected");
+      expect(after.find((item) => item.id === applicationId)?.status).toBe(
+        "rejected",
+      );
     });
 
     test("consumeSospeso", async () => {

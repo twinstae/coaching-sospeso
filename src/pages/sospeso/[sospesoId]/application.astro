@@ -1,0 +1,35 @@
+---
+import { SospesoApplyingForm } from "@/components/SospesoApplyingForm.tsx";
+import Layout from "@/layouts/Layout.astro";
+
+const session = Astro.locals.session;
+
+if (!session) {
+  return Astro.redirect("/auth/login");
+}
+---
+
+<Layout title="소스페소 신청하기">
+  <SospesoApplyingForm client:load />
+</Layout>
+
+<script>
+  import { sospesoApplyingEventBus } from "@/components/SospesoApplyingForm";
+  import { navigate } from "@/routing/navigate";
+  import { getParsedParams } from "@/routing/parseRouteParams";
+  import { actions } from "astro:actions";
+
+  const { sospesoId } = getParsedParams("소스페소-신청");
+
+  sospesoApplyingEventBus.on(window.document.body, (command) => {
+    actions
+      .applySospeso({ ...command, sospesoId: sospesoId, appliedAt: new Date() })
+      .then((result) => {
+        if (result.error) {
+          return console.error(result.error);
+        }
+
+        navigate("소스페소-신청완료", undefined);
+      });
+  });
+</script>
