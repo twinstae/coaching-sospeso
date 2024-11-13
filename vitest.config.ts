@@ -2,6 +2,9 @@ import { getViteConfig } from "astro/config";
 
 export default getViteConfig({
   root: "./",
+  optimizeDeps: {
+    include: ["@vitest/coverage-istanbul"],
+  },
   test: {
     pool: "vmThreads",
     poolOptions: {
@@ -34,7 +37,7 @@ export default getViteConfig({
         "src/layouts/**",
         "src/astro/**",
         "src/routing/navigate.ts",
-        "src/adapters/**"
+        "src/adapters/**",
       ],
     },
   },
