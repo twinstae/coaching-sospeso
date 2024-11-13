@@ -28,8 +28,8 @@ if (!applicationList) {
   import {
     sospesoApproveEventBus,
     sospesoRejectEventBus,
-  } from '@/components/SospesoApplicationDashboard';
-  import { actions } from 'astro:actions';
+  } from "@/components/SospesoApplicationDashboard";
+  import { actions } from "astro:actions";
 
   sospesoApproveEventBus.on(window.document.body, (command) => {
     actions.approveSospesoApplication(command).then(() => {});

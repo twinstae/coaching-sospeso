@@ -8,8 +8,9 @@ if (!session) {
   return Astro.redirect("/auth/login");
 }
 ---
+
 <Layout title="소스페소 신청하기">
-  <SospesoApplyingForm client:load userNickname={session.nickname}/>
+  <SospesoApplyingForm client:load />
 </Layout>
 
 <script>

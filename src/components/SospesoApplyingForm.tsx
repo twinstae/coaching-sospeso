@@ -7,8 +7,10 @@ import * as v from "valibot";
 
 const applyingSchema = v.object({
   applicationId: v.string(),
-  applicantId: v.string(),
-  content: v.pipe(v.string(), v.minLength(1, "코치에게 쓸 편지를 입력해주세요")),
+  content: v.pipe(
+    v.string(),
+    v.minLength(1, "코치에게 쓸 편지를 입력해주세요"),
+  ),
 });
 
 export const sospesoApplyingEventBus = createSafeEvent(
@@ -18,10 +20,8 @@ export const sospesoApplyingEventBus = createSafeEvent(
 
 export function SospesoApplyingForm({
   generateId = generateNanoId,
-  userNickname,
 }: {
   generateId?: generateIdI;
-  userNickname: string;
 }) {
   const id = useMemo(() => generateId(), [generateId]);
 
@@ -29,7 +29,7 @@ export function SospesoApplyingForm({
     <Form
       form={{
         schema: applyingSchema,
-        defaultValues: { applicationId: id, applicantId: userNickname, content: "" },
+        defaultValues: { applicationId: id, content: "" },
         bus: sospesoApplyingEventBus,
       }}
     >
