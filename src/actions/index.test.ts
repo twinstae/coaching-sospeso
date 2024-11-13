@@ -5,9 +5,7 @@ import { like } from "drizzle-orm";
 import * as schema from "@/adapters/drizzle/schema.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
 import { generateNanoId } from "@/adapters/generateId.ts";
-
 import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
-
 import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import type { Sospeso } from "@/sospeso/domain.ts";
 import {
@@ -70,9 +68,9 @@ function runSospesoActionsTest(
         sospesoId: id,
         applicationId: TEST_APPLICATION_ID,
         content: "저 퀴어 문화 축제 갔다 왔어요",
-        applicantId: TEST_USER_ID,
         appliedAt: TEST_NOW,
-      });
+      }, 
+      LOGGED_IN_CONTEXT);
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 
