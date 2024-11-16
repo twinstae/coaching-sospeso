@@ -65,4 +65,16 @@ body {
     background-color: oklch(var(--p, var(--b2)) / var(--tw-bg-opacity));
     color: white;
   }
+
+  .tooltip-content {
+    max-width: 20rem;
+    white-space: normal;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    background-color: var(--tooltip-color);
+    color: var(--tooltip-text-color);
+    width: max-content;
+  }
 }
