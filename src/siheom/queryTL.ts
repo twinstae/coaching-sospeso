@@ -39,6 +39,7 @@ export type TLocator = {
     options?: Parameters<typeof userEvent.type>[2],
   ): Promise<void>;
   clear(): Promise<void>;
+  hover(): Promise<void>;
   waitFor(): Promise<void>;
   find(): Promise<HTMLElement>;
   findAll(): Promise<HTMLElement[]>;
@@ -191,6 +192,16 @@ export function createQueryTL(getBaseElement = () => document.body) {
               return swapStackAsync(fakeError, error);
             }
           },
+          async hover() {
+            const fakeError = new Error();
+            try {
+              await base()
+                .findByRole(role, { name })
+                .then(($el) => userEvent.hover($el));
+            } catch (error) {
+              return swapStackAsync(fakeError, error);
+            }
+          },
           async waitFor() {
             const fakeError = new Error();
             try {
@@ -262,6 +273,9 @@ export function createQueryTL(getBaseElement = () => document.body) {
         },
         async clear() {
           return find().then(($el) => userEvent.clear($el));
+        },
+        async hover() {
+          return find().then(($el) => userEvent.hover($el));
         },
         async waitFor() {
           return find().then(() => undefined);
