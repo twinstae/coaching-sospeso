@@ -1,3 +1,6 @@
+import { Resend } from "resend";
+import { env } from "./env";
+
 export type EmailT = {
   from: string;
   to: string[];
@@ -17,9 +20,22 @@ export async function readInbox(
   return fakeEmailInbox[emailAddress];
 }
 
+export const resendEmailApi = {
+  send: async (email) => {
+    const resend = new Resend(env.RESEND_API_KEY);
+
+    const { error } = await resend.emails.send(email);
+
+    if (error) {
+      throw error;
+    }
+
+    return undefined;
+  },
+} satisfies EmailApiI;
+
 export const fakeEmailApi = {
   send: async (email) => {
-    console.log("email", email);
     for (const to of email.to) {
       const inbox = fakeEmailInbox[to];
       if (inbox) {

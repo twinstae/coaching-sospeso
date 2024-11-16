@@ -36,39 +36,35 @@ export const authApi: AuthApi = {
   },
   signUp: {
     async email({ email, password, name, nickname }) {
-      const { data, error } = await authClient.signUp.email({
+      const { error } = await authClient.signUp.email({
         email,
         password,
         name,
         nickname,
       });
-      console.log("email sign up", data, error);
 
       if (error) {
-        alert("email sign up failed" + error.message);
+        throw error;
       }
     },
   },
   login: {
     async magicLink({ email }) {
-      const { data, error } = await authClient.signIn.magicLink({
+      const { error } = await authClient.signIn.magicLink({
         email,
         callbackURL: "/",
       });
-      console.log("magicLink sign in", data, error);
 
       if (error) {
-        alert("magicLink sign in failed" + error.message);
+        throw error;
       }
     },
   },
   async logout() {
-    const { data, error } = await authClient.signOut();
-
-    console.log("magicLink sign in", data, error);
+    const { error } = await authClient.signOut();
 
     if (error) {
-      alert("logout failed" + error.message);
+      throw error;
     }
   },
 };
