@@ -10,6 +10,7 @@ import {
   PENDING_SOSPESO,
 } from "@/sospeso/fixtures";
 import { ToastifyToastContainer, toastifyToastApi } from "@/adapters/toastApi";
+import userEvent from "@testing-library/user-event";
 
 const STAMP_ALT = "사용됨";
 
@@ -44,6 +45,14 @@ describe("SospesoDetail", () => {
     render(<SospesoDetail sospeso={PENDING_SOSPESO} />);
 
     await expectTL(queryTL.button("대기중")).toHaveAttribute("disabled", "");
+  });
+
+  test("대기중 버튼에 마우스를 올리면 도움말 툴팁을 보여준다.", async () => {
+    render(<SospesoDetail sospeso={PENDING_SOSPESO} />);
+
+    userEvent.hover(queryTL.button("대기중").get());
+
+    await expectTL(queryTL.tooltip("대기중")).toBeVisible();
   });
 
   test("소스페소 링크를 복사하면 성공했다는 토스트 메세지를 보여준다.", async () => {

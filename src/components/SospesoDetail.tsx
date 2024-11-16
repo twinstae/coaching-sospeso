@@ -47,9 +47,20 @@ export function SospesoDetail({
       )}
 
       {sospeso.status === "pending" && (
-        <button className="btn btn-primary" disabled>
-          대기중
-        </button>
+        <div
+          role="tooltip"
+          id="pendingSospeso"
+          data-tip="승인을 기다리고 있는 소스페소입니다."
+          className="tooltip"
+        >
+          <button
+            aria-describedby="pendingSospeso"
+            className="btn btn-primary !pointer-events-auto"
+            disabled
+          >
+            대기중
+          </button>
+        </div>
       )}
 
       {sospeso.status === "consumed" && <img alt="사용됨" />}
