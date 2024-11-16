@@ -43,7 +43,7 @@ describe("SospesoDetail", () => {
   test("대기 중인 소스페소는 대기중 버튼이 비활성화되어있다.", async () => {
     render(<SospesoDetail sospeso={PENDING_SOSPESO} />);
 
-    await expectTL(queryTL.button("대기중")).toHaveAttribute("disabled", "");
+    await expectTL(queryTL.button("대기중")).toBeDisabled();
   });
 
   test("대기중 버튼에 마우스를 올리면 도움말 툴팁을 보여준다.", async () => {
@@ -51,7 +51,10 @@ describe("SospesoDetail", () => {
 
     await queryTL.button("대기중").hover();
 
-    await expectTL(queryTL.tooltip("대기중")).toBeVisible();
+    const tooltip = queryTL.tooltip(
+      "이미 신청한 사람이 있어 코칭을 기다리고 있습니다",
+    );
+    await expectTL(tooltip).toBeVisible();
   });
 
   test("소스페소 링크를 복사하면 성공했다는 토스트 메세지를 보여준다.", async () => {
