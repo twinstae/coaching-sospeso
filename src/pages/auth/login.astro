@@ -6,4 +6,26 @@ import Layout from "@/layouts/Layout.astro";
 <Layout title="로그인">
   <LoginForm client:load />
 </Layout>
-<script></script>
+<script>
+  import { authApi } from "@/adapters/authApi";
+  import { toastifyToastApi } from "@/adapters/toastApi";
+  import { magicLinkLoginBus } from "@/components/auth/LoginForm";
+
+  const toastApi = toastifyToastApi;
+
+  magicLinkLoginBus.on(window.document.body, (command) => {
+    authApi
+      .sendEmailVerification(command)
+      .then(() => {
+        toastApi.toast(
+          command.email + "로 로그인 이메일을 보냈어요! 메일함을 확인해주세요.",
+        );
+      })
+      .catch(() => {
+        toastApi.toast(
+          "이메일을 보내는데 실패했어요. 잠시 후에 다시 시도해주세요.",
+          "error",
+        );
+      });
+  });
+</script>

@@ -1,6 +1,20 @@
+import * as v from "valibot";
+
+import { Form } from "@/shared/form/Form";
 import Github from "@/shared/icons/Github.tsx";
 import Google from "@/shared/icons/Google.tsx";
 import Twitter from "@/shared/icons/Twitter.tsx";
+import { createSafeEvent } from "@/event/SafeEventBus";
+import { TextField } from "@/shared/form/TextField";
+
+const loginSchema = v.object({
+  email: v.pipe(v.string(), v.email("올바른 이메일 형식을 입력해주세요!")),
+});
+
+export const magicLinkLoginBus = createSafeEvent(
+  "magic-email-login",
+  loginSchema,
+);
 
 export function LoginForm() {
   return (
@@ -8,6 +22,22 @@ export function LoginForm() {
       <h2 className="text-2xl font-bold text-center mb-8">로그인</h2>
 
       <div className="space-y-4">
+        <Form
+          className="flex flex-col gap-4"
+          form={{
+            schema: loginSchema,
+            defaultValues: { email: "" },
+            bus: magicLinkLoginBus,
+          }}
+        >
+          <TextField label="이메일" name="email" />
+          <button className="btn btn-outline w-full" type="submit">
+            이메일로 계속하기
+          </button>
+        </Form>
+
+        <div className="divider">OR</div>
+
         <button className="btn btn-outline w-full">
           <Google className="w-5 h-5" />
           구글로 계속하기
