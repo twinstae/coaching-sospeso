@@ -1,6 +1,6 @@
 # 웹 프레임워크 : Astro 와 React
 
-상태 : proposed
+상태 : accepted
 
 ## 역사
 

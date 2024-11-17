@@ -1,6 +1,6 @@
 # 패키지 매니저 : pnpm
 
-상태 : proposed
+상태 : accepted
 
 ## 역사
 

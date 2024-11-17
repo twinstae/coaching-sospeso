@@ -1,6 +1,6 @@
 # 테스트 : vitest + @testing-library + siheom + playwright
 
-상태 : proposed
+상태 : accepted
 
 ## 역사
 

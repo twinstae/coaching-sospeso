@@ -1,6 +1,6 @@
 # 스타일링 : tailwindcss + daisyui
 
-상태 : proposed
+상태 : accepted
 
 ## 역사
 

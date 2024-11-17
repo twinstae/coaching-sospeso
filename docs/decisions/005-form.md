@@ -1,6 +1,6 @@
 # 폼 : HTML form과 react hook form
 
-상태 : proposed
+상태 : accepted
 
 ## 역사
 

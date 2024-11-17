@@ -1,6 +1,6 @@
-# 디자인 시스템
+# 디자인 시스템 : daisyui + ariakit
 
-상태 : proposed | rejected | accepted | deprecated
+상태 : proposed
 
 ## 역사
 

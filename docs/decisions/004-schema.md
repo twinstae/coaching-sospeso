@@ -1,6 +1,6 @@
 # 스키마 : valibot
 
-상태 : proposed
+상태 : accepted
 
 ## 역사
 
