@@ -16,7 +16,7 @@ const alertVariantDict = {
 } as const;
 
 const Toast = ({
-  text
+  text,
 }: {
   text: string;
   type?: keyof typeof alertVariantDict;

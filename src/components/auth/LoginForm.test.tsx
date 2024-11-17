@@ -1,4 +1,4 @@
-import { renderTL } from '@/siheom/renderTL.tsx';
+import { renderTL } from "@/siheom/renderTL.tsx";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
@@ -6,7 +6,7 @@ import { magicLinkLoginBus, LoginForm } from "./LoginForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
-const TEST_PASSWORD = crypto.randomUUID();;
+const TEST_PASSWORD = crypto.randomUUID();
 
 describe("LoginForm", () => {
   test("이메일을 입력하지 않으면 로그인할 수 없다", async () => {

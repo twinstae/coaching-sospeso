@@ -14,10 +14,11 @@ if (!session) {
 </Layout>
 
 <script>
-  import { sospesoApplyingEventBus } from "@/components/SospesoApplyingForm";
-  import { navigate } from "@/routing/navigate";
-  import { getParsedParams } from "@/routing/parseRouteParams";
   import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+  import { sospesoApplyingEventBus } from "@/components/SospesoApplyingForm.tsx";
+  import { href } from "@/routing/href.ts";
+  import { getParsedParams } from "@/routing/parseRouteParams.ts";
 
   const { sospesoId } = getParsedParams("소스페소-신청");
 
@@ -29,7 +30,7 @@ if (!session) {
           return console.error(result.error);
         }
 
-        navigate("소스페소-신청완료", undefined);
+        navigate(href("소스페소-신청완료", undefined));
       });
   });
 </script>

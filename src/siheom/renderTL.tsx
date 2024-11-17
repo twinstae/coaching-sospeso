@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render } from "@testing-library/react";
 import type { ReactNode } from "react";
 
 import { ToastifyToastContainer } from "@/adapters/toastApi";

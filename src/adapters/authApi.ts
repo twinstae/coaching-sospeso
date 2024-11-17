@@ -75,7 +75,7 @@ export const authApi: AuthApi = {
       });
 
       if (error) {
-        console.error(error.message)
+        console.error(error.message);
         if (error.message === "Invalid email or password") {
           return "invalid-email-or-password";
         }

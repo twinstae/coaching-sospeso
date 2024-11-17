@@ -9,8 +9,10 @@ export function parseRouteParamsFromUrl<RouteKey extends RouteKeys>(
   const route = resolveRoute(routeKey);
 
   const searchParams = Object.fromEntries(
-    Array.from(new URLSearchParams(url.search))
-      .map(([key, value]) => [key, decodeURIComponent(value)]),
+    Array.from(new URLSearchParams(url.search)).map(([key, value]) => [
+      key,
+      decodeURIComponent(value),
+    ]),
   );
 
   if ("paramsSchema" in route) {

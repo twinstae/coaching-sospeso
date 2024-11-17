@@ -8,10 +8,11 @@ import Layout from "@/layouts/Layout.astro";
 </Layout>
 
 <script>
-  import { sospesoConsumingEventBus } from "@/components/SospesoConsumingForm.tsx";
-  import { navigate } from "@/routing/navigate.ts";
-  import { getParsedParams } from "@/routing/parseRouteParams.ts";
   import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+  import { sospesoConsumingEventBus } from "@/components/SospesoConsumingForm.tsx";
+  import { href } from "@/routing/href.ts";
+  import { getParsedParams } from "@/routing/parseRouteParams.ts";
 
   sospesoConsumingEventBus.on(window.document.body, (command) => {
     const { sospesoId, consumerId } = getParsedParams("어드민-소스페소-사용");
@@ -23,7 +24,7 @@ import Layout from "@/layouts/Layout.astro";
         consumerId,
       })
       .then(() => {
-        navigate("소스페소-상세", { sospesoId });
+        navigate(href("소스페소-상세", { sospesoId }));
       });
   });
 </script>

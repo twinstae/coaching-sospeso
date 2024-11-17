@@ -11,14 +11,15 @@ import Layout from "@/layouts/Layout.astro";
   import { authApi } from "@/adapters/authApi.ts";
   import { toastifyToastApi } from "@/adapters/toastApi.tsx";
   import { magicLinkLoginBus } from "@/components/auth/LoginForm.tsx";
-  import { navigate } from "@/routing/navigate";
+  import { href } from "@/routing/href";
+  import { navigate } from "astro:transitions/client";
 
   const toastApi = toastifyToastApi;
 
   magicLinkLoginBus.on(window.document.body, (command) => {
     authApi.login.emailPassword(command).then((result) => {
       if (result === "success") {
-        navigate("홈", { page: 1 });
+        navigate(href("홈", { page: 1 }));
         return;
       }
 
@@ -30,7 +31,10 @@ import Layout from "@/layouts/Layout.astro";
 
       if (result === "email-not-verified") {
         authApi.sendEmailVerification({ email: command.email });
-        toastApi.toast("아직 인증이 되지 않았어요. 인증 이메일을 다시 전송했으니, 확인해주세요.", "error");
+        toastApi.toast(
+          "아직 인증이 되지 않았어요. 인증 이메일을 다시 전송했으니, 확인해주세요.",
+          "error",
+        );
 
         return;
       }

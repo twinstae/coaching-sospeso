@@ -16,17 +16,18 @@ if (!session) {
 </Layout>
 
 <script>
-  import { toastifyToastApi } from "@/adapters/toastApi";
-  import { sospesoIssuingEventBus } from "@/components/SospesoIssuingForm";
-  import { navigate } from "@/routing/navigate";
   import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+  import { toastifyToastApi } from "@/adapters/toastApi.tsx";
+  import { sospesoIssuingEventBus } from "@/components/SospesoIssuingForm.tsx";
+  import { href } from "@/routing/href.ts";
   const toastApi = toastifyToastApi;
 
   sospesoIssuingEventBus.on(window.document.body, async (command) => {
     actions
       .createIssuingSospesoPayment(command)
       .then(() => {
-        navigate("소스페소-결제", { paymentId: command.sospesoId });
+        navigate(href("소스페소-결제", { paymentId: command.sospesoId }));
       })
       .catch(() => {
         toastApi.toast(

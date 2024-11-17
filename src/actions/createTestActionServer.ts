@@ -55,7 +55,7 @@ export async function buildTestActionServer(
   initState: Record<string, Sospeso>,
 ): Promise<TestActionServer> {
   const sospesoRepo = await createSospesoRepository(initState);
-  const paymentRepo = await createFakePaymentRepository({});
+  const paymentRepo = createFakePaymentRepository({});
   const pureActions = buildSospesoActions(sospesoRepo, paymentRepo);
 
   return Object.fromEntries(

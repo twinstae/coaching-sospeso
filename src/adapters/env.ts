@@ -1,4 +1,4 @@
-import invariant from '@/invariant';
+import invariant from "@/invariant";
 import * as v from "valibot";
 
 export const isProd = import.meta.env.PROD;
@@ -25,5 +25,9 @@ const result = v.safeParse(envSchema, {
   PAYPLE_CLIENT_KEY: import.meta.env.PAYPLE_CLIENT_KEY,
 });
 
-invariant(result.success, "env에 빠진 부분이 있습니다! 값을 채워주세요. \n" + JSON.stringify(result.issues, null, 2))
+invariant(
+  result.success,
+  "env에 빠진 부분이 있습니다! 값을 채워주세요. \n" +
+    JSON.stringify(result.issues, null, 2),
+);
 export const env = result.output;

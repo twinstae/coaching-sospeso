@@ -1,6 +1,6 @@
 import { waitFor, within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
-import { getA11ySnapshot } from './getA11ySnapshot';
+import { getA11ySnapshot } from "./getA11ySnapshot";
 
 // https://main.vitest.dev/guide/browser#context
 // import { userEvent } from '@vitest/browser/context';
@@ -124,12 +124,7 @@ const ARIADocumentStructureRole = [
   "tooltip",
 ] as const;
 
-const ARIALiveRegionRole = [
-  "log",
-  "marquee",
-  "status",
-  "timer",
-] as const;
+const ARIALiveRegionRole = ["log", "marquee", "status", "timer"] as const;
 
 const ARIAWindowRole = ["alertdialog", "dialog"] as const;
 
@@ -260,33 +255,37 @@ export function createQueryTL(getBaseElement = () => document.body) {
   return {
     ...query,
     alert: (text: string | RegExp) => {
-      function isMatch(el: HTMLElement){
-          if(typeof text === "string"){
-            return el.textContent ??"" === text;
-          } {
-            return text.exec(el.textContent ??"")
-          }
+      function isMatch(el: HTMLElement) {
+        if (typeof text === "string") {
+          return el.textContent ?? "" === text;
         }
+        {
+          return text.exec(el.textContent ?? "");
+        }
+      }
 
-      function getFirst(elements: HTMLElement[]){
-        const element = elements.filter(el => {
+      function getFirst(elements: HTMLElement[]) {
+        const element = elements
+          .filter((el) => {
+            if (typeof text === "string") {
+              return el.textContent ?? "" === text;
+            }
+            {
+              return text.exec(el.textContent ?? "");
+            }
+          })
+          .at(0);
 
-          if(typeof text === "string"){
-            return el.textContent ??"" === text;
-          } {
-            return text.exec(el.textContent ??"")
-          }
-        }).at(0);
-
-
-        if (element === undefined){
-          throw Error(`alert: ${text} 인 요소를 찾지 못했습니다. \n\n` + getA11ySnapshot(document.body));
+        if (element === undefined) {
+          throw Error(
+            `alert: ${text} 인 요소를 찾지 못했습니다. \n\n` +
+              getA11ySnapshot(document.body),
+          );
         }
 
         return element;
       }
       const find = () => waitFor(() => getFirst(base().getAllByRole("alert")));
-
 
       const result: TLocator = {
         async click(options) {
@@ -308,14 +307,15 @@ export function createQueryTL(getBaseElement = () => document.body) {
           return find().then(() => undefined);
         },
         find,
-        findAll: () =>  waitFor(() => base().getAllByRole("alert")),
+        findAll: () => waitFor(() => base().getAllByRole("alert")),
         get: () => getFirst(base().getAllByRole("alert")),
         getAll: () => base().getAllByRole("alert").filter(isMatch),
-        query: () => base().queryAllByRole("alert")?.filter(isMatch).at(0) ?? null,
+        query: () =>
+          base().queryAllByRole("alert")?.filter(isMatch).at(0) ?? null,
         ...createQueryTL(() => base().getByText(text)),
-      }
+      };
       return result;
-      },
+    },
     text: (text: string | RegExp) => {
       const find = () => base().findByText(text);
       const result: TLocator = {

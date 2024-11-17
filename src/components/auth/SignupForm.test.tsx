@@ -4,7 +4,7 @@ import { expectTL } from "@/siheom/expectTL.ts";
 import { signUpBus, SignUpForm } from "./SignUpForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 import { getA11ySnapshot } from "@/siheom/getA11ySnapshot.ts";
-import { renderTL } from '@/siheom/renderTL.tsx';
+import { renderTL } from "@/siheom/renderTL.tsx";
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
 

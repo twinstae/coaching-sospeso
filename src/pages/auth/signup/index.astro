@@ -11,14 +11,15 @@ import Layout from "@/layouts/Layout.astro";
   import { authApi } from "@/adapters/authApi.ts";
   import { toastifyToastApi } from "@/adapters/toastApi.tsx";
   import { signUpBus } from "@/components/auth/SignUpForm.tsx";
-  import { navigate } from "@/routing/navigate.ts";
+  import { href } from "@/routing/href";
+  import { navigate } from "astro:transitions/client";
 
   const toastApi = toastifyToastApi;
 
   signUpBus.on(window.document.body, (command) => {
     authApi.signUp.email(command).then((status) => {
       if (status === "success") {
-        navigate("회원가입-이메일-전송-완료", { email: command.email });
+        navigate(href("회원가입-이메일-전송-완료", { email: command.email }));
       }
 
       if (status === "already-exists") {

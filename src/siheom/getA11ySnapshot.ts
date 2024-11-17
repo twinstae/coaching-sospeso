@@ -1,12 +1,4 @@
-/**
- * @param {HTMLElement} element
- * @returns {string}
- */
 export function getA11ySnapshot(element: HTMLElement) {
-  /**
-   * @param {HTMLElement} el
-   * @returns {string}
-   */
   function getAriaRole(el: HTMLElement) {
     return (
       el.getAttribute("role") ||
@@ -45,10 +37,6 @@ export function getA11ySnapshot(element: HTMLElement) {
     );
   }
 
-  /**
-   * @param {HTMLElement} el
-   * @returns {string}
-   */
   function getAccessibleName(el: HTMLElement) {
     const alt = el.tagName === "IMG" ? el.getAttribute("alt") : "";
     const ariaLabel = el.getAttribute("aria-label") ?? "";
@@ -93,11 +81,6 @@ export function getA11ySnapshot(element: HTMLElement) {
     );
   }
 
-  /**
-   * @param {HTMLElement} el
-   * @param {number} [depth=0]
-   * @returns {string}
-   */
   function processElement(el: HTMLElement, depth = 0) {
     if (el === null || el === undefined || el.ariaHidden == "true" || el.hidden)
       return "";

@@ -9,7 +9,7 @@ import {
   PENDING_SOSPESO,
 } from "@/sospeso/fixtures";
 import { toastifyToastApi } from "@/adapters/toastApi";
-import { renderTL } from '@/siheom/renderTL.tsx';
+import { renderTL } from "@/siheom/renderTL.tsx";
 
 const STAMP_ALT = "사용됨";
 
@@ -67,11 +67,14 @@ describe("SospesoDetail", () => {
             throw new Error("복사 실패");
           },
         }}
-      />);
+      />,
+    );
 
     await queryTL.button("공유 링크 복사하기").click();
 
-    await expectTL(queryTL.alert("복사 권한을 허용했는지 확인해 주세요.")).toBeVisible();
+    await expectTL(
+      queryTL.alert("복사 권한을 허용했는지 확인해 주세요."),
+    ).toBeVisible();
   });
 
   // 소스페소 링크를 공유할 수 있다 → 나와 비슷한 사람에게 이 기회를 공유하고 싶다
@@ -84,10 +87,7 @@ describe("SospesoDetail", () => {
     };
     // given 렌더
     renderTL(
-      <SospesoDetail
-        sospeso={ISSUED_SOSPESO}
-        clipboardApi={clipboardApi}
-      />,
+      <SospesoDetail sospeso={ISSUED_SOSPESO} clipboardApi={clipboardApi} />,
     );
 
     // when 버튼을 클릭하면
