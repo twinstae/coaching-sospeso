@@ -3,6 +3,7 @@ import * as v from "valibot";
 export const isProd = import.meta.env.PROD;
 
 const envSchema = v.object({
+  APP_HOST: v.string(),
   TURSO_CONNECTION_URL: v.string(),
   TURSO_AUTH_TOKEN: v.string(),
   PLUNK_EMAIL_API_KEY: v.string(),
@@ -13,6 +14,7 @@ const envSchema = v.object({
 });
 
 export const env = v.parse(envSchema, {
+  APP_HOST: import.meta.env.APP_HOST,
   TURSO_CONNECTION_URL: import.meta.env.TURSO_CONNECTION_URL,
   TURSO_AUTH_TOKEN: import.meta.env.TURSO_AUTH_TOKEN,
   PLUNK_EMAIL_API_KEY: import.meta.env.PLUNK_EMAIL_API_KEY,

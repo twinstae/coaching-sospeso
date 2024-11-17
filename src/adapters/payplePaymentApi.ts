@@ -1,24 +1,15 @@
 import * as v from "valibot";
 
-import { addHours, formatDate } from "./dateApi.ts";
+import { formatDate } from "./dateApi.ts";
 import { env } from "./env.ts";
 import invariant from "@/invariant.ts";
-
-export type PaymentT = {
-    goodsTitle: string;
-    goodsDescription: string;
-    paymentTotalAmount: number;
-    expiredDate: Date;
-};
+import type { PaymentT } from '@/payment/domain.ts';
 
 export type PayplePaymentApiI = {
   generatePaymentLink: (payment: PaymentT) => Promise<{
     paymentLink: string;
-    expiredAt: Date;
   }>;
 };
-
-const EXPIRE_TIME_IN_HOURS = 24;
 
 const partnerAuthResultSchema = v.object({
   result: v.picklist(["success", "error"]),
@@ -78,6 +69,7 @@ export const payplePaymentApi = {
           PCD_PAY_GOODS_EXPLAIN: payment.goodsDescription,
           PCD_PAY_TOTAL: payment.paymentTotalAmount,
           PCD_LINK_EXPIREDATE: formatDate(payment.expiredDate, "YYYYMMddHH"), // "2024110315" 2024년 11월 3일 15시
+          PCD_LINK_PARAMETER: "",
           PCD_PAY_ISTAX: false, // 비과세
         //   PCD_LINK_NOTI_MSG: "" // 결제 완료 후 메세지
         // PCD_LINK_URL: "" // 결제 완료 후 이동할 URL
@@ -90,8 +82,7 @@ export const payplePaymentApi = {
 
     return {
       paymentLink:
-        linkGenerationResult.PCD_LINK_URL,
-      expiredAt: payment.expiredDate,
+        linkGenerationResult.PCD_LINK_URL
     };
   },
 } satisfies PayplePaymentApiI;
@@ -100,8 +91,7 @@ export const fakePayplePaymentApi = {
   generatePaymentLink: async (payment: PaymentT) => {
     return {
       paymentLink:
-        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg",
-      expiredAt: addHours(new Date(), EXPIRE_TIME_IN_HOURS),
+        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg"
     };
   },
 } satisfies PayplePaymentApiI;

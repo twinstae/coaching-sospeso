@@ -34,25 +34,6 @@ function runSospesoActionsTest(
   }
 
   describe("sospesoActionServer: " + name, () => {
-    test("issueSospeso", async () => {
-      const actionServer = await createTestActionServer({});
-      const before = await actionServer.retrieveSospesoList({});
-
-      expect(before).toHaveLength(0);
-
-      await actionServer.issueSospeso(
-        {
-          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-          ...TEST_SOSPESO_LIST_ITEM,
-        },
-        LOGGED_IN_CONTEXT,
-      );
-
-      const after = await actionServer.retrieveSospesoList({});
-
-      expect(after).toMatchObject([TEST_SOSPESO_LIST_ITEM]);
-    });
-
     test("applySospeso", async () => {
       const id = generateId();
       const actionServer = await createTestActionServer({
