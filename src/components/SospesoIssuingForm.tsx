@@ -26,22 +26,30 @@ export function SospesoIssuingForm({
   const id = useMemo(() => generateId(), [generateId]);
 
   return (
-    <Form
-      form={{
-        schema: issuingSchema,
-        defaultValues: { sospesoId: id, from: userNickname, to: "" },
-        bus: sospesoIssuingEventBus,
-      }}
-    >
-      <TextField label="From." name="from" placeholder="ex) 탐정토끼, 김태희" />
-      <TextField
-        label="To."
-        name="to"
-        placeholder="ex) 퀴어 문화 축제 올 사람"
-      />
-      <button className="btn btn-primary" type="submit">
-        발행하기
-      </button>
-    </Form>
+    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
+      <Form
+        className="flex flex-col gap-4"
+        form={{
+          schema: issuingSchema,
+          defaultValues: { sospesoId: id, from: userNickname, to: "" },
+          bus: sospesoIssuingEventBus,
+        }}
+      >
+        <TextField
+          label="From."
+          name="from"
+          placeholder="ex) 탐정토끼, 김태희"
+        />
+        <TextField
+          label="To."
+          name="to"
+          placeholder="ex) 퀴어 문화 축제 올 사람"
+        />
+
+        <button className="btn btn-primary w-full" type="submit">
+          발행하기
+        </button>
+      </Form>
+    </div>
   );
 }
