@@ -3,7 +3,7 @@ import * as v from "valibot";
 import { formatDate } from "./dateApi.ts";
 import { env } from "./env.ts";
 import invariant from "@/invariant.ts";
-import type { PaymentT } from '@/payment/domain.ts';
+import type { PaymentT } from "@/payment/domain.ts";
 
 export type PayplePaymentApiI = {
   generatePaymentLink: (payment: PaymentT) => Promise<{
@@ -19,11 +19,10 @@ const partnerAuthResultSchema = v.object({
   return_url: v.string(),
 });
 
-
 const linkGenerationResultSchema = v.object({
-    result: v.picklist(["success", "error"]),
-    PCD_LINK_URL: v.string(),
-  });
+  result: v.picklist(["success", "error"]),
+  PCD_LINK_URL: v.string(),
+});
 
 export const payplePaymentApi = {
   generatePaymentLink: async (payment: PaymentT) => {
@@ -73,16 +72,15 @@ export const payplePaymentApi = {
           PCD_PAY_ISTAX: false, // 비과세
           PCD_LINK_NOTI_MSG: "", // 결제 완료 후 메세지
           PCD_LINK_URL: payment.afterLinkUrl, // 결제 완료 후 이동할 URL
-          PCD_TAXSAVE_FLAG: "Y" // 현금영수증
+          PCD_TAXSAVE_FLAG: "Y", // 현금영수증
         }),
       },
     )
-    .then((res) => res.json())
-    .then((body) => v.parse(linkGenerationResultSchema, body));;
+      .then((res) => res.json())
+      .then((body) => v.parse(linkGenerationResultSchema, body));
 
     return {
-      paymentLink:
-        linkGenerationResult.PCD_LINK_URL
+      paymentLink: linkGenerationResult.PCD_LINK_URL,
     };
   },
 } satisfies PayplePaymentApiI;
@@ -91,7 +89,7 @@ export const fakePayplePaymentApi = {
   generatePaymentLink: async (payment: PaymentT) => {
     return {
       paymentLink:
-        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg"
+        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg",
     };
   },
 } satisfies PayplePaymentApiI;

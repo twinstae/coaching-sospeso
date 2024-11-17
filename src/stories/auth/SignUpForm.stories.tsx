@@ -9,6 +9,5 @@ export default meta;
 type Story = StoryObj<typeof SignUpForm>;
 
 export const Base: Story = {
-  args: {
-  },
+  args: {},
 };

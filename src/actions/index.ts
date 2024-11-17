@@ -12,10 +12,16 @@ import {
   definePureAction,
   type ActionDefinition,
 } from "./buildActionServer";
-import { createFakePaymentRepository, type PaymentRepositoryI } from '@/payment/repository';
-import { createSospesoIssuingPayment } from '@/payment/domain';
+import {
+  createFakePaymentRepository,
+  type PaymentRepositoryI,
+} from "@/payment/repository";
+import { createSospesoIssuingPayment } from "@/payment/domain";
 
-export function buildSospesoActions(sospesoRepo: SospesoRepositoryI, paymentRepo: PaymentRepositoryI) {
+export function buildSospesoActions(
+  sospesoRepo: SospesoRepositoryI,
+  paymentRepo: PaymentRepositoryI,
+) {
   return {
     retrieveSospesoList: definePureAction({
       input: z.object({}),
@@ -82,7 +88,7 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI, paymentRepo
         from: z.string(),
         to: z.string(),
       }),
-      handler: async (input, { locals: { session, now }}) => {
+      handler: async (input, { locals: { session, now } }) => {
         const issuerId = session?.id;
 
         invariant(issuerId, "로그인해야 소스페소를 발급할 수 있어요!");
@@ -90,9 +96,11 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI, paymentRepo
         await paymentRepo.updateOrSave(input.sospesoId, (payment) => {
           invariant(payment === undefined, "이미 결제가 진행 중이에요!");
 
-          return createSospesoIssuingPayment({ sospesoId: input.sospesoId, now })
-          
-        })
+          return createSospesoIssuingPayment({
+            sospesoId: input.sospesoId,
+            now,
+          });
+        });
       },
     }),
     applySospeso: definePureAction({
@@ -110,7 +118,10 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI, paymentRepo
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
 
-          const appliedSospeso = domain.applySospeso(sospeso, { ...input, applicantId });
+          const appliedSospeso = domain.applySospeso(sospeso, {
+            ...input,
+            applicantId,
+          });
 
           return appliedSospeso;
         });
@@ -140,5 +151,8 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI, paymentRepo
 }
 
 export const server = buildActionServer(
-  buildSospesoActions(createFakeSospesoRepository({}), createFakePaymentRepository({})),
+  buildSospesoActions(
+    createFakeSospesoRepository({}),
+    createFakePaymentRepository({}),
+  ),
 );

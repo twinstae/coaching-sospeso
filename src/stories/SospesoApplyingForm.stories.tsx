@@ -9,6 +9,5 @@ export default meta;
 type Story = StoryObj<typeof SospesoApplyingForm>;
 
 export const Base: Story = {
-  args: {
-  },
+  args: {},
 };

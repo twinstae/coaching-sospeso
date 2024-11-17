@@ -12,7 +12,7 @@ export const passwordSchema = v.pipe(
   v.regex(/[0-9]/i, "숫자를 적어도 하나 이상 포함해야해요"),
   v.regex(/[a-zA-Z]/i, "영문자를 적어도 하나 이상 포함해야해요"),
   // v.regex(/[\W_]/i, "특수문자를 적어도 하나 이상 포함해야해요"),
-)
+);
 
 export const phoneSchema = v.pipe(
   v.string(),
@@ -20,4 +20,4 @@ export const phoneSchema = v.pipe(
     /[0-9]{3}-[0-9]{4}-[0-9]{4}/,
     "010-1234-5678 같은 휴대폰 번호를 입력해주세요",
   ),
-)
+);

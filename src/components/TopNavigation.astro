@@ -17,7 +17,7 @@ const session = Astro.locals.session;
           <span class="font-bold">{session.nickname}</span> 로그아웃
         </button>
       ) : (
-        <Link routeKey="로그인" params={undefined} className="btn btn-ghost">
+        <Link routeKey="로그인" params={{}} className="btn btn-ghost">
           로그인
         </Link>
       )
@@ -31,6 +31,6 @@ const session = Astro.locals.session;
 
   document.getElementById("logout-button")?.addEventListener("click", () => {
     authApi.logout();
-    navigate("로그인", undefined);
+    navigate("로그인", {});
   });
 </script>
