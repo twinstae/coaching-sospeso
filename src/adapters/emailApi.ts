@@ -1,9 +1,8 @@
-import { Resend } from "resend";
 import { env } from "./env";
 
 export type EmailT = {
   from: string;
-  to: string[];
+  to: string;
   subject: string;
   html: string;
 };
@@ -20,30 +19,43 @@ export async function readInbox(
   return fakeEmailInbox[emailAddress];
 }
 
-export const resendEmailApi = {
+export const plunkEmailApi = {
   send: async (email) => {
-    const resend = new Resend(env.RESEND_API_KEY);
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + env.PLUNK_EMAIL_API_KEY,
+      },
+      body: JSON.stringify({
+        name: "코칭 소스페소",
+        from: email.from,
+        to: email.to,
+        subject: email.subject,
+        body: email.html,
+        // subscribed: true,
+        // reply: "<string>",
+        headers: {},
+      }),
+    };
 
-    const { error } = await resend.emails.send(email);
+    const result = await fetch(
+      "https://api.useplunk.com/v1/send",
+      options,
+    ).then((response) => response.json());
 
-    if (error) {
-      throw error;
-    }
-
-    return undefined;
+    console.log("plunk send result: ", result);
   },
 } satisfies EmailApiI;
 
 export const fakeEmailApi = {
   send: async (email) => {
     console.log("send", email);
-    for (const to of email.to) {
-      const inbox = fakeEmailInbox[to];
-      if (inbox) {
-        inbox.push(email);
-      } else {
-        fakeEmailInbox[to] = [email];
-      }
+    const inbox = fakeEmailInbox[email.to];
+    if (inbox) {
+      inbox.push(email);
+    } else {
+      fakeEmailInbox[email.to] = [email];
     }
   },
 } satisfies EmailApiI;
