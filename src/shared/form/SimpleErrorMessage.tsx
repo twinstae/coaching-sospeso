@@ -10,7 +10,7 @@ export function SimpleErrorMessage({
   }
 
   return (
-    <p id={id} role="alert" aria-label={error.message} className="text-error">
+    <p id={id} role="alert" className="text-error">
       {error.message}
     </p>
   );

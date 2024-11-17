@@ -1,5 +1,6 @@
-import { within } from "@testing-library/dom";
+import { waitFor, within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
+import { getA11ySnapshot } from './getA11ySnapshot';
 
 // https://main.vitest.dev/guide/browser#context
 // import { userEvent } from '@vitest/browser/context';
@@ -124,7 +125,6 @@ const ARIADocumentStructureRole = [
 ] as const;
 
 const ARIALiveRegionRole = [
-  "alert",
   "log",
   "marquee",
   "status",
@@ -259,6 +259,63 @@ export function createQueryTL(getBaseElement = () => document.body) {
 
   return {
     ...query,
+    alert: (text: string | RegExp) => {
+      function isMatch(el: HTMLElement){
+          if(typeof text === "string"){
+            return el.textContent ??"" === text;
+          } {
+            return text.exec(el.textContent ??"")
+          }
+        }
+
+      function getFirst(elements: HTMLElement[]){
+        const element = elements.filter(el => {
+
+          if(typeof text === "string"){
+            return el.textContent ??"" === text;
+          } {
+            return text.exec(el.textContent ??"")
+          }
+        }).at(0);
+
+
+        if (element === undefined){
+          throw Error(`alert: ${text} 인 요소를 찾지 못했습니다. \n\n` + getA11ySnapshot(document.body));
+        }
+
+        return element;
+      }
+      const find = () => waitFor(() => getFirst(base().getAllByRole("alert")));
+
+
+      const result: TLocator = {
+        async click(options) {
+          return find().then(($el) => userEvent.click($el, options));
+        },
+        async fill(text, options) {
+          return find().then(async ($el) => {
+            await userEvent.clear($el);
+            await userEvent.type($el, text, options);
+          });
+        },
+        async clear() {
+          return find().then(($el) => userEvent.clear($el));
+        },
+        async hover() {
+          return find().then(($el) => userEvent.hover($el));
+        },
+        async waitFor() {
+          return find().then(() => undefined);
+        },
+        find,
+        findAll: () =>  waitFor(() => base().getAllByRole("alert")),
+        get: () => getFirst(base().getAllByRole("alert")),
+        getAll: () => base().getAllByRole("alert").filter(isMatch),
+        query: () => base().queryAllByRole("alert")?.filter(isMatch).at(0) ?? null,
+        ...createQueryTL(() => base().getByText(text)),
+      }
+      return result;
+      },
     text: (text: string | RegExp) => {
       const find = () => base().findByText(text);
       const result: TLocator = {

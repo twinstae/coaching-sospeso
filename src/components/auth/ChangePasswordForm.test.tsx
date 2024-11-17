@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { renderTL } from '@/siheom/renderTL.tsx';
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
@@ -13,7 +13,7 @@ const TEST_EMAIL = "taehee.kim@life-lifter.com";
 describe("ChangePasswordForm", () => {
   test("이메일을 입력하지 않으면 이메일을 보낼 수 없다", async () => {
     let result = {}; // mock
-    render(
+    renderTL(
       <SafeEventHandler
         bus={changePasswordBus}
         onEvent={(command) => {
@@ -35,7 +35,7 @@ describe("ChangePasswordForm", () => {
 
   test("이메일을 입력하면 비밀번호 변경 인증 이메일을 보낸다", async () => {
     let result = {};
-    render(
+    renderTL(
       <SafeEventHandler
         bus={changePasswordBus}
         onEvent={(command) => {

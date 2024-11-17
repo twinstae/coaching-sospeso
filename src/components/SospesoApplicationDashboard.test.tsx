@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { renderTL } from '@/siheom/renderTL.tsx';
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import {
@@ -17,7 +17,7 @@ import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
 describe("SospesoApplicationDashboard", () => {
   test("소스페소에 신청한 목록을 볼 수 있다", async () => {
-    render(
+    renderTL(
       <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />,
     );
 
@@ -34,7 +34,7 @@ describe("SospesoApplicationDashboard", () => {
   test("신청된 소스페소를 승인할 수 있다", async () => {
     let approved = {};
 
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoApproveEventBus}
         onEvent={(detail) => {
@@ -55,7 +55,7 @@ describe("SospesoApplicationDashboard", () => {
   test("신청한 소스페소를 거절할 수 있다", async () => {
     let rejected = {};
 
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoRejectEventBus}
         onEvent={(detail) => {
@@ -76,7 +76,7 @@ describe("SospesoApplicationDashboard", () => {
   test("승인한 소스페소를 거절할 수 있다", async () => {
     let rejected = {};
 
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoRejectEventBus}
         onEvent={(detail) => {
@@ -95,7 +95,7 @@ describe("SospesoApplicationDashboard", () => {
   });
 
   test("승인한 소스페소에서 사용하기 폼 페이지로 이동할 수 있다", async () => {
-    render(
+    renderTL(
       <SospesoApplicationDashboard applicationList={TEST_APPLICATION_LIST} />,
     );
 

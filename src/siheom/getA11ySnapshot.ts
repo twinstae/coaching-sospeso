@@ -107,7 +107,7 @@ export function getA11ySnapshot(element: HTMLElement) {
 
     const name = getAccessibleName(el);
     let result = role
-      ? `${"  ".repeat(depth) + role + (name ? `: "${name}"` : "")} ${el.hasAttribute("disabled") ? ":disabled" : ""} ${el instanceof HTMLProgressElement ? `[value=${el.value}]` : ""} ${el instanceof HTMLInputElement ? (["checkbox", "radio"].includes(role) ? `[checked=${el.checked}]` : `[value=${el.value}]`) : role === "tab" && el.ariaSelected === "true" ? "[aria-selected=true]" : role === "progressbar" ? `[aria-valuenow=${el.getAttribute("aria-valuenow")}]` : ""}\n`
+      ? `${"  ".repeat(depth) + role + (name ? `: "${name}"` : "")} ${el.hasAttribute("disabled") ? ":disabled" : ""}${el.role === "alert" ? `[text="${el.textContent}"]` : ""}${el instanceof HTMLProgressElement ? `[value=${el.value}]` : ""} ${el instanceof HTMLInputElement ? (["checkbox", "radio"].includes(role) ? `[checked=${el.checked}]` : `[value=${el.value}]`) : role === "tab" && el.ariaSelected === "true" ? "[aria-selected=true]" : role === "progressbar" ? `[aria-valuenow=${el.getAttribute("aria-valuenow")}]` : ""}\n`
       : "";
 
     for (const child of Array.from(el.children)) {

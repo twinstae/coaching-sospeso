@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { renderTL } from '@/siheom/renderTL.tsx';
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
@@ -15,7 +15,7 @@ describe("SospesoIssuingForm", () => {
   test("필수 값을 입력하지 않으면 에러가 난다", async () => {
     // given 기존 상태, input, 외부 의존성
     let result = {};
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoIssuingEventBus}
         onEvent={(detail) => {
@@ -48,7 +48,7 @@ describe("SospesoIssuingForm", () => {
       to: "퀴어 문화 축제 올 사람",
     };
 
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoIssuingEventBus}
         onEvent={(detail) => {

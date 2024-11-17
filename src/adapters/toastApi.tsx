@@ -16,14 +16,13 @@ const alertVariantDict = {
 } as const;
 
 const Toast = ({
-  text,
-  type = "info",
+  text
 }: {
   text: string;
   type?: keyof typeof alertVariantDict;
 }) => {
   return (
-    <div role="alert" aria-label={`alert-${type}`}>
+    <div role="alert">
       <span>{text}</span>
     </div>
   );

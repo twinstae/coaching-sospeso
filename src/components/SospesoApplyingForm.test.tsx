@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { renderTL } from '@/siheom/renderTL.tsx';
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
@@ -15,7 +15,7 @@ describe("SospesoApplyingForm", () => {
   test("필수 값을 입력하지 않으면 에러가 난다", async () => {
     // given 렌더를 함
     let result = {}; // mock
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoApplyingEventBus}
         onEvent={(command) => {
@@ -39,7 +39,7 @@ describe("SospesoApplyingForm", () => {
 
   test("필수 값을 입력하면 폼을 제출할 수 있다", async () => {
     let result = {};
-    render(
+    renderTL(
       <SafeEventHandler
         bus={sospesoApplyingEventBus}
         onEvent={(command) => {
