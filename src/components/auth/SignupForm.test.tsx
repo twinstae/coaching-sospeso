@@ -1,4 +1,3 @@
-import { waitFor } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
