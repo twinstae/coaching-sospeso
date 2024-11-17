@@ -6,26 +6,32 @@ import Layout from "@/layouts/Layout.astro";
 <Layout title="코칭 소스페소 로그인">
   <LoginForm client:load />
 </Layout>
+
 <script>
-  import { authApi } from "@/adapters/authApi";
-  import { toastifyToastApi } from "@/adapters/toastApi";
-  import { magicLinkLoginBus } from "@/components/auth/LoginForm";
+  import { authApi } from "@/adapters/authApi.ts";
+  import { toastifyToastApi } from "@/adapters/toastApi.tsx";
+  import { magicLinkLoginBus } from "@/components/auth/LoginForm.tsx";
 
   const toastApi = toastifyToastApi;
 
   magicLinkLoginBus.on(window.document.body, (command) => {
-    authApi.login
-      .magicLink(command)
-      .then(() => {
-        toastApi.toast(
+    authApi.login.emailPassword(command).then((result) => {
+      if (result === "success") {
+        return toastApi.toast(
           command.email + "로 로그인 이메일을 보냈어요! 메일함을 확인해주세요.",
         );
-      })
-      .catch(() => {
+      }
+
+      // 가입을 안 했음 -> 회원가입으로 보내기
+      if (result === "invalid-email-or-password") {
+    
         toastApi.toast(
-          "이메일을 보내는데 실패했어요. 잠시 후에 다시 시도해주세요.",
-          "error",
-        );
-      });
+        "이메일이나 비밀번호를 확인해주세요!",
+        "error",
+      );
+
+        return;
+      }
+    });
   });
 </script>

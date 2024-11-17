@@ -22,7 +22,8 @@ export type AuthApi = {
     }) => Promise<void>;
   };
   login: {
-    magicLink: (command: { email: string }) => Promise<void>;
+    emailPassword: (command: { email: string, password: string })
+      => Promise<"success" | "invalid-email-or-password">;
   };
   logout: () => Promise<void>;
 };
@@ -49,15 +50,22 @@ export const authApi: AuthApi = {
     },
   },
   login: {
-    async magicLink({ email }) {
-      const { error } = await authClient.signIn.magicLink({
+    async emailPassword({ email, password }) {
+      const { error } = await authClient.signIn.email({
         email,
-        callbackURL: "/",
+        password,
+        callbackURL: "/"
       });
 
-      if (error) {
-        throw error;
+
+      if(error){
+        if(error.message === "Invalid email or password") {
+          return "invalid-email-or-password"
+        }
+
       }
+
+      return "success"
     },
   },
   async logout() {
