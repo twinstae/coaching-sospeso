@@ -54,14 +54,21 @@ export const routes = {
   },
   로그인: {
     path: "/auth/login",
-    paramsSchema: v.object({
-    })
+    paramsSchema: v.object({}),
+  },
+  "비밀번호-변경-이메일": {
+    path: "/auth/change-password",
+    paramsSchema: v.object({}),
+  },
+  "비밀번호-변경하기": {
+    path: "/auth/reset-password",
+    paramsSchema: v.object({}),
   },
   회원가입: {
     path: "/auth/signup",
     paramsSchema: v.object({
       email: v.optional(v.pipe(v.string(), v.email())),
-    })
+    }),
   },
   "회원가입-이메일-전송-완료": {
     path: "/auth/signup/sent",

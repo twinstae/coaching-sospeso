@@ -7,11 +7,11 @@ import Twitter from "@/shared/icons/Twitter.tsx";
 import { createSafeEvent } from "@/event/SafeEventBus.ts";
 import { TextField } from "@/shared/form/TextField.tsx";
 import { Link } from "@/routing/Link.tsx";
-import { emailSchema, passwordSchema } from '@/auth/schema.ts';
+import { emailSchema, passwordSchema } from "@/auth/schema.ts";
 
 const loginSchema = v.object({
   email: emailSchema,
-  password: passwordSchema
+  password: passwordSchema,
 });
 
 export const magicLinkLoginBus = createSafeEvent(
@@ -46,13 +46,23 @@ export function LoginForm() {
           </button>
         </Form>
 
-        <Link
-          routeKey="회원가입"
-          params={{}}
-          className="link self-center m-auto"
-        >
-          회원가입
-        </Link>
+        <div className="flex space-between">
+          <Link
+            routeKey="회원가입"
+            params={{}}
+            className="link self-center m-auto"
+          >
+            회원가입
+          </Link>
+
+          <Link
+            routeKey="비밀번호-변경-이메일"
+            params={{}}
+            className="link self-center m-auto"
+          >
+            비밀번호 변경하기
+          </Link>
+        </div>
 
         <div className="divider">OR</div>
 

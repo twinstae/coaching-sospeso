@@ -11,24 +11,19 @@ import Layout from "@/layouts/Layout.astro";
   import { authApi } from "@/adapters/authApi.ts";
   import { toastifyToastApi } from "@/adapters/toastApi.tsx";
   import { magicLinkLoginBus } from "@/components/auth/LoginForm.tsx";
+  import { navigate } from "@/routing/navigate";
 
   const toastApi = toastifyToastApi;
 
   magicLinkLoginBus.on(window.document.body, (command) => {
     authApi.login.emailPassword(command).then((result) => {
       if (result === "success") {
-        return toastApi.toast(
-          command.email + "로 로그인 이메일을 보냈어요! 메일함을 확인해주세요.",
-        );
+        navigate("홈", { page: 1 });
+        return;
       }
 
-      // 가입을 안 했음 -> 회원가입으로 보내기
       if (result === "invalid-email-or-password") {
-    
-        toastApi.toast(
-        "이메일이나 비밀번호를 확인해주세요!",
-        "error",
-      );
+        toastApi.toast("이메일이나 비밀번호를 확인해주세요!", "error");
 
         return;
       }

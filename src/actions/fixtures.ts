@@ -5,7 +5,7 @@ const TEST_NOW = new Date("2024-11-06T00:00:00Z");
 
 export const NOT_LOGGED_IN_CONTEXT = {
   locals: {
-    now: TEST_NOW
+    now: TEST_NOW,
   },
 } as ActionAPIContext;
 
@@ -14,6 +14,6 @@ export const LOGGED_IN_CONTEXT = {
     session: {
       id: TEST_USER_ID,
     },
-    now: TEST_NOW
+    now: TEST_NOW,
   },
 } as ActionAPIContext;

@@ -47,7 +47,6 @@ function runSospesoActionsTest(
         },
         LOGGED_IN_CONTEXT,
       );
-
     });
 
     test("applySospeso", async () => {
@@ -61,13 +60,15 @@ function runSospesoActionsTest(
 
       const TEST_APPLICATION_ID = generateId();
       const TEST_NOW = new Date();
-      await actionServer.applySospeso({
-        sospesoId: id,
-        applicationId: TEST_APPLICATION_ID,
-        content: "저 퀴어 문화 축제 갔다 왔어요",
-        appliedAt: TEST_NOW,
-      }, 
-      LOGGED_IN_CONTEXT);
+      await actionServer.applySospeso(
+        {
+          sospesoId: id,
+          applicationId: TEST_APPLICATION_ID,
+          content: "저 퀴어 문화 축제 갔다 왔어요",
+          appliedAt: TEST_NOW,
+        },
+        LOGGED_IN_CONTEXT,
+      );
 
       const after = await actionServer.retrieveSospesoApplicationList({});
 

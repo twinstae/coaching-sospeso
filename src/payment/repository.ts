@@ -1,4 +1,4 @@
-import type { PaymentT } from './domain.ts';
+import type { PaymentT } from "./domain.ts";
 
 export interface PaymentRepositoryI {
   updateOrSave(

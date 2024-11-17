@@ -22,6 +22,14 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    sendResetPassword: async (user, url) => {
+      await emailApi.send({
+        to: user.email,
+        from: LIFE_LIFTER_ADMIN_EMAIL,
+        subject: "Reset your password",
+        html: `Click the link to reset your password: <a href="${url}">비밀번호 리셋하기</a>`,
+      });
+    },
   },
   emailVerification: {
     sendVerificationEmail: async (user: { email: string }, url: string) => {

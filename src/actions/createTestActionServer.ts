@@ -8,7 +8,7 @@ import type { Sospeso } from "@/sospeso/domain";
 import { buildSospesoActions } from "./index.ts";
 import type { SospesoRepositoryI } from "@/sospeso/repository.ts";
 import type { ActionDefinition } from "./buildActionServer.ts";
-import { createFakePaymentRepository } from '@/payment/repository.ts';
+import { createFakePaymentRepository } from "@/payment/repository.ts";
 
 type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
   input: z.input<TInputSchema>,

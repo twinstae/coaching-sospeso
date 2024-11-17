@@ -3,7 +3,7 @@ import * as v from "valibot";
 import { Form } from "@/shared/form/Form.tsx";
 import { createSafeEvent } from "@/event/SafeEventBus.ts";
 import { TextField } from "@/shared/form/TextField.tsx";
-import { emailSchema, passwordSchema, phoneSchema } from '@/auth/schema';
+import { emailSchema, passwordSchema, phoneSchema } from "@/auth/schema";
 
 const signUpSchema = v.pipe(
   v.object({
@@ -36,11 +36,23 @@ export function SignUpForm() {
           className="flex flex-col gap-4"
           form={{
             schema: signUpSchema,
-            defaultValues: { email: "", password: "", passwordAgain: "", name: "", phone: "", nickname: "" },
+            defaultValues: {
+              email: "",
+              password: "",
+              passwordAgain: "",
+              name: "",
+              phone: "",
+              nickname: "",
+            },
             bus: signUpBus,
           }}
         >
-          <TextField label="이메일" name="email" autoComplete="email" placeholder='gildong@gmail.com'/>
+          <TextField
+            label="이메일"
+            name="email"
+            autoComplete="email"
+            placeholder="gildong@gmail.com"
+          />
           <TextField
             label="비밀번호"
             name="password"

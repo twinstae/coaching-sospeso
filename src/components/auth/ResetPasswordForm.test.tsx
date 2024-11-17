@@ -2,33 +2,28 @@ import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
-import { magicLinkLoginBus, LoginForm } from "./LoginForm.tsx";
+import { resetPasswordBus, ResetPasswordForm } from "./ResetPasswordForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
-const TEST_EMAIL = "taehee.kim@life-lifter.com";
 const TEST_PASSWORD = "!1q2w3e4r!"
 
-describe("LoginForm", () => {
+describe("ResetPasswordForm", () => {
   test("이메일을 입력하지 않으면 로그인할 수 없다", async () => {
     let result = {}; // mock
     render(
       <SafeEventHandler
-        bus={magicLinkLoginBus}
+        bus={resetPasswordBus}
         onEvent={(command) => {
           result = command;
         }}
       >
-        <LoginForm />
+        <ResetPasswordForm />
       </SafeEventHandler>,
     );
 
-    await queryTL.button("이메일로 계속하기").click();
-
-    await expectTL(queryTL.textbox("이메일")).toHaveErrorMessage(
-      "이메일이 없어요",
-    );
+    await queryTL.button("비밀번호 변경하기").click();
     
-    await expectTL(queryTL.textbox("비밀번호")).toHaveErrorMessage(
+    await expectTL(queryTL.textbox("새 비밀번호")).toHaveErrorMessage(
       "최소 10자리 이상이어야해요",
     );
 
@@ -39,21 +34,19 @@ describe("LoginForm", () => {
     let result = {};
     render(
       <SafeEventHandler
-        bus={magicLinkLoginBus}
+        bus={resetPasswordBus}
         onEvent={(command) => {
           result = command;
         }}
       >
-        <LoginForm />
+        <ResetPasswordForm />
       </SafeEventHandler>,
     );
 
-    await queryTL.textbox("이메일").fill(TEST_EMAIL);
-    await queryTL.textbox("비밀번호").fill(TEST_PASSWORD);
-    await queryTL.button("이메일로 계속하기").click();
+    await queryTL.textbox("새 비밀번호").fill(TEST_PASSWORD);
+    await queryTL.button("비밀번호 변경하기").click();
 
     expect(result).toEqual({
-      email: TEST_EMAIL,
       "password": TEST_PASSWORD,
     });
   });

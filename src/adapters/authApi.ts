@@ -3,7 +3,7 @@ import {
   inferAdditionalFields,
   magicLinkClient,
 } from "better-auth/client/plugins";
-import { href } from "@/routing/href";
+import { href } from "@/routing/href.ts";
 import type { auth } from "@/lib/auth";
 
 const authClient = createAuthClient({
@@ -22,8 +22,14 @@ export type AuthApi = {
     }) => Promise<void>;
   };
   login: {
-    emailPassword: (command: { email: string, password: string })
-      => Promise<"success" | "invalid-email-or-password">;
+    emailPassword: (command: {
+      email: string;
+      password: string;
+    }) => Promise<"success" | "invalid-email-or-password" | "unknown-error">;
+  };
+  password: {
+    sendVerificationEmail: (email: string) => Promise<void>;
+    resetPassword: (newPassword: string) => Promise<void>;
   };
   logout: () => Promise<void>;
 };
@@ -54,18 +60,38 @@ export const authApi: AuthApi = {
       const { error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/"
+        callbackURL: "/",
       });
 
-
-      if(error){
-        if(error.message === "Invalid email or password") {
-          return "invalid-email-or-password"
+      if (error) {
+        if (error.message === "Invalid email or password") {
+          return "invalid-email-or-password";
         }
-
+        return "unknown-error";
       }
 
-      return "success"
+      return "success";
+    },
+  },
+  password: {
+    sendVerificationEmail: async (email: string) => {
+      const { error } = await authClient.forgetPassword({
+        email,
+        redirectTo: href("비밀번호-변경하기", {}),
+      });
+
+      if (error) {
+        throw error;
+      }
+    },
+    resetPassword: async (newPassword: string) => {
+      const { error } = await authClient.resetPassword({
+        newPassword,
+      });
+
+      if (error) {
+        throw error;
+      }
     },
   },
   async logout() {
