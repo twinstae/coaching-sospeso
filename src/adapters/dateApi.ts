@@ -1,5 +1,3 @@
-import { format } from "date-fns/format";
+export { format as formatDate } from "date-fns/format";
+export { addHours } from "date-fns/addHours";
 
-export function formatDate(date: Date, formatStr: string) {
-  return format(date, formatStr);
-}
