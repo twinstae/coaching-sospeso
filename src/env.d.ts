@@ -6,6 +6,7 @@ declare namespace App {
       id: string;
       nickname: string;
     };
+    now: Date;
   }
 }
 

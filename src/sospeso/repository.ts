@@ -55,7 +55,7 @@ export interface SospesoRepositoryI {
   ): Promise<void>;
 }
 
-export const createFakeRepository = (
+export const createFakeSospesoRepository = (
   initState: Record<string, Sospeso> = {},
 ): SospesoRepositoryI => {
   let _fakeState = initState;

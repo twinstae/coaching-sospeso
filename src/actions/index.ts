@@ -1,5 +1,5 @@
 import {
-  createFakeRepository,
+  createFakeSospesoRepository,
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
 import * as domain from "@/sospeso/domain.ts";
@@ -12,8 +12,10 @@ import {
   definePureAction,
   type ActionDefinition,
 } from "./buildActionServer";
+import { createFakePaymentRepository, type PaymentRepositoryI } from '@/payment/repository';
+import { createSospesoIssuingPayment } from '@/payment/domain';
 
-export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
+export function buildSospesoActions(sospesoRepo: SospesoRepositoryI, paymentRepo: PaymentRepositoryI) {
   return {
     retrieveSospesoList: definePureAction({
       input: z.object({}),
@@ -80,22 +82,17 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
         from: z.string(),
         to: z.string(),
       }),
-      handler: async (input, context) => {
-        const issuerId = context.locals.session?.id;
+      handler: async (input, { locals: { session, now }}) => {
+        const issuerId = session?.id;
 
         invariant(issuerId, "로그인해야 소스페소를 발급할 수 있어요!");
 
-        await sospesoRepo.updateOrSave(input.sospesoId, (existed) => {
-          invariant(existed === undefined, "이미 소스페소가 생성되었어요!");
+        await paymentRepo.updateOrSave(input.sospesoId, (payment) => {
+          invariant(payment === undefined, "이미 결제가 진행 중이에요!");
 
-          const issuedSospeso = domain.issueSospeso({
-            ...input,
-            issuerId,
-            paidAmount: SOSPESO_PRICE,
-          });
-
-          return issuedSospeso;
-        });
+          return createSospesoIssuingPayment({ sospesoId: input.sospesoId, now })
+          
+        })
       },
     }),
     applySospeso: definePureAction({
@@ -143,5 +140,5 @@ export function buildSospesoActions(sospesoRepo: SospesoRepositoryI) {
 }
 
 export const server = buildActionServer(
-  buildSospesoActions(createFakeRepository({})),
+  buildSospesoActions(createFakeSospesoRepository({}), createFakePaymentRepository({})),
 );

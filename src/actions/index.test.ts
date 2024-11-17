@@ -14,7 +14,7 @@ import {
   issuedSospeso,
 } from "@/sospeso/domain.test.ts";
 import {
-  createFakeRepository,
+  createFakeSospesoRepository,
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
 
@@ -48,9 +48,6 @@ function runSospesoActionsTest(
         LOGGED_IN_CONTEXT,
       );
 
-      const after = await actionServer.retrieveSospesoList({});
-
-      expect(after).toMatchObject([TEST_SOSPESO_LIST_ITEM]);
     });
 
     test("applySospeso", async () => {
@@ -220,7 +217,7 @@ afterAll(async () => {
 });
 
 runSospesoActionsTest("fake", async (initState) =>
-  createFakeRepository(initState),
+  createFakeSospesoRepository(initState),
 );
 
 runSospesoActionsTest("drizzle sqlite", createDrizzleTestRepository);
