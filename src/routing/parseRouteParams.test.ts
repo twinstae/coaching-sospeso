@@ -27,4 +27,19 @@ describe("parseRouteParams", () => {
       consumerId: TEST_CONSUMER_ID,
     });
   });
+
+  test("URL에 못 들어갈 값들도 처리할 수 있다", () => {
+    const TEST_ID = "#@!TT RST김토끼-=_/+"; // 뛰어쓰기 한글 특수문자 슬래시와 골뱅이 등
+    const path = href("파라미터-테스트", {
+      testId: TEST_ID,
+      q: TEST_ID,
+    });
+
+    const url = new URL(window.origin + path);
+
+    expect(parseRouteParamsFromUrl("파라미터-테스트", url)).toEqual({
+      testId: TEST_ID,
+      q: TEST_ID,
+    });
+  });
 });

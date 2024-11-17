@@ -20,7 +20,7 @@ const partnerAuthResultSchema = v.object({
 });
 
 const linkGenerationResultSchema = v.object({
-  result: v.picklist(["success", "error"]),
+  PCD_LINK_RST: v.picklist(["success", "error"]),
   PCD_LINK_URL: v.string(),
 });
 
@@ -49,7 +49,8 @@ export const payplePaymentApi = {
       "파트너 인증에 실패했습니다! " + JSON.stringify(partnerAuthPayload),
     );
 
-    // 링크 생성 요청 https://docs.payple.kr/parameters/domestic-linkpay#%EB%A7%81%ED%81%AC%EC%83%9D%EC%84%B1%EC%9A%94%EC%B2%AD
+    // 결제 링크 생성 요청
+    // https://docs.payple.kr/parameters/domestic-linkpay#%EB%A7%81%ED%81%AC%EC%83%9D%EC%84%B1%EC%9A%94%EC%B2%AD
     const linkGenerationResult = await fetch(
       env.PAYPLE_HOST + "/php/link/api/LinkRegAct.php?ACT_=LINKREG",
       {
@@ -66,10 +67,10 @@ export const payplePaymentApi = {
           PCD_PAY_TYPE: "transfer+card", // "card" | "transfer" | "transfer+card"
           PCD_PAY_GOODS: payment.goodsTitle,
           PCD_PAY_GOODS_EXPLAIN: payment.goodsDescription,
-          PCD_PAY_TOTAL: payment.paymentTotalAmount,
-          PCD_LINK_EXPIREDATE: formatDate(payment.expiredDate, "YYYYMMddHH"), // "2024110315" 2024년 11월 3일 15시
-          PCD_LINK_PARAMETER: "",
+          PCD_PAY_TOTAL: String(payment.totalAmount),
+          PCD_LINK_EXPIREDATE: formatDate(payment.expiredDate, "yyyyMMddHH"), // "2024110315" 2024년 11월 3일 15시
           PCD_PAY_ISTAX: false, // 비과세
+          PCD_LINK_PARAMETER: "id=" + payment.id,
           PCD_LINK_NOTI_MSG: "", // 결제 완료 후 메세지
           PCD_LINK_URL: payment.afterLinkUrl, // 결제 완료 후 이동할 URL
           PCD_TAXSAVE_FLAG: "Y", // 현금영수증
@@ -78,6 +79,11 @@ export const payplePaymentApi = {
     )
       .then((res) => res.json())
       .then((body) => v.parse(linkGenerationResultSchema, body));
+
+    invariant(
+      linkGenerationResult.PCD_LINK_RST === "success",
+      "파트너 인증에 실패했습니다! " + JSON.stringify(partnerAuthPayload),
+    );
 
     return {
       paymentLink: linkGenerationResult.PCD_LINK_URL,
@@ -89,7 +95,8 @@ export const fakePayplePaymentApi = {
   generatePaymentLink: async (payment: PaymentT) => {
     return {
       paymentLink:
-        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg",
+        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg?id=" +
+        payment.id,
     };
   },
 } satisfies PayplePaymentApiI;

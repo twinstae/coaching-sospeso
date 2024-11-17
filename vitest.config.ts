@@ -44,6 +44,8 @@ export default getViteConfig({
         "src/astro/**",
         "src/routing/navigate.ts",
         "src/adapters/**",
+        "src/lib/**",
+        "src/middleware/**",
       ],
     },
   },

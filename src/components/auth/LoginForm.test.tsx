@@ -6,7 +6,7 @@ import { magicLinkLoginBus, LoginForm } from "./LoginForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
-const TEST_PASSWORD = "!1q2w3e4r!"
+const TEST_PASSWORD = "!1q2w3e4r!";
 
 describe("LoginForm", () => {
   test("이메일을 입력하지 않으면 로그인할 수 없다", async () => {
@@ -27,7 +27,7 @@ describe("LoginForm", () => {
     await expectTL(queryTL.textbox("이메일")).toHaveErrorMessage(
       "이메일이 없어요",
     );
-    
+
     await expectTL(queryTL.textbox("비밀번호")).toHaveErrorMessage(
       "최소 10자리 이상이어야해요",
     );
@@ -54,7 +54,7 @@ describe("LoginForm", () => {
 
     expect(result).toEqual({
       email: TEST_EMAIL,
-      "password": TEST_PASSWORD,
+      password: TEST_PASSWORD,
     });
   });
 });

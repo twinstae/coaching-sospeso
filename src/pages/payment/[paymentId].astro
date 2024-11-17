@@ -1,0 +1,35 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
+import { actions } from "astro:actions";
+
+const session = Astro.locals.session;
+
+if (!session) {
+  // TODO! 로그인 페이지로 리다이렉트 시키기
+  //  https://docs.astro.build/en/guides/routing/#dynamic-redirects
+  return Astro.redirect("/auth/login");
+}
+
+const { paymentId } = parseRouteParamsFromUrl(
+  "소스페소-결제",
+  new URL(Astro.url),
+);
+
+const { data, error } = await actions.generatePaymentLink({ paymentId });
+---
+
+<Layout title="소스페소 발행하기">
+  {error && <div>죄송합니다. 결제 링크 생성에 실패했어요 ㅠㅠ</div>}
+
+  {
+    data && (
+      <div>
+        <h2>결제를 진행해주세요.</h2>{" "}
+        <a class="btn btn-primary" href={data.paymentLink} target="_blank">
+          결제 진행하기
+        </a>
+      </div>
+    )
+  }
+</Layout>

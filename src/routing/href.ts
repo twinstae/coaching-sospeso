@@ -16,10 +16,10 @@ export function href<RouteKey extends RouteKeys>(
       const result = Object.entries(parsedParams).reduce(
         (path, [key, value]) => {
           if (new RegExp("\\[" + key + "\\]").exec(path)) {
-            return path.replace("[" + key + "]", value);
+            return path.replace("[" + key + "]", encodeURIComponent(value));
           }
 
-          searchParams.set(key, value);
+          searchParams.set(key, encodeURIComponent(value));
           return path;
         },
         route.path,
