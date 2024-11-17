@@ -16,19 +16,23 @@ if (!session) {
 </Layout>
 
 <script>
+  import { toastifyToastApi } from "@/adapters/toastApi";
   import { sospesoIssuingEventBus } from "@/components/SospesoIssuingForm";
   import { navigate } from "@/routing/navigate";
   import { actions } from "astro:actions";
+  const toastApi = toastifyToastApi;
 
-  sospesoIssuingEventBus.on(window.document.body, (command) => {
+  sospesoIssuingEventBus.on(window.document.body, async (command) => {
     actions
-      .issueSospeso({ ...command, issuedAt: new Date() })
-      .then((result) => {
-        if (result.error) {
-          return console.error(result.error);
-        }
-
-        navigate("소스페소-상세", { sospesoId: command.sospesoId });
+      .createIssuingSospesoPayment(command)
+      .then(() => {
+        navigate("소스페소-결제", { paymentId: command.sospesoId });
+      })
+      .catch(() => {
+        toastApi.toast(
+          "알 수 없는 에러가 발생했어요. 잠시 뒤에 다시 시도해주세요.",
+          "error",
+        );
       });
   });
 </script>

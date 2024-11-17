@@ -16,29 +16,17 @@ import Layout from "@/layouts/Layout.astro";
   const toastApi = toastifyToastApi;
 
   signUpBus.on(window.document.body, (command) => {
-    authApi.signUp
-      .email(command)
-      .then((status) => {
-        if (status === "success"){
+    authApi.signUp.email(command).then((status) => {
+      if (status === "success") {
+        navigate("회원가입-이메일-전송-완료", { email: command.email });
+      }
 
-          navigate("회원가입-이메일-전송-완료", { email: command.email });
-
-        }
-        
-        if(status === "already-exists"){
-          
-        toastApi.toast(
-          "이미 가입한 이메일이에요",
-          "error",
-        );
-        }
-        if(status === "unknown-error"){
-          
-          toastApi.toast(
-            "알 수 없는 에러 잠시 뒤에 다시 시도해주세요.",
-            "error",
-          );
-          }
-      })
+      if (status === "already-exists") {
+        toastApi.toast("이미 가입한 이메일이에요", "error");
+      }
+      if (status === "unknown-error") {
+        toastApi.toast("알 수 없는 에러 잠시 뒤에 다시 시도해주세요.", "error");
+      }
+    });
   });
 </script>

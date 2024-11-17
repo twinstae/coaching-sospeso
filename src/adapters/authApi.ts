@@ -50,15 +50,15 @@ export const authApi: AuthApi = {
         nickname,
       });
 
-      if (error?.message === 'User with this email already exists') {
-        return 'already-exists'
+      if (error?.message === "User with this email already exists") {
+        return "already-exists";
       }
-      if (error){
+      if (error) {
         console.error(error);
-        return "unknown-error"
+        return "unknown-error";
       }
 
-      return "success"
+      return "success";
     },
   },
   login: {

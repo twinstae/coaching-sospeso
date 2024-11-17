@@ -55,7 +55,7 @@ export function isConsumed(
   return sospeso.consuming !== undefined;
 }
 
-type SospesoIssuingCommand = {
+export type SospesoIssuingCommand = {
   sospesoId: string;
   issuedAt: Date;
   from: string;

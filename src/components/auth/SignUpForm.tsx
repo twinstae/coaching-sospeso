@@ -67,15 +67,19 @@ export function SignUpForm() {
             autoComplete="new-password"
             minLength={10}
           />
-          <TextField label="이름(실명)" name="name" autoComplete="name" 
-            placeholder='홍길동'/>
+          <TextField
+            label="이름(실명)"
+            name="name"
+            autoComplete="name"
+            placeholder="홍길동"
+          />
           <TextField
             label="전화번호"
             name="phone"
-            placeholder='010-1234-5678'
+            placeholder="010-1234-5678"
             autoComplete="tel-national"
           />
-          <TextField label="별명" name="nickname" placeholder='다정한 토끼'/>
+          <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
 
           <button className="btn btn-primary w-full" type="submit">
             회원가입하기

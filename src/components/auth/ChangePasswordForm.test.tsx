@@ -2,7 +2,10 @@ import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { queryTL } from "@/siheom/queryTL.ts";
 import { expectTL } from "@/siheom/expectTL.ts";
-import { changePasswordBus, ChangePasswordForm } from "./ChangePasswordForm.tsx";
+import {
+  changePasswordBus,
+  ChangePasswordForm,
+} from "./ChangePasswordForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
@@ -26,7 +29,7 @@ describe("ChangePasswordForm", () => {
     await expectTL(queryTL.textbox("이메일")).toHaveErrorMessage(
       "이메일이 없어요",
     );
-    
+
     expect(result).toEqual({});
   });
 
@@ -47,7 +50,7 @@ describe("ChangePasswordForm", () => {
     await queryTL.button("비밀번호 변경 이메일 보내기").click();
 
     expect(result).toEqual({
-      email: TEST_EMAIL
+      email: TEST_EMAIL,
     });
   });
 });

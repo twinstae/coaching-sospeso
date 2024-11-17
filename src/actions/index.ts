@@ -17,6 +17,13 @@ import {
   type PaymentRepositoryI,
 } from "@/payment/repository";
 import { createSospesoIssuingPayment } from "@/payment/domain";
+import {
+  fakePayplePaymentApi,
+  payplePaymentApi,
+} from "@/adapters/payplePaymentApi";
+import { isProd } from "@/adapters/env";
+
+const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
 export function buildSospesoActions(
   sospesoRepo: SospesoRepositoryI,
@@ -81,10 +88,9 @@ export function buildSospesoActions(
         return readInbox(input.email);
       },
     }),
-    issueSospeso: definePureAction({
+    createIssuingSospesoPayment: definePureAction({
       input: z.object({
         sospesoId: z.string(),
-        issuedAt: z.coerce.date(),
         from: z.string(),
         to: z.string(),
       }),
@@ -99,8 +105,29 @@ export function buildSospesoActions(
           return createSospesoIssuingPayment({
             sospesoId: input.sospesoId,
             now,
+            totalAmount: SOSPESO_PRICE,
+            command: {
+              sospesoId: input.sospesoId,
+              issuedAt: now,
+              from: input.from,
+              to: input.to,
+              issuerId,
+              paidAmount: SOSPESO_PRICE,
+            },
           });
         });
+      },
+    }),
+    generatePaymentLink: definePureAction({
+      input: z.object({
+        paymentId: z.string(),
+      }),
+      handler: async (input) => {
+        const payment = await paymentRepo.retrievePayment(input.paymentId);
+
+        const { paymentLink } = await paymentApi.generatePaymentLink(payment);
+
+        return { paymentLink };
       },
     }),
     applySospeso: definePureAction({

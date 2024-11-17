@@ -34,18 +34,29 @@ function runSospesoActionsTest(
   }
 
   describe("sospesoActionServer: " + name, () => {
-    test("issueSospeso", async () => {
+    test("createIssuingSospesoPayment", async () => {
       const actionServer = await createTestActionServer({});
-      const before = await actionServer.retrieveSospesoList({});
 
-      expect(before).toHaveLength(0);
+      await expect(() =>
+        actionServer.generatePaymentLink({
+          paymentId: TEST_SOSPESO_LIST_ITEM.id,
+        }),
+      ).rejects.toThrowError("결제가 존재하지 않습니다! : 7pD2z_SkcIWR75");
 
-      await actionServer.issueSospeso(
+      await actionServer.createIssuingSospesoPayment(
         {
           sospesoId: TEST_SOSPESO_LIST_ITEM.id,
           ...TEST_SOSPESO_LIST_ITEM,
         },
         LOGGED_IN_CONTEXT,
+      );
+
+      const { paymentLink } = await actionServer.generatePaymentLink({
+        paymentId: TEST_SOSPESO_LIST_ITEM.id,
+      });
+
+      expect(paymentLink).toBe(
+        "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg?id=7pD2z_SkcIWR75",
       );
     });
 

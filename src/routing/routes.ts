@@ -24,6 +24,12 @@ export const routes = {
   "소스페소-발행": {
     path: "/sospeso/issuing",
   },
+  "소스페소-결제": {
+    path: "/payment/[paymentId]",
+    paramsSchema: v.object({
+      paymentId: v.string(),
+    }),
+  },
   "소스페소-상세": {
     path: "/sospeso/[sospesoId]",
     paramsSchema: v.object({
@@ -78,6 +84,13 @@ export const routes = {
   },
   "소스페소-신청완료": {
     path: "/sospeso/applicationSuccess",
+  },
+  "파라미터-테스트": {
+    path: "/test/[testId]",
+    paramsSchema: v.object({
+      testId: v.string(),
+      q: v.string(),
+    }),
   },
 } satisfies Record<string, Route>;
 

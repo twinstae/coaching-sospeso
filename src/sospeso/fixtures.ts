@@ -8,7 +8,7 @@ export const TEST_SOSPESO_ID = "DaLNnQs8nfVgs0";
 export const TEST_ISSUED_AT = new Date("2024-11-09T00:00:00Z");
 
 export const TEST_SOSPESO_LIST_ITEM = {
-  id: generateId(),
+  id: "7pD2z_SkcIWR75",
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   issuedAt: TEST_ISSUED_AT,
