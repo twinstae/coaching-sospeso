@@ -31,7 +31,7 @@ export function LoginForm() {
             bus: magicLinkLoginBus,
           }}
         >
-          <TextField label="이메일" name="email" />
+          <TextField label="이메일" name="email" autoComplete="email" />
           <button className="btn btn-outline w-full" type="submit">
             이메일로 계속하기
           </button>

@@ -57,15 +57,25 @@ export function SignUpForm() {
             bus: signUpBus,
           }}
         >
-          <TextField label="이메일" name="email" />
-          <TextField label="비밀번호" name="password" type="password" />
+          <TextField label="이메일" name="email" autoComplete="email" />
+          <TextField
+            label="비밀번호"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+          />
           <TextField
             label="비밀번호 확인"
             name="passwordAgain"
             type="password"
+            autoComplete="new-password"
           />
-          <TextField label="이름(실명)" name="name" />
-          <TextField label="전화번호" name="phone" />
+          <TextField label="이름(실명)" name="name" autoComplete="name" />
+          <TextField
+            label="전화번호"
+            name="phone"
+            autoComplete="tel-national"
+          />
           <TextField label="별명" name="nickname" />
 
           <button className="btn btn-primary w-full" type="submit">
