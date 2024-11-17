@@ -16,7 +16,7 @@ export const resetPasswordBus = createSafeEvent(
 
 export function ResetPasswordForm() {
   return (
-    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-32">
+    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
       <h2 className="text-2xl font-bold text-center mb-8">비밀번호 변경하기</h2>
 
       <div className="space-y-4">

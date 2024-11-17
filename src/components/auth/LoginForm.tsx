@@ -21,7 +21,7 @@ export const magicLinkLoginBus = createSafeEvent(
 
 export function LoginForm() {
   return (
-    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-32">
+    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
       <h2 className="text-2xl font-bold text-center mb-8">로그인</h2>
 
       <div className="space-y-4">

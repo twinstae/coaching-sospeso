@@ -19,7 +19,7 @@ export type AuthApi = {
       name: string;
       phone: string;
       nickname: string;
-    }) => Promise<void>;
+    }) => Promise<"success" | "already-exists" | "unknown-error">;
   };
   login: {
     emailPassword: (command: {
@@ -50,9 +50,15 @@ export const authApi: AuthApi = {
         nickname,
       });
 
-      if (error) {
-        throw error;
+      if (error?.message === 'User with this email already exists') {
+        return 'already-exists'
       }
+      if (error){
+        console.error(error);
+        return "unknown-error"
+      }
+
+      return "success"
     },
   },
   login: {
