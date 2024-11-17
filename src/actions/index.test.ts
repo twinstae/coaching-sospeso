@@ -14,7 +14,7 @@ import {
   issuedSospeso,
 } from "@/sospeso/domain.test.ts";
 import {
-  createFakeRepository,
+  createFakeSospesoRepository,
   type SospesoRepositoryI,
 } from "@/sospeso/repository.ts";
 
@@ -34,6 +34,22 @@ function runSospesoActionsTest(
   }
 
   describe("sospesoActionServer: " + name, () => {
+    test("issueSospeso", async () => {
+      const actionServer = await createTestActionServer({});
+      const before = await actionServer.retrieveSospesoList({});
+
+      expect(before).toHaveLength(0);
+
+      await actionServer.issueSospeso(
+        {
+          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
+          ...TEST_SOSPESO_LIST_ITEM,
+        },
+        LOGGED_IN_CONTEXT,
+      );
+
+    });
+
     test("applySospeso", async () => {
       const id = generateId();
       const actionServer = await createTestActionServer({
@@ -201,7 +217,7 @@ afterAll(async () => {
 });
 
 runSospesoActionsTest("fake", async (initState) =>
-  createFakeRepository(initState),
+  createFakeSospesoRepository(initState),
 );
 
 runSospesoActionsTest("drizzle sqlite", createDrizzleTestRepository);

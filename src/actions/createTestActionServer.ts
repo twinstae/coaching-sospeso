@@ -8,6 +8,7 @@ import type { Sospeso } from "@/sospeso/domain";
 import { buildSospesoActions } from "./index.ts";
 import type { SospesoRepositoryI } from "@/sospeso/repository.ts";
 import type { ActionDefinition } from "./buildActionServer.ts";
+import { createFakePaymentRepository } from '@/payment/repository.ts';
 
 type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
   input: z.input<TInputSchema>,
@@ -48,13 +49,14 @@ function defineTestAction<TInput, TOutput>({
 }
 
 export async function buildTestActionServer(
-  createRepository: (
+  createSospesoRepository: (
     initState: Record<string, Sospeso>,
   ) => Promise<SospesoRepositoryI>,
   initState: Record<string, Sospeso>,
 ): Promise<TestActionServer> {
-  const repo = await createRepository(initState);
-  const pureActions = buildSospesoActions(repo);
+  const sospesoRepo = await createSospesoRepository(initState);
+  const paymentRepo = await createFakePaymentRepository({});
+  const pureActions = buildSospesoActions(sospesoRepo, paymentRepo);
 
   return Object.fromEntries(
     Object.entries(pureActions).map(([key, actionDefinition]) => [

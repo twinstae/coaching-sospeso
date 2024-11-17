@@ -71,9 +71,9 @@ export const payplePaymentApi = {
           PCD_LINK_EXPIREDATE: formatDate(payment.expiredDate, "YYYYMMddHH"), // "2024110315" 2024년 11월 3일 15시
           PCD_LINK_PARAMETER: "",
           PCD_PAY_ISTAX: false, // 비과세
-        //   PCD_LINK_NOTI_MSG: "" // 결제 완료 후 메세지
-        // PCD_LINK_URL: "" // 결제 완료 후 이동할 URL
-        PCD_TAXSAVE_FLAG: "Y" // 현금영수증
+          PCD_LINK_NOTI_MSG: "", // 결제 완료 후 메세지
+          PCD_LINK_URL: payment.afterLinkUrl, // 결제 완료 후 이동할 URL
+          PCD_TAXSAVE_FLAG: "Y" // 현금영수증
         }),
       },
     )

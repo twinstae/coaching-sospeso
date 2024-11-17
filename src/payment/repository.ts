@@ -7,7 +7,7 @@ export interface PaymentRepositoryI {
   ): Promise<void>;
 }
 
-export const createFakeRepository = (
+export const createFakePaymentRepository = (
   initState: Record<string, PaymentT> = {},
 ): PaymentRepositoryI => {
   let _fakeState = initState;
