@@ -6,7 +6,7 @@ import { magicLinkLoginBus, LoginForm } from "./LoginForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
-const TEST_PASSWORD = "!1q2w3e4r!";
+const TEST_PASSWORD = crypto.randomUUID();;
 
 describe("LoginForm", () => {
   test("이메일을 입력하지 않으면 로그인할 수 없다", async () => {
