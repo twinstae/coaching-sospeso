@@ -27,8 +27,10 @@ const session = Astro.locals.session;
 
 <script>
   import { authApi } from "@/adapters/authApi.ts";
+  import { navigate } from "@/routing/navigate";
 
   document.getElementById("logout-button")?.addEventListener("click", () => {
     authApi.logout();
+    navigate("로그인", undefined);
   });
 </script>

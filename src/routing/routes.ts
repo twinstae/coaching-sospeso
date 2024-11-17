@@ -55,6 +55,15 @@ export const routes = {
   로그인: {
     path: "/auth/login",
   },
+  회원가입: {
+    path: "/auth/signup",
+  },
+  "회원가입-이메일-전송-완료": {
+    path: "/auth/signup/sent",
+    paramsSchema: v.object({
+      email: v.pipe(v.string(), v.email()),
+    }),
+  },
   "소스페소-신청완료": {
     path: "/sospeso/applicationSuccess",
   },

@@ -38,3 +38,4 @@ coverage
 test.db
 .vercel
 storybook-static
+!.env.sample

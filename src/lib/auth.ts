@@ -2,10 +2,11 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { magicLink } from "better-auth/plugins";
 import { db } from "@/adapters/db.ts";
-import { fakeEmailApi } from "@/adapters/emailApi";
+import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
+import { isProd } from "@/adapters/env.ts";
 
-const emailApi = fakeEmailApi;
-const LIFE_LIFTER_ADMIN_EMAIL = "hello@lifelifter.com";
+const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
+const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "sqlite",
@@ -23,16 +24,12 @@ export const auth = betterAuth({
     requireEmailVerification: true,
   },
   emailVerification: {
-    sendVerificationEmail: async (
-      user: { email: string },
-      url: string,
-      token: string,
-    ) => {
+    sendVerificationEmail: async (user: { email: string }, url: string) => {
       emailApi.send({
-        to: [user.email],
+        to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,
         subject: "코칭 소스페소에 가입하기",
-        html: `${token} ${url}`,
+        html: `소스페소에 가입하시려면 다음 링크를 클릭하세요 <a href="${url}">로그인하기</a>`,
       });
     },
   },
@@ -40,7 +37,6 @@ export const auth = betterAuth({
     magicLink({
       sendMagicLink: async ({
         email,
-        token,
         url,
       }: {
         email: string;
@@ -48,10 +44,10 @@ export const auth = betterAuth({
         url: string;
       }) => {
         emailApi.send({
-          to: [email],
+          to: email,
           from: LIFE_LIFTER_ADMIN_EMAIL,
           subject: "코칭 소스페소에 로그인",
-          html: `${token} ${url}`,
+          html: `로그인하시려면 다음 링크를 클릭하세요 <a href="${url}">로그인하기</a>`,
         });
       },
     }),

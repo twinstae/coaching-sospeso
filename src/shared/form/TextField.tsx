@@ -32,6 +32,7 @@ export function TextField<InputT extends Record<string, any>>({
         {label}
         <input
           {...props}
+          type={type}
           role="textbox"
           name={field.name} // send down the input name
           className={clsx(

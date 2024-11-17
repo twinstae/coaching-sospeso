@@ -1,0 +1,17 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
+
+const { email } = parseRouteParamsFromUrl(
+  "회원가입-이메일-전송-완료",
+  new URL(Astro.url),
+);
+---
+
+<Layout title="코칭 소스페소 회원가입 이메일 전송 완료">
+  {email}로 회원가입 인증 이메일을 보냈어요. 메일함을 확인해주세요.
+</Layout>
+
+<script>
+  // TODO: 이메일이 오지 않았나요? 재전송하기
+</script>
