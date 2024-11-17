@@ -27,6 +27,14 @@ import Layout from "@/layouts/Layout.astro";
 
         return;
       }
+
+      if (result === "email-not-verified") {
+        authApi.sendEmailVerification({ email: command.email });
+        toastApi.toast("아직 인증이 되지 않았어요. 인증 이메일을 다시 전송했으니, 확인해주세요.", "error");
+
+        return;
+      }
+      toastApi.toast("알 수 없는 에러!", "error");
     });
   });
 </script>

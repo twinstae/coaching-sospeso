@@ -25,7 +25,12 @@ export type AuthApi = {
     emailPassword: (command: {
       email: string;
       password: string;
-    }) => Promise<"success" | "invalid-email-or-password" | "unknown-error">;
+    }) => Promise<
+      | "success"
+      | "invalid-email-or-password"
+      | "email-not-verified"
+      | "unknown-error"
+    >;
   };
   password: {
     sendVerificationEmail: (email: string) => Promise<void>;
@@ -70,9 +75,15 @@ export const authApi: AuthApi = {
       });
 
       if (error) {
+        console.error(error.message)
         if (error.message === "Invalid email or password") {
           return "invalid-email-or-password";
         }
+
+        if (error.message?.includes("Email is not verified")) {
+          return "email-not-verified";
+        }
+
         return "unknown-error";
       }
 
