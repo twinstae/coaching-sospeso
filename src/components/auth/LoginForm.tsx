@@ -7,9 +7,10 @@ import Twitter from "@/shared/icons/Twitter.tsx";
 import { createSafeEvent } from "@/event/SafeEventBus.ts";
 import { TextField } from "@/shared/form/TextField.tsx";
 import { Link } from "@/routing/Link.tsx";
+import { emailSchema } from '@/auth/schema.ts';
 
 const loginSchema = v.object({
-  email: v.pipe(v.string(), v.email("올바른 이메일 형식을 입력해주세요!")),
+  email: emailSchema,
 });
 
 export const magicLinkLoginBus = createSafeEvent(

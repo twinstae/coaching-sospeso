@@ -1,9 +1,15 @@
 import { getViteConfig } from "astro/config";
+import { config } from "dotenv";
+
+const { parsed } = config({ path: ".env" });
 
 export default getViteConfig({
   root: "./",
   optimizeDeps: {
     include: ["@vitest/coverage-istanbul"],
+  },
+  define: {
+    "import.meta.env": parsed ?? {},
   },
   test: {
     pool: "vmThreads",
