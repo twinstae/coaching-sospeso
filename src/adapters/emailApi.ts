@@ -36,6 +36,7 @@ export const resendEmailApi = {
 
 export const fakeEmailApi = {
   send: async (email) => {
+    console.log("send", email);
     for (const to of email.to) {
       const inbox = fakeEmailInbox[to];
       if (inbox) {

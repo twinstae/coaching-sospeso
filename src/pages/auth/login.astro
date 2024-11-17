@@ -3,7 +3,7 @@ import { LoginForm } from "@/components/auth/LoginForm.tsx";
 import Layout from "@/layouts/Layout.astro";
 ---
 
-<Layout title="로그인">
+<Layout title="코칭 소스페소 로그인">
   <LoginForm client:load />
 </Layout>
 <script>
@@ -14,8 +14,8 @@ import Layout from "@/layouts/Layout.astro";
   const toastApi = toastifyToastApi;
 
   magicLinkLoginBus.on(window.document.body, (command) => {
-    authApi
-      .sendEmailVerification(command)
+    authApi.login
+      .magicLink(command)
       .then(() => {
         toastApi.toast(
           command.email + "로 로그인 이메일을 보냈어요! 메일함을 확인해주세요.",

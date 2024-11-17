@@ -1,11 +1,12 @@
 import * as v from "valibot";
 
-import { Form } from "@/shared/form/Form";
+import { Form } from "@/shared/form/Form.tsx";
 import Github from "@/shared/icons/Github.tsx";
 import Google from "@/shared/icons/Google.tsx";
 import Twitter from "@/shared/icons/Twitter.tsx";
-import { createSafeEvent } from "@/event/SafeEventBus";
-import { TextField } from "@/shared/form/TextField";
+import { createSafeEvent } from "@/event/SafeEventBus.ts";
+import { TextField } from "@/shared/form/TextField.tsx";
+import { Link } from "@/routing/Link.tsx";
 
 const loginSchema = v.object({
   email: v.pipe(v.string(), v.email("올바른 이메일 형식을 입력해주세요!")),
@@ -35,6 +36,14 @@ export function LoginForm() {
             이메일로 계속하기
           </button>
         </Form>
+
+        <Link
+          routeKey="회원가입"
+          params={undefined}
+          className="link self-center m-auto"
+        >
+          회원가입
+        </Link>
 
         <div className="divider">OR</div>
 

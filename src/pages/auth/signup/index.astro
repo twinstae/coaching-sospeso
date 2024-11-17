@@ -1,0 +1,31 @@
+---
+import { SignUpForm } from "@/components/auth/SignUpForm.tsx";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="코칭 소스페소 회원가입">
+  <SignUpForm client:load />
+</Layout>
+
+<script>
+  import { authApi } from "@/adapters/authApi.ts";
+  import { toastifyToastApi } from "@/adapters/toastApi.tsx";
+  import { signUpBus } from "@/components/auth/SignUpForm.tsx";
+  import { navigate } from "@/routing/navigate.ts";
+
+  const toastApi = toastifyToastApi;
+
+  signUpBus.on(window.document.body, (command) => {
+    authApi.signUp
+      .email(command)
+      .then(() => {
+        navigate("회원가입-이메일-전송-완료", { email: command.email });
+      })
+      .catch(() => {
+        toastApi.toast(
+          "회원가입에 실패했어요. 잠시 후에 다시 시도해주세요.",
+          "error",
+        );
+      });
+  });
+</script>

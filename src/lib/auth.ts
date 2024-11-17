@@ -2,9 +2,10 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { magicLink } from "better-auth/plugins";
 import { db } from "@/adapters/db.ts";
-import { resendEmailApi } from "@/adapters/emailApi";
+import { resendEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
+import { isProd } from "@/adapters/env.ts";
 
-const emailApi = resendEmailApi;
+const emailApi = isProd ? resendEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
