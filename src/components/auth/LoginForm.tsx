@@ -89,7 +89,7 @@ export function LoginForm({ error }: { error: "email_not_found" | undefined }) {
           <Google className="w-5 h-5" />
           구글로 계속하기
         </button>
-        
+
         <button
           className="btn btn-twitter w-full"
           onClick={() => {
