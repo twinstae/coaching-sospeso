@@ -31,7 +31,8 @@ const session = Astro.locals.session;
   import { href } from "@/routing/href";
 
   document.getElementById("logout-button")?.addEventListener("click", () => {
-    authApi.logout();
-    navigate(href("로그인", {}));
+    authApi.logout().then(() => {
+      navigate(href("로그인", {}));
+    });
   });
 </script>

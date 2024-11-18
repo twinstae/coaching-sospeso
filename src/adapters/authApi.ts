@@ -31,6 +31,7 @@ export type AuthApi = {
       | "email-not-verified"
       | "unknown-error"
     >;
+    google: () => Promise<"success" | "unknown-error">;
   };
   password: {
     sendVerificationEmail: (email: string) => Promise<void>;
@@ -84,6 +85,18 @@ export const authApi: AuthApi = {
           return "email-not-verified";
         }
 
+        return "unknown-error";
+      }
+
+      return "success";
+    },
+    async google() {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+      });
+
+      if (error) {
+        console.error(error.message);
         return "unknown-error";
       }
 

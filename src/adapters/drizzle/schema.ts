@@ -5,7 +5,7 @@ import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  nickname: text("nickname").notNull(),
+  nickname: text("nickname").notNull().default("손님"),
   email: text("email").notNull().unique(),
   emailVerified: integer("emailVerified", {
     mode: "boolean",

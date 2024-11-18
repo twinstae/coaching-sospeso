@@ -8,6 +8,7 @@ import { createSafeEvent } from "@/event/SafeEventBus.ts";
 import { TextField } from "@/shared/form/TextField.tsx";
 import { Link } from "@/routing/Link.tsx";
 import { emailSchema, passwordSchema } from "@/auth/schema.ts";
+import { authApi } from "@/adapters/authApi.ts";
 
 const loginSchema = v.object({
   email: emailSchema,
@@ -66,7 +67,12 @@ export function LoginForm() {
 
         <div className="divider">OR</div>
 
-        <button className="btn btn-outline w-full">
+        <button
+          className="btn btn-outline w-full"
+          onClick={() => {
+            authApi.login.google();
+          }}
+        >
           <Google className="w-5 h-5" />
           구글로 계속하기
         </button>
