@@ -12,6 +12,8 @@ const envSchema = v.object({
   PAYPLE_CST_ID: v.string(),
   PAYPLE_CUST_KEY: v.string(),
   PAYPLE_CLIENT_KEY: v.string(),
+  GOOGLE_CLIENT_ID: v.string(),
+  GOOGLE_CLIENT_SECRET: v.string(),
 });
 
 const result = v.safeParse(envSchema, {
@@ -23,6 +25,8 @@ const result = v.safeParse(envSchema, {
   PAYPLE_CST_ID: import.meta.env.PAYPLE_CST_ID,
   PAYPLE_CUST_KEY: import.meta.env.PAYPLE_CUST_KEY,
   PAYPLE_CLIENT_KEY: import.meta.env.PAYPLE_CLIENT_KEY,
+  GOOGLE_CLIENT_ID: import.meta.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: import.meta.env.GOOGLE_CLIENT_SECRET,
 });
 
 invariant(

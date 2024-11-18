@@ -3,7 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { magicLink } from "better-auth/plugins";
 import { db } from "@/adapters/db.ts";
 import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
-import { isProd } from "@/adapters/env.ts";
+import { env, isProd } from "@/adapters/env.ts";
 
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
@@ -11,6 +11,12 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID as string,
+      clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+    },
+  },
   user: {
     additionalFields: {
       nickname: {
