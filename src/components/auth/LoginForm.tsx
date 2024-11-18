@@ -9,6 +9,7 @@ import { TextField } from "@/shared/form/TextField.tsx";
 import { Link } from "@/routing/Link.tsx";
 import { emailSchema, passwordSchema } from "@/auth/schema.ts";
 import { authApi } from "@/adapters/authApi.ts";
+import { SimpleErrorMessage } from "@/shared/form/SimpleErrorMessage";
 
 const loginSchema = v.object({
   email: emailSchema,
@@ -20,7 +21,7 @@ export const magicLinkLoginBus = createSafeEvent(
   loginSchema,
 );
 
-export function LoginForm() {
+export function LoginForm({ error }: { error: "email_not_found" | undefined }) {
   return (
     <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
       <h2 className="text-2xl font-bold text-center mb-8">로그인</h2>
@@ -67,6 +68,18 @@ export function LoginForm() {
 
         <div className="divider">OR</div>
 
+        {error && (
+          <SimpleErrorMessage
+            id={"login-error"}
+            error={{
+              message:
+                error === "email_not_found"
+                  ? "이메일이 없어 가입하지 못했습니다"
+                  : "알 수 없는 에러",
+            }}
+          />
+        )}
+
         <button
           className="btn btn-outline w-full"
           onClick={() => {
@@ -76,7 +89,7 @@ export function LoginForm() {
           <Google className="w-5 h-5" />
           구글로 계속하기
         </button>
-
+        
         <button
           className="btn btn-twitter w-full"
           onClick={() => {
@@ -87,7 +100,12 @@ export function LoginForm() {
           트위터로 계속하기
         </button>
 
-        <button className="btn btn-primary w-full">
+        <button
+          className="btn btn-primary w-full"
+          onClick={() => {
+            authApi.login.github();
+          }}
+        >
           <Github className="w-5 h-5" />
           깃허브로 계속하기
         </button>

@@ -18,7 +18,7 @@ describe("LoginForm", () => {
           result = command;
         }}
       >
-        <LoginForm />
+        <LoginForm error={undefined} />
       </SafeEventHandler>,
     );
 
@@ -44,7 +44,7 @@ describe("LoginForm", () => {
           result = command;
         }}
       >
-        <LoginForm />
+        <LoginForm error={undefined} />
       </SafeEventHandler>,
     );
 

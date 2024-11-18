@@ -60,7 +60,9 @@ export const routes = {
   },
   로그인: {
     path: "/auth/login",
-    paramsSchema: v.object({}),
+    paramsSchema: v.object({
+      error: v.optional(v.picklist(["email_not_found"]))
+    }),
   },
   "비밀번호-변경-이메일": {
     path: "/auth/change-password",

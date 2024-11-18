@@ -16,6 +16,8 @@ const envSchema = v.object({
   GOOGLE_CLIENT_SECRET: v.string(),
   TWITTER_CLIENT_ID: v.string(),
   TWITTER_CLIENT_SECRET: v.string(),
+  GITHUB_CLIENT_ID: v.string(),
+  GITHUB_CLIENT_SECRET: v.string(),
 });
 
 const result = v.safeParse(envSchema, {
@@ -31,6 +33,8 @@ const result = v.safeParse(envSchema, {
   GOOGLE_CLIENT_SECRET: import.meta.env.GOOGLE_CLIENT_SECRET,
   TWITTER_CLIENT_ID: import.meta.env.TWITTER_CLIENT_ID,
   TWITTER_CLIENT_SECRET: import.meta.env.TWITTER_CLIENT_SECRET,
+  GITHUB_CLIENT_ID: import.meta.env.GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET: import.meta.env.GITHUB_CLIENT_SECRET,
 });
 
 invariant(

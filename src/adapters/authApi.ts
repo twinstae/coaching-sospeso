@@ -33,6 +33,7 @@ export type AuthApi = {
     >;
     google: () => Promise<"success" | "unknown-error">;
     twitter: () => Promise<"success" | "unknown-error">;
+    github: () => Promise<"success" | "unknown-error">;
   };
   password: {
     sendVerificationEmail: (email: string) => Promise<void>;
@@ -73,7 +74,7 @@ export const authApi: AuthApi = {
       const { error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/",
+        callbackURL: href("홈", { page: 1 }),
       });
 
       if (error) {
@@ -94,6 +95,7 @@ export const authApi: AuthApi = {
     async google() {
       const { error } = await authClient.signIn.social({
         provider: "google",
+        callbackURL: href("홈", { page: 1 }),
       });
 
       if (error) {
@@ -106,6 +108,20 @@ export const authApi: AuthApi = {
     async twitter() {
       const { error } = await authClient.signIn.social({
         provider: "twitter",
+        callbackURL: href("홈", { page: 1 }),
+      });
+
+      if (error) {
+        console.error(error.message);
+        return "unknown-error";
+      }
+
+      return "success";
+    },
+    async github() {
+      const { error } = await authClient.signIn.social({
+        provider: "github",
+        callbackURL: href("홈", { page: 1 }),
       });
 
       if (error) {

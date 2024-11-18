@@ -20,6 +20,10 @@ export const auth = betterAuth({
       clientId: env.TWITTER_CLIENT_ID,
       clientSecret: env.TWITTER_CLIENT_SECRET,
     },
+    github: {
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+    },
   },
   user: {
     additionalFields: {
@@ -32,7 +36,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    sendResetPassword: async (user, url) => {
+    sendResetPassword: async ({ user }, url) => {
       await emailApi.send({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,
@@ -42,7 +46,7 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    sendVerificationEmail: async (user: { email: string }, url: string) => {
+    sendVerificationEmail: async ({ user, url }) => {
       emailApi.send({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,

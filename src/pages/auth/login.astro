@@ -1,10 +1,13 @@
 ---
 import { LoginForm } from "@/components/auth/LoginForm.tsx";
 import Layout from "@/layouts/Layout.astro";
+import { parseRouteParamsFromUrl } from '@/routing/parseRouteParams';
+
+const { error } = parseRouteParamsFromUrl("로그인", new URL(Astro.url));
 ---
 
 <Layout title="코칭 소스페소 로그인">
-  <LoginForm client:load />
+  <LoginForm error={error} client:load />
 </Layout>
 
 <script>

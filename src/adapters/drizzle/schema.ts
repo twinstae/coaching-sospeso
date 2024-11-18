@@ -54,6 +54,9 @@ export const verification = sqliteTable("verification", {
   expiresAt: integer("expiresAt", {
     mode: "timestamp",
   }).notNull(),
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
+  }),
 });
 
 // sospeso
