@@ -16,6 +16,10 @@ export const auth = betterAuth({
       clientId: env.GOOGLE_CLIENT_ID as string,
       clientSecret: env.GOOGLE_CLIENT_SECRET as string,
     },
+    twitter: {
+      clientId: env.TWITTER_CLIENT_ID,
+      clientSecret: env.TWITTER_CLIENT_SECRET,
+    },
   },
   user: {
     additionalFields: {

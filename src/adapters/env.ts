@@ -14,6 +14,8 @@ const envSchema = v.object({
   PAYPLE_CLIENT_KEY: v.string(),
   GOOGLE_CLIENT_ID: v.string(),
   GOOGLE_CLIENT_SECRET: v.string(),
+  TWITTER_CLIENT_ID: v.string(),
+  TWITTER_CLIENT_SECRET: v.string(),
 });
 
 const result = v.safeParse(envSchema, {
@@ -27,6 +29,8 @@ const result = v.safeParse(envSchema, {
   PAYPLE_CLIENT_KEY: import.meta.env.PAYPLE_CLIENT_KEY,
   GOOGLE_CLIENT_ID: import.meta.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: import.meta.env.GOOGLE_CLIENT_SECRET,
+  TWITTER_CLIENT_ID: import.meta.env.TWITTER_CLIENT_ID,
+  TWITTER_CLIENT_SECRET: import.meta.env.TWITTER_CLIENT_SECRET,
 });
 
 invariant(

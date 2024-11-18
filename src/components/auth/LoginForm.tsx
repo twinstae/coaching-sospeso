@@ -77,7 +77,12 @@ export function LoginForm() {
           구글로 계속하기
         </button>
 
-        <button className="btn btn-twitter w-full">
+        <button
+          className="btn btn-twitter w-full"
+          onClick={() => {
+            authApi.login.twitter();
+          }}
+        >
           <Twitter className="w-5 h-5" />
           트위터로 계속하기
         </button>

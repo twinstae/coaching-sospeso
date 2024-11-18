@@ -32,6 +32,7 @@ export type AuthApi = {
       | "unknown-error"
     >;
     google: () => Promise<"success" | "unknown-error">;
+    twitter: () => Promise<"success" | "unknown-error">;
   };
   password: {
     sendVerificationEmail: (email: string) => Promise<void>;
@@ -93,6 +94,18 @@ export const authApi: AuthApi = {
     async google() {
       const { error } = await authClient.signIn.social({
         provider: "google",
+      });
+
+      if (error) {
+        console.error(error.message);
+        return "unknown-error";
+      }
+
+      return "success";
+    },
+    async twitter() {
+      const { error } = await authClient.signIn.social({
+        provider: "twitter",
       });
 
       if (error) {
