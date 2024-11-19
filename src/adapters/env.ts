@@ -18,6 +18,7 @@ const envSchema = v.object({
   TWITTER_CLIENT_SECRET: v.string(),
   GITHUB_CLIENT_ID: v.string(),
   GITHUB_CLIENT_SECRET: v.string(),
+  UNLEASH_FRONTEND_TOKEN: v.string()
 });
 
 const result = v.safeParse(envSchema, {
@@ -35,11 +36,12 @@ const result = v.safeParse(envSchema, {
   TWITTER_CLIENT_SECRET: import.meta.env.TWITTER_CLIENT_SECRET,
   GITHUB_CLIENT_ID: import.meta.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: import.meta.env.GITHUB_CLIENT_SECRET,
+  UNLEASH_FRONTEND_TOKEN: import.meta.env.UNLEASH_FRONTEND_TOKEN
 });
 
 invariant(
   result.success,
   "env에 빠진 부분이 있습니다! 값을 채워주세요. \n" +
-    JSON.stringify(result.issues, null, 2),
+  JSON.stringify(result.issues, null, 2),
 );
 export const env = result.output;

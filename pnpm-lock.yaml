@@ -32,6 +32,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.1
         version: 18.3.1
+      '@unleash/proxy-client-react':
+        specifier: ^4.4.0
+        version: 4.4.0(unleash-proxy-client@3.6.1)
       astro:
         specifier: 4.16.7
         version: 4.16.7(@types/node@22.8.7)(rollup@4.24.3)(typescript@5.6.3)
@@ -68,6 +71,9 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
+      unleash-proxy-client:
+        specifier: ^3.6.1
+        version: 3.6.1
       valibot:
         specifier: 1.0.0-beta.3
         version: 1.0.0-beta.3(typescript@5.6.3)
@@ -131,7 +137,7 @@ importers:
         version: 2.1.4(@types/node@22.8.7)(playwright@1.48.2)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.7))(vitest@2.1.4)
       '@vitest/coverage-istanbul':
         specifier: ^2.1.4
-        version: 2.1.4(vitest@2.1.4)
+        version: 2.1.4(vitest@2.1.4(@types/node@22.8.7)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(msw@2.6.0(@types/node@22.8.7)(typescript@5.6.3)))
       '@vitest/ui':
         specifier: 2.1.4
         version: 2.1.4(vitest@2.1.4)
@@ -1996,6 +2002,12 @@ packages:
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
+
+  '@unleash/proxy-client-react@4.4.0':
+    resolution: {integrity: sha512-btU/2Pho5eVOBdIYxNAeHq36lpm41/qmRVKuuLIGdg3XOZign9rA6KsarAk94W01XKulrNCrESINZMIvPoA6Cg==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      unleash-proxy-client: ^3.5.2
 
   '@vercel/analytics@1.3.2':
     resolution: {integrity: sha512-n/Ws7skBbW+fUBMeg+jrT30+GP00jTHvCcL4fuVrShuML0uveEV/4vVUdvqEVnDgXIGfLm0GXW5EID2mCcRXhg==}
@@ -4548,6 +4560,9 @@ packages:
   thenify@3.3.1:
     resolution: {integrity: sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==}
 
+  tiny-emitter@2.1.0:
+    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==}
+
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
@@ -4719,6 +4734,9 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
+
+  unleash-proxy-client@3.6.1:
+    resolution: {integrity: sha512-gbvkob/cBewLHMh9aAwWLDLN8D1efJ5FdUMva7wGBVykJMIqyYIlUsJpVNXnpq+feNBn6Qc1D1huXD2bk9bEmA==}
 
   unplugin@1.15.0:
     resolution: {integrity: sha512-jTPIs63W+DUEDW207ztbaoO7cQ4p5aVaB823LSlxpsFEU3Mykwxf3ZGC/wzxFJeZlASZYgVrWeo7LgOrqJZ8RA==}
@@ -6819,6 +6837,10 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
+  '@unleash/proxy-client-react@4.4.0(unleash-proxy-client@3.6.1)':
+    dependencies:
+      unleash-proxy-client: 3.6.1
+
   '@vercel/analytics@1.3.2(react@18.3.1)':
     dependencies:
       server-only: 0.0.1
@@ -6877,7 +6899,7 @@ snapshots:
       - utf-8-validate
       - vite
 
-  '@vitest/coverage-istanbul@2.1.4(vitest@2.1.4)':
+  '@vitest/coverage-istanbul@2.1.4(vitest@2.1.4(@types/node@22.8.7)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(msw@2.6.0(@types/node@22.8.7)(typescript@5.6.3)))':
     dependencies:
       '@istanbuljs/schema': 0.1.3
       debug: 4.3.7
@@ -9937,6 +9959,8 @@ snapshots:
     dependencies:
       any-promise: 1.3.0
 
+  tiny-emitter@2.1.0: {}
+
   tiny-invariant@1.3.3: {}
 
   tinybench@2.9.0: {}
@@ -10113,6 +10137,11 @@ snapshots:
   universalify@0.2.0: {}
 
   universalify@2.0.1: {}
+
+  unleash-proxy-client@3.6.1:
+    dependencies:
+      tiny-emitter: 2.1.0
+      uuid: 9.0.1
 
   unplugin@1.15.0:
     dependencies:
