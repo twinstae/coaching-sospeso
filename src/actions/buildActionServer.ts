@@ -12,8 +12,8 @@ export type ActionDefinition<TInput = any, TOutput = any> = {
 
 type InferDefinedActions<T> = {
   [K in keyof T]: T[K] extends ActionDefinition<infer Input, infer Output>
-    ? ActionClient<Output, undefined, z.ZodType<Input>> & string
-    : never;
+  ? ActionClient<Output, undefined, z.ZodType<Input>> & string
+  : never;
 };
 
 export function definePureAction<

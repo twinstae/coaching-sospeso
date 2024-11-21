@@ -23,31 +23,13 @@ import {
 } from "@/adapters/payplePaymentApi";
 import { isProd } from "@/adapters/env";
 
-const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
+export const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
 export function buildSospesoActions(
   sospesoRepo: SospesoRepositoryI,
   paymentRepo: PaymentRepositoryI,
 ) {
   return {
-    retrieveSospesoList: definePureAction({
-      input: z.object({}),
-      handler: async (_input) => {
-        return sospesoRepo.retrieveSospesoList();
-      },
-    }),
-    retrieveSospesoDetail: definePureAction({
-      input: z.object({ sospesoId: z.string() }),
-      handler: async (input) => {
-        return sospesoRepo.retrieveSospesoDetail(input.sospesoId);
-      },
-    }),
-    retrieveSospesoApplicationList: definePureAction({
-      input: z.object({}),
-      handler: async (_input) => {
-        return sospesoRepo.retrieveApplicationList();
-      },
-    }),
     approveSospesoApplication: definePureAction({
       input: z.object({
         sospesoId: z.string(),
@@ -118,18 +100,6 @@ export function buildSospesoActions(
         });
       },
     }),
-    generatePaymentLink: definePureAction({
-      input: z.object({
-        paymentId: z.string(),
-      }),
-      handler: async (input) => {
-        const payment = await paymentRepo.retrievePayment(input.paymentId);
-
-        const { paymentLink } = await paymentApi.generatePaymentLink(payment);
-
-        return { paymentLink };
-      },
-    }),
     applySospeso: definePureAction({
       input: z.object({
         sospesoId: z.string(),
@@ -177,9 +147,12 @@ export function buildSospesoActions(
   } satisfies Record<string, ActionDefinition>;
 }
 
+export const sospesoRepo = createFakeSospesoRepository({});
+export const paymentRepo = createFakePaymentRepository({});
+
 export const server = buildActionServer(
   buildSospesoActions(
-    createFakeSospesoRepository({}),
-    createFakePaymentRepository({}),
+    sospesoRepo,
+    paymentRepo,
   ),
 );

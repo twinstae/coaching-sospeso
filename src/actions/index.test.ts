@@ -20,6 +20,7 @@ import {
 
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
+import { paymentApi } from './index.ts';
 
 const generateId = generateNanoId;
 
@@ -35,13 +36,7 @@ function runSospesoActionsTest(
 
   describe("sospesoActionServer: " + name, () => {
     test("createIssuingSospesoPayment", async () => {
-      const actionServer = await createTestActionServer({});
-
-      await expect(() =>
-        actionServer.generatePaymentLink({
-          paymentId: TEST_SOSPESO_LIST_ITEM.id,
-        }),
-      ).rejects.toThrowError("결제가 존재하지 않습니다! : 7pD2z_SkcIWR75");
+      const { actionServer, paymentRepo } = await createTestActionServer({});
 
       await actionServer.createIssuingSospesoPayment(
         {
@@ -51,9 +46,9 @@ function runSospesoActionsTest(
         LOGGED_IN_CONTEXT,
       );
 
-      const { paymentLink } = await actionServer.generatePaymentLink({
-        paymentId: TEST_SOSPESO_LIST_ITEM.id,
-      });
+      const payment = await paymentRepo.retrievePayment(TEST_SOSPESO_LIST_ITEM.id);
+
+      const { paymentLink } = await paymentApi.generatePaymentLink(payment);
 
       expect(paymentLink).toBe(
         "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg?id=7pD2z_SkcIWR75",
@@ -62,10 +57,10 @@ function runSospesoActionsTest(
 
     test("applySospeso", async () => {
       const id = generateId();
-      const actionServer = await createTestActionServer({
+      const { actionServer, sospesoRepo } = await createTestActionServer({
         [id]: { ...issuedSospeso, id },
       });
-      const before = await actionServer.retrieveSospesoApplicationList({});
+      const before = await sospesoRepo.retrieveApplicationList();
 
       expect(before).toMatchObject([]);
 
@@ -81,7 +76,7 @@ function runSospesoActionsTest(
         LOGGED_IN_CONTEXT,
       );
 
-      const after = await actionServer.retrieveSospesoApplicationList({});
+      const after = await sospesoRepo.retrieveApplicationList();
 
       expect(after).toMatchObject([
         {
@@ -100,12 +95,12 @@ function runSospesoActionsTest(
     });
 
     test("approveSospesoApplication", async () => {
-      const actionServer = await createTestActionServer({
+      const { actionServer, sospesoRepo } = await createTestActionServer({
         [appliedSospeso.id]: appliedSospeso,
       });
       const applicationId = appliedSospeso.applicationList[0]!.id;
 
-      const before = await actionServer.retrieveSospesoApplicationList({});
+      const before = await sospesoRepo.retrieveApplicationList();
 
       expect(before.find((item) => item.id === applicationId)?.status).toBe(
         "applied",
@@ -116,7 +111,7 @@ function runSospesoActionsTest(
         applicationId: applicationId,
       });
 
-      const after = await actionServer.retrieveSospesoApplicationList({});
+      const after = await sospesoRepo.retrieveApplicationList();
 
       expect(after.find((item) => item.id === applicationId)?.status).toBe(
         "approved",
@@ -124,12 +119,12 @@ function runSospesoActionsTest(
     });
 
     test("rejectSospesoApplication", async () => {
-      const actionServer = await createTestActionServer({
+      const { actionServer, sospesoRepo } = await createTestActionServer({
         [appliedSospeso.id]: appliedSospeso,
       });
       const applicationId = appliedSospeso.applicationList[0]!.id;
 
-      const before = await actionServer.retrieveSospesoApplicationList({});
+      const before = await sospesoRepo.retrieveApplicationList();
 
       expect(before.find((item) => item.id === applicationId)?.status).toBe(
         "applied",
@@ -140,7 +135,7 @@ function runSospesoActionsTest(
         applicationId: applicationId,
       });
 
-      const after = await actionServer.retrieveSospesoApplicationList({});
+      const after = await sospesoRepo.retrieveApplicationList();
 
       expect(after.find((item) => item.id === applicationId)?.status).toBe(
         "rejected",
@@ -149,13 +144,11 @@ function runSospesoActionsTest(
 
     test("consumeSospeso", async () => {
       // 기존에 이미 승인된 소스페소가 있었음
-      const actionServer = await createTestActionServer({
+      const { actionServer, sospesoRepo } = await createTestActionServer({
         [approvedSospeso.id]: approvedSospeso,
       });
 
-      const before = await actionServer.retrieveSospesoDetail({
-        sospesoId: approvedSospeso.id,
-      });
+      const before = await sospesoRepo.retrieveSospesoDetail(approvedSospeso.id);
 
       expect(before?.status).toBe("pending");
 
@@ -169,9 +162,7 @@ function runSospesoActionsTest(
         memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
       });
 
-      const after = await actionServer.retrieveSospesoDetail({
-        sospesoId: approvedSospeso.id,
-      });
+      const after = await sospesoRepo.retrieveSospesoDetail(approvedSospeso.id);
 
       expect(after?.status).toBe("consumed");
     });

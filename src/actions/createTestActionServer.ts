@@ -8,7 +8,7 @@ import type { Sospeso } from "@/sospeso/domain";
 import { buildSospesoActions } from "./index.ts";
 import type { SospesoRepositoryI } from "@/sospeso/repository.ts";
 import type { ActionDefinition } from "./buildActionServer.ts";
-import { createFakePaymentRepository } from "@/payment/repository.ts";
+import { createFakePaymentRepository, type PaymentRepositoryI } from "@/payment/repository.ts";
 
 type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
   input: z.input<TInputSchema>,
@@ -17,8 +17,8 @@ type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
 
 type InferDefinedTestActions<T> = {
   [K in keyof T]: T[K] extends ActionDefinition<infer Input, infer Output>
-    ? ActionTestClient<Output, z.ZodType<Input>> & string
-    : never;
+  ? ActionTestClient<Output, z.ZodType<Input>> & string
+  : never;
 };
 
 type TestActionServer = InferDefinedTestActions<
@@ -53,15 +53,23 @@ export async function buildTestActionServer(
     initState: Record<string, Sospeso>,
   ) => Promise<SospesoRepositoryI>,
   initState: Record<string, Sospeso>,
-): Promise<TestActionServer> {
+): Promise<{
+  actionServer: TestActionServer,
+  sospesoRepo: SospesoRepositoryI,
+  paymentRepo: PaymentRepositoryI
+}> {
   const sospesoRepo = await createSospesoRepository(initState);
   const paymentRepo = createFakePaymentRepository({});
   const pureActions = buildSospesoActions(sospesoRepo, paymentRepo);
 
-  return Object.fromEntries(
-    Object.entries(pureActions).map(([key, actionDefinition]) => [
-      key,
-      defineTestAction(actionDefinition as any) as any,
-    ]),
-  ) as TestActionServer;
+  return {
+    actionServer: Object.fromEntries(
+      Object.entries(pureActions).map(([key, actionDefinition]) => [
+        key,
+        defineTestAction(actionDefinition as any) as any,
+      ]),
+    ) as TestActionServer,
+    sospesoRepo,
+    paymentRepo
+  }
 }

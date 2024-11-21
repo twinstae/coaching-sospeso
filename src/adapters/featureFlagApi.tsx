@@ -1,5 +1,4 @@
-import { FlagProvider as UnleashFlagProvider } from '@unleash/proxy-client-react'
-import { useFlag as useUnleashFlag } from '@unleash/proxy-client-react'
+import { useFlag as useUnleashFlag, FlagProvider as UnleashFlagProvider } from '@unleash/proxy-client-react'
 import type { PropsWithChildren } from 'react'
 import { env } from './env'
 

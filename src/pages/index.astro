@@ -1,10 +1,10 @@
 ---
-import { actions } from "astro:actions";
+import { sospesoRepo } from "@/actions";
 import { SospesoList } from "@/components/SospesoList";
 import Layout from "@/layouts/Layout.astro";
 import { Link } from "@/routing/Link.tsx";
 
-const { data: sospesoList } = await actions.retrieveSospesoList({});
+const sospesoList = await sospesoRepo.retrieveSospesoList();
 
 if (!sospesoList) {
   return new Response(null, {

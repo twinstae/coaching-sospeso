@@ -1,7 +1,7 @@
 ---
+import { paymentApi, paymentRepo } from "@/actions";
 import Layout from "@/layouts/Layout.astro";
 import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
-import { actions } from "astro:actions";
 
 const session = Astro.locals.session;
 
@@ -16,17 +16,17 @@ const { paymentId } = parseRouteParamsFromUrl(
   new URL(Astro.url),
 );
 
-const { data, error } = await actions.generatePaymentLink({ paymentId });
+const payment = await paymentRepo.retrievePayment(paymentId);
+
+const { paymentLink } = await paymentApi.generatePaymentLink(payment);
 ---
 
 <Layout title="소스페소 발행하기">
-  {error && <div>죄송합니다. 결제 링크 생성에 실패했어요 ㅠㅠ</div>}
-
   {
-    data && (
+    paymentLink && (
       <div>
         <h2>결제를 진행해주세요.</h2>{" "}
-        <a class="btn btn-primary" href={data.paymentLink} target="_blank">
+        <a class="btn btn-primary" href={paymentLink} target="_blank">
           결제 진행하기
         </a>
       </div>
