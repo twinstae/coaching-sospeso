@@ -1,3 +1,4 @@
+import { FlagProvider, useFlag } from "@/adapters/featureFlagApi";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { Link } from "@/routing/Link.tsx";
 import { type SospesoApplicationStatus } from "@/sospeso/domain.ts";
@@ -32,6 +33,12 @@ export const sospesoRejectEventBus = createSafeEvent(
   detailSchema,
 );
 
+function Test() {
+  const isFlagOn = useFlag("isFlagOn");
+
+  return <div> isFlagOn: {String(isFlagOn)}</div>;
+}
+
 export function SospesoApplicationDashboard({
   applicationList,
 }: {
@@ -39,6 +46,9 @@ export function SospesoApplicationDashboard({
 }) {
   return (
     <div className="overflow-x-auto card shadow-lg min-h-96">
+      <FlagProvider>
+        <Test />
+      </FlagProvider>
       <table className="table">
         <thead>
           <tr className="bg-primary text-primary-content">

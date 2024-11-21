@@ -20,11 +20,9 @@ const { title } = Astro.props;
     <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
     <meta content={Astro.generator} name="generator" />
     <title>{title}</title>
-    <link
-      href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
     <script
+      is:inline
       defer
       src="https://umami.life-lifter.com/script.js"
       data-website-id="fb529fdb-c507-417a-ac37-9bef2965f7cc"></script>
