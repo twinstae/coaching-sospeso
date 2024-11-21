@@ -39,8 +39,8 @@ importers:
         specifier: 4.16.13
         version: 4.16.13(@types/node@22.8.7)(rollup@4.24.3)(typescript@5.6.3)
       better-auth:
-        specifier: 0.8.6
-        version: 0.8.6
+        specifier: 1.0.0-canary.8
+        version: 1.0.0-canary.8
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -2303,8 +2303,8 @@ packages:
   base-64@1.0.0:
     resolution: {integrity: sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg==}
 
-  better-auth@0.8.6:
-    resolution: {integrity: sha512-LkbMnOSDUZMp8JDUclPXMxLpUARxY6iAuVLFVHjuQnopSszvCaB8lUvJacXIH/L3xcXDdiF/WY4Yy28OZns6Ww==}
+  better-auth@1.0.0-canary.8:
+    resolution: {integrity: sha512-UMx1JPq4M9MFnaH3yI2FKuFSUGm4K7SS98PKJZOKCM8mykOwbs58bj0CZPLeOHRFq/lx7puUL+ZQkBXysaRv2A==}
 
   better-call@0.2.15-beta.6:
     resolution: {integrity: sha512-IIpVe7z7xW5pNOOhOj3u7cEde53v3Duzs4bstDJfLVqdmEiYRUCfy+1w2apf3MqYOHY8gYcd7DbTsvFeBqg4CA==}
@@ -7309,7 +7309,7 @@ snapshots:
 
   base-64@1.0.0: {}
 
-  better-auth@0.8.6:
+  better-auth@1.0.0-canary.8:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       '@noble/ciphers': 0.6.0

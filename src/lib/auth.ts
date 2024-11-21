@@ -36,7 +36,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    sendResetPassword: async ({ user }, url) => {
+    sendResetPassword: async ({ user, url }) => {
       await emailApi.send({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,

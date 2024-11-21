@@ -24,6 +24,13 @@ export const session = sqliteTable("session", {
   expiresAt: integer("expiresAt", {
     mode: "timestamp",
   }).notNull(),
+  token: text("token").notNull().unique(),
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
+  }).notNull(),
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
+  }).notNull(),
   ipAddress: text("ipAddress"),
   userAgent: text("userAgent"),
   userId: text("userId")
@@ -41,10 +48,20 @@ export const account = sqliteTable("account", {
   accessToken: text("accessToken"),
   refreshToken: text("refreshToken"),
   idToken: text("idToken"),
-  expiresAt: integer("expiresAt", {
+  accessTokenExpiresAt: integer("accessTokenExpiresAt", {
     mode: "timestamp",
   }),
+  refreshTokenExpiresAt: integer("refreshTokenExpiresAt", {
+    mode: "timestamp",
+  }),
+  scope: text("scope"),
   password: text("password"),
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
+  }).notNull(),
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
+  }).notNull(),
 });
 
 export const verification = sqliteTable("verification", {
@@ -57,7 +74,11 @@ export const verification = sqliteTable("verification", {
   createdAt: integer("createdAt", {
     mode: "timestamp",
   }),
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
+  }),
 });
+
 
 // sospeso
 export const sospeso = sqliteTable("sospeso", {
