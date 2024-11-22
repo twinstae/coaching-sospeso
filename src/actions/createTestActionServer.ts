@@ -8,7 +8,10 @@ import type { Sospeso } from "@/sospeso/domain";
 import { buildSospesoActions } from "./index.ts";
 import type { SospesoRepositoryI } from "@/sospeso/repository.ts";
 import type { ActionDefinition } from "./buildActionServer.ts";
-import { createFakePaymentRepository, type PaymentRepositoryI } from "@/payment/repository.ts";
+import {
+  createFakePaymentRepository,
+  type PaymentRepositoryI,
+} from "@/payment/repository.ts";
 
 type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
   input: z.input<TInputSchema>,
@@ -17,8 +20,8 @@ type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
 
 type InferDefinedTestActions<T> = {
   [K in keyof T]: T[K] extends ActionDefinition<infer Input, infer Output>
-  ? ActionTestClient<Output, z.ZodType<Input>> & string
-  : never;
+    ? ActionTestClient<Output, z.ZodType<Input>> & string
+    : never;
 };
 
 type TestActionServer = InferDefinedTestActions<
@@ -54,9 +57,9 @@ export async function buildTestActionServer(
   ) => Promise<SospesoRepositoryI>,
   initState: Record<string, Sospeso>,
 ): Promise<{
-  actionServer: TestActionServer,
-  sospesoRepo: SospesoRepositoryI,
-  paymentRepo: PaymentRepositoryI
+  actionServer: TestActionServer;
+  sospesoRepo: SospesoRepositoryI;
+  paymentRepo: PaymentRepositoryI;
 }> {
   const sospesoRepo = await createSospesoRepository(initState);
   const paymentRepo = createFakePaymentRepository({});
@@ -70,6 +73,6 @@ export async function buildTestActionServer(
       ]),
     ) as TestActionServer,
     sospesoRepo,
-    paymentRepo
-  }
+    paymentRepo,
+  };
 }

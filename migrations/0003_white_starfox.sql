@@ -1,1 +1,0 @@
-ALTER TABLE `verification` ADD `createdAt` integer;

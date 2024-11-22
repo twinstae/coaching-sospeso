@@ -79,7 +79,6 @@ export const verification = sqliteTable("verification", {
   }),
 });
 
-
 // sospeso
 export const sospeso = sqliteTable("sospeso", {
   id: text("id").primaryKey(),

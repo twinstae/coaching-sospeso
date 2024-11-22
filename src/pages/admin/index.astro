@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { SospesoApplicationDashboard } from "@/components/SospesoApplicationDashboard";
-import { sospesoRepo } from '@/actions';
+import { sospesoRepo } from "@/actions";
 
 const applicationList = await sospesoRepo.retrieveApplicationList();
 

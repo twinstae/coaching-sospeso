@@ -26,15 +26,24 @@ importers:
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
+      '@openfeature/core':
+        specifier: ^1.5.0
+        version: 1.5.0
+      '@openfeature/react-sdk':
+        specifier: ^0.4.8
+        version: 0.4.8(@openfeature/web-sdk@1.3.2(@openfeature/core@1.5.0))(react@18.3.1)
+      '@openfeature/server-sdk':
+        specifier: ^1.16.2
+        version: 1.16.2(@openfeature/core@1.5.0)
+      '@openfeature/web-sdk':
+        specifier: ^1.3.2
+        version: 1.3.2(@openfeature/core@1.5.0)
       '@types/react':
         specifier: ^18.3.11
         version: 18.3.12
       '@types/react-dom':
         specifier: ^18.3.1
         version: 18.3.1
-      '@unleash/proxy-client-react':
-        specifier: ^4.4.0
-        version: 4.4.0(unleash-proxy-client@3.6.1)
       astro:
         specifier: 4.16.13
         version: 4.16.13(@types/node@22.8.7)(rollup@4.24.3)(typescript@5.6.3)
@@ -71,9 +80,6 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
-      unleash-proxy-client:
-        specifier: ^3.6.1
-        version: 3.6.1
       valibot:
         specifier: 1.0.0-beta.3
         version: 1.0.0-beta.3(typescript@5.6.3)
@@ -1516,6 +1522,26 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
+  '@openfeature/core@1.5.0':
+    resolution: {integrity: sha512-dRBJjnYhEa6XoF9BNf9sW4sHuXmigfBbbatA5djbRXRBDExrXsMydMpEWQqKYhd7XwdwFatuh2q+UkVbXriUKA==}
+
+  '@openfeature/react-sdk@0.4.8':
+    resolution: {integrity: sha512-v0mmOUc546o7FoOS2EY7Z7aY/ocEsVQ/tcpN0qlLwO4Nfl/zNGExGc4X/owPP2XVbWIWws5JrOutK48Hal7Zgw==}
+    peerDependencies:
+      '@openfeature/web-sdk': ^1.3.0
+      react: '>=16.8.0'
+
+  '@openfeature/server-sdk@1.16.2':
+    resolution: {integrity: sha512-bGK3Lgf9JY06s1vJkBs1PgSH+taxrwBx/SJFTNWAmA5TfV3c5SgLCGlU2xYEda5Ba3885ly+foWeRJrXdZGQ+g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@openfeature/core': ^1.5.0
+
+  '@openfeature/web-sdk@1.3.2':
+    resolution: {integrity: sha512-DY7JwA4Pakczq/s6em8hsLuCL8xYfKeyzb9F18gM3Eh0OStUxrUsKfDKuAk1h9l810W1hoA1AVmvPSsQDHItxw==}
+    peerDependencies:
+      '@openfeature/core': ^1.5.0
+
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
@@ -2002,12 +2028,6 @@ packages:
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
-
-  '@unleash/proxy-client-react@4.4.0':
-    resolution: {integrity: sha512-btU/2Pho5eVOBdIYxNAeHq36lpm41/qmRVKuuLIGdg3XOZign9rA6KsarAk94W01XKulrNCrESINZMIvPoA6Cg==}
-    engines: {node: '>=16.0.0'}
-    peerDependencies:
-      unleash-proxy-client: ^3.5.2
 
   '@vercel/analytics@1.3.2':
     resolution: {integrity: sha512-n/Ws7skBbW+fUBMeg+jrT30+GP00jTHvCcL4fuVrShuML0uveEV/4vVUdvqEVnDgXIGfLm0GXW5EID2mCcRXhg==}
@@ -4560,9 +4580,6 @@ packages:
   thenify@3.3.1:
     resolution: {integrity: sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==}
 
-  tiny-emitter@2.1.0:
-    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==}
-
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
@@ -4734,9 +4751,6 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
-
-  unleash-proxy-client@3.6.1:
-    resolution: {integrity: sha512-gbvkob/cBewLHMh9aAwWLDLN8D1efJ5FdUMva7wGBVykJMIqyYIlUsJpVNXnpq+feNBn6Qc1D1huXD2bk9bEmA==}
 
   unplugin@1.15.0:
     resolution: {integrity: sha512-jTPIs63W+DUEDW207ztbaoO7cQ4p5aVaB823LSlxpsFEU3Mykwxf3ZGC/wzxFJeZlASZYgVrWeo7LgOrqJZ8RA==}
@@ -6257,6 +6271,21 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
+  '@openfeature/core@1.5.0': {}
+
+  '@openfeature/react-sdk@0.4.8(@openfeature/web-sdk@1.3.2(@openfeature/core@1.5.0))(react@18.3.1)':
+    dependencies:
+      '@openfeature/web-sdk': 1.3.2(@openfeature/core@1.5.0)
+      react: 18.3.1
+
+  '@openfeature/server-sdk@1.16.2(@openfeature/core@1.5.0)':
+    dependencies:
+      '@openfeature/core': 1.5.0
+
+  '@openfeature/web-sdk@1.3.2(@openfeature/core@1.5.0)':
+    dependencies:
+      '@openfeature/core': 1.5.0
+
   '@oslojs/encoding@1.1.0': {}
 
   '@peculiar/asn1-android@2.3.13':
@@ -6836,10 +6865,6 @@ snapshots:
       eslint-visitor-keys: 3.4.3
 
   '@ungap/structured-clone@1.2.0': {}
-
-  '@unleash/proxy-client-react@4.4.0(unleash-proxy-client@3.6.1)':
-    dependencies:
-      unleash-proxy-client: 3.6.1
 
   '@vercel/analytics@1.3.2(react@18.3.1)':
     dependencies:
@@ -9959,8 +9984,6 @@ snapshots:
     dependencies:
       any-promise: 1.3.0
 
-  tiny-emitter@2.1.0: {}
-
   tiny-invariant@1.3.3: {}
 
   tinybench@2.9.0: {}
@@ -10137,11 +10160,6 @@ snapshots:
   universalify@0.2.0: {}
 
   universalify@2.0.1: {}
-
-  unleash-proxy-client@3.6.1:
-    dependencies:
-      tiny-emitter: 2.1.0
-      uuid: 9.0.1
 
   unplugin@1.15.0:
     dependencies:

@@ -26,7 +26,7 @@ describe("payment", () => {
     });
 
     expect(payment).toStrictEqual({
-      afterLinkUrl: "http://localhost:3000/sospeso/DaLNnQs8nfVgs0",
+      afterLinkUrl: "http://localhost:4321/sospeso/DaLNnQs8nfVgs0",
       expiredDate: new Date("2024-11-15T00:00:00Z"),
       goodsDescription:
         "1시간 반에서 2시간의 코칭을 수혜자에게 제공하는 소스페소를 구매합니다.",
@@ -48,7 +48,7 @@ describe("payment", () => {
 
     const result = completePayment(payment, EXAMPLE_PAYMENT_PAYLOAD);
     expect(result).toStrictEqual({
-      afterLinkUrl: "http://localhost:3000/sospeso/DaLNnQs8nfVgs0",
+      afterLinkUrl: "http://localhost:4321/sospeso/DaLNnQs8nfVgs0",
       expiredDate: new Date("2024-11-15T00:00:00Z"),
       goodsDescription:
         "1시간 반에서 2시간의 코칭을 수혜자에게 제공하는 소스페소를 구매합니다.",

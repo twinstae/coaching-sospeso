@@ -151,8 +151,5 @@ export const sospesoRepo = createFakeSospesoRepository({});
 export const paymentRepo = createFakePaymentRepository({});
 
 export const server = buildActionServer(
-  buildSospesoActions(
-    sospesoRepo,
-    paymentRepo,
-  ),
+  buildSospesoActions(sospesoRepo, paymentRepo),
 );

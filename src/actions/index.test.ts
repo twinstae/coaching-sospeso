@@ -20,7 +20,7 @@ import {
 
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
-import { paymentApi } from './index.ts';
+import { paymentApi } from "./index.ts";
 
 const generateId = generateNanoId;
 
@@ -46,7 +46,9 @@ function runSospesoActionsTest(
         LOGGED_IN_CONTEXT,
       );
 
-      const payment = await paymentRepo.retrievePayment(TEST_SOSPESO_LIST_ITEM.id);
+      const payment = await paymentRepo.retrievePayment(
+        TEST_SOSPESO_LIST_ITEM.id,
+      );
 
       const { paymentLink } = await paymentApi.generatePaymentLink(payment);
 
@@ -148,7 +150,9 @@ function runSospesoActionsTest(
         [approvedSospeso.id]: approvedSospeso,
       });
 
-      const before = await sospesoRepo.retrieveSospesoDetail(approvedSospeso.id);
+      const before = await sospesoRepo.retrieveSospesoDetail(
+        approvedSospeso.id,
+      );
 
       expect(before?.status).toBe("pending");
 
