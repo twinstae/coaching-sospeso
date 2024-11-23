@@ -48,7 +48,7 @@ export function LoginForm({ error }: { error: "email_not_found" | undefined }) {
           </button>
         </Form>
 
-        <div className="flex space-between">
+        <div className="grid grid-cols-2">
           <Link
             routeKey="회원가입"
             params={{}}
