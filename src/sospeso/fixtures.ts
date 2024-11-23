@@ -160,7 +160,10 @@ export function randomSospeso(status: SospesoStatus = "issued"): Sospeso {
       id: generateId(),
       paidAmount: 80000,
       issuerId: TEST_USER_ID,
-      issuedAt: faker.date.between({ from: new Date("2024-11-01T00:00:00Z"), to: new Date(),}),
+      issuedAt: faker.date.between({
+        from: new Date("2024-11-01T00:00:00Z"),
+        to: new Date(),
+      }),
     },
     applicationList:
       status === "issued"

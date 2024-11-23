@@ -24,15 +24,3 @@ const user = Astro.locals.user;
     }
   </div>
 </div>
-
-<script>
-  import { navigate } from "astro:transitions/client";
-  import { authApi } from "@/adapters/authApi.ts";
-  import { href } from "@/routing/href";
-
-  document.getElementById("logout-button")?.addEventListener("click", () => {
-    authApi.logout().then(() => {
-      navigate(href("로그인", {}));
-    });
-  });
-</script>

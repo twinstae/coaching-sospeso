@@ -1,6 +1,10 @@
 import { SospesoList } from "@/components/SospesoList";
-import { calcStatus } from '@/sospeso/domain';
-import { pick, randomSospeso, TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures";
+import { calcStatus } from "@/sospeso/domain";
+import {
+  pick,
+  randomSospeso,
+  TEST_SOSPESO_LIST_ITEM,
+} from "@/sospeso/fixtures";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof SospesoList> = {
@@ -16,15 +20,16 @@ export const Base: Story = {
   },
 };
 
-const sospesoList = Array.from({length: 10})
-.map((_, _i) => {
-  const sospeso = randomSospeso(pick(["issued", "consumed", "consumed", "pending"]));
+const sospesoList = Array.from({ length: 10 }).map((_, _i) => {
+  const sospeso = randomSospeso(
+    pick(["issued", "consumed", "consumed", "pending"]),
+  );
 
   return {
     ...sospeso,
     status: calcStatus(sospeso),
-    issuedAt: sospeso.issuing.issuedAt
-  }
+    issuedAt: sospeso.issuing.issuedAt,
+  };
 });
 
 export const Ten: Story = {

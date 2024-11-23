@@ -110,8 +110,9 @@ export function SignUpForm() {
                   className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
                   routeKey={"이용약관"}
                   params={undefined}
-                  target='_blank'
-                >이용약관 <span className="text-red-600">(필수)</span>
+                  target="_blank"
+                >
+                  이용약관 <span className="text-red-600">(필수)</span>
                 </Link>
               </>
             }
@@ -124,7 +125,7 @@ export function SignUpForm() {
                   className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
                   routeKey={"개인정보처리방침"}
                   params={undefined}
-                  target='_blank'
+                  target="_blank"
                 >
                   개인정보처리방침 <span className="text-red-600">(필수)</span>
                 </Link>

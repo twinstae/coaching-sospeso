@@ -4,6 +4,7 @@ export type User = {
   name: string;
   role: "user" | "admin";
   nickname: string;
+  phone: string;
   email: string;
   emailVerified: boolean;
   image: string;

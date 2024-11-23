@@ -5,7 +5,7 @@ import { signUpBus, SignUpForm } from "./SignUpForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 import { getA11ySnapshot } from "@/siheom/getA11ySnapshot.ts";
 import { renderTL } from "@/siheom/renderTL.tsx";
-import { href } from '@/routing/href.ts';
+import { href } from "@/routing/href.ts";
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
 
@@ -109,15 +109,20 @@ describe("SignUpForm", () => {
       "약관에 동의하지 않으면 가입할 수 없습니다",
     );
 
-    await expectTL(queryTL.link(/이용약관/i)).toHaveAttribute("href", href("이용약관", undefined))
+    await expectTL(queryTL.link(/이용약관/i)).toHaveAttribute(
+      "href",
+      href("이용약관", undefined),
+    );
     await queryTL.checkbox(/이용약관/i).click();
     await queryTL.button("회원가입하기").click();
 
-
-    await expectTL(
-      queryTL.checkbox(/개인정보처리방침/i),
-    ).toHaveErrorMessage("개인청보처리방침에 동의하지 않으면 가입할 수 없습니다");
-    await expectTL(queryTL.link(/개인정보처리방침/i)).toHaveAttribute("href", href("개인정보처리방침", undefined))
+    await expectTL(queryTL.checkbox(/개인정보처리방침/i)).toHaveErrorMessage(
+      "개인청보처리방침에 동의하지 않으면 가입할 수 없습니다",
+    );
+    await expectTL(queryTL.link(/개인정보처리방침/i)).toHaveAttribute(
+      "href",
+      href("개인정보처리방침", undefined),
+    );
 
     expect(result).toEqual({});
   });
@@ -144,7 +149,7 @@ describe("SignUpForm", () => {
     await queryTL.textbox("전화번호").fill("010-4827-1733");
     await queryTL.textbox("별명").fill("김토끼");
 
-    await queryTL.checkbox(/이용약관/i).click();    
+    await queryTL.checkbox(/이용약관/i).click();
     await queryTL.checkbox(/개인정보처리방침/i).click();
 
     await queryTL.button("회원가입하기").click();
@@ -157,7 +162,7 @@ describe("SignUpForm", () => {
       passwordAgain: "!1q2w3e4r!",
       phone: "010-4827-1733",
       privacy: true,
-      usage: true
+      usage: true,
     });
   });
 });

@@ -9,6 +9,7 @@ export const user = sqliteTable("user", {
   emailVerified: integer("emailVerified", {
     mode: "boolean",
   }).notNull(),
+  phone: text("phone_number").notNull().default(""),
   image: text("image"),
   createdAt: integer("createdAt", {
     mode: "timestamp",
@@ -16,7 +17,7 @@ export const user = sqliteTable("user", {
   updatedAt: integer("updatedAt", {
     mode: "timestamp",
   }).notNull(),
-  nickname: text("nickname").notNull(),
+  nickname: text("nickname").notNull().default(""),
   role: text("role").default("user"),
   banned: integer("banned", {
     mode: "boolean",

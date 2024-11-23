@@ -32,10 +32,7 @@ export function Checkbox<InputT extends Record<string, any>>({
           {...props}
           type="checkbox"
           name={field.name} // send down the input name
-          className={clsx(
-            "checkbox aria-[invalid=true]:text-error",
-            className,
-          )}
+          className={clsx("checkbox aria-[invalid=true]:text-error", className)}
           onChange={field.onChange} // send value to hook form
           onBlur={field.onBlur} // notify when input is touched/blur
           value={field.value ?? ""} // input value

@@ -7,33 +7,50 @@ const data = await auth.api.getSession({
   headers: Astro.request.headers,
 });
 
+const user = data?.user;
+
+if (!user) {
+  return Astro.redirect("/auth/login");
+}
+
 const currentUser: {
   name: string;
   nickname: string;
   phone: string;
-} | null = data?.user
-  ? {
-      name: data.user.name,
-
-      phone: data.user.phone,
-      nickname: data.user.nickname,
-    }
-  : null;
+} = {
+  name: user.name,
+  phone: user.phone,
+  nickname: user.nickname,
+};
 ---
 
 <Layout title="코칭 소스페소 프로필">
-  {
-    currentUser ? (
-      <div class="flex flex-col text-center">
-        <Link routeKey="개인정보-변경" params={undefined} className=" link">
-          개인정보 변경
-        </Link>
-        <span>이름(실명): {currentUser.name}</span>
-        <span>전화번호: {currentUser.phone}</span>
-        <button id="logout-button">
-          <span class="font-bold">{currentUser.nickname}</span> 로그아웃
-        </button>
-      </div>
-    ) : null
-  }
+  <div class="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
+    
+    
+    <h2 class="text-lg font-bold">{currentUser.nickname} ({currentUser.name})</h2>
+    <p>이메일: {user.email}</p>
+    <p>전화번호: {currentUser.phone}</p>
+    
+  <div class="grid grid-cols-2 gap-2">
+    <Link routeKey="개인정보-변경" params={undefined} className="btn btn-primary">
+      개인정보 변경하기
+    </Link>
+    <button id="logout-button" class="btn btn-error">
+      로그아웃
+    </button>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+  import { authApi } from "@/adapters/authApi.ts";
+  import { href } from "@/routing/href";
+
+  document.getElementById("logout-button")?.addEventListener("click", () => {
+    authApi.logout().then(() => {
+      navigate(href("로그인", {}));
+    });
+  });
+</script>
