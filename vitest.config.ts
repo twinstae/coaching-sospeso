@@ -45,6 +45,7 @@ export default getViteConfig({
         "src/adapters/**",
         "src/lib/**",
         "src/middleware/**",
+        "src/shared/email",
       ],
     },
   },

@@ -45,8 +45,8 @@ importers:
         specifier: 4.16.13
         version: 4.16.13(@types/node@22.8.7)(rollup@4.24.3)(typescript@5.6.3)
       better-auth:
-        specifier: 1.0.0-canary.8
-        version: 1.0.0-canary.8
+        specifier: 1.0.0
+        version: 1.0.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -2865,11 +2865,11 @@ packages:
   bcp-47-match@2.0.3:
     resolution: {integrity: sha512-JtTezzbAibu8G0R9op9zb3vcWZd9JF6M0xOYGPn0fNCd7wOpRB1mU2mH9T8gaBGbAAyIIVgB2G7xG0GP98zMAQ==}
 
-  better-auth@1.0.0-canary.8:
-    resolution: {integrity: sha512-UMx1JPq4M9MFnaH3yI2FKuFSUGm4K7SS98PKJZOKCM8mykOwbs58bj0CZPLeOHRFq/lx7puUL+ZQkBXysaRv2A==}
+  better-auth@1.0.0:
+    resolution: {integrity: sha512-R//T+jrIMZk1hScFk4b+Z0hDPCh/vj4p9UyErWdRVsZQy5yn1bA/suHw76uLTeYdwDvoyvhbsgdoQ9MQ1z3Q/w==}
 
-  better-call@0.2.15-beta.6:
-    resolution: {integrity: sha512-IIpVe7z7xW5pNOOhOj3u7cEde53v3Duzs4bstDJfLVqdmEiYRUCfy+1w2apf3MqYOHY8gYcd7DbTsvFeBqg4CA==}
+  better-call@0.3.2:
+    resolution: {integrity: sha512-ZYUADh4S4JF3QOIgC0QAm4N9Ifb7v3rOEcwkIxr3UXxd+GCrGmEzv7VDe35o1ldX0Zcb9CX3QfT0jdJoMIKA9w==}
 
   better-opn@3.0.2:
     resolution: {integrity: sha512-aVNobHnJqLiUelTaHat9DZ1qM2w0C0Eym4LPI/3JxOnSokGVdsl1T1kN7TFvsEAD8G47A6VKQ0TVHqbBnYMJlQ==}
@@ -8859,14 +8859,14 @@ snapshots:
 
   bcp-47-match@2.0.3: {}
 
-  better-auth@1.0.0-canary.8:
+  better-auth@1.0.0:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       '@noble/ciphers': 0.6.0
       '@noble/hashes': 1.5.0
       '@simplewebauthn/browser': 10.0.0
       '@simplewebauthn/server': 10.0.1
-      better-call: 0.2.15-beta.6
+      better-call: 0.3.2
       consola: 3.2.3
       defu: 6.1.4
       jose: 5.9.6
@@ -8879,7 +8879,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  better-call@0.2.15-beta.6:
+  better-call@0.3.2:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       rou3: 0.5.1
