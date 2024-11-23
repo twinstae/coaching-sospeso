@@ -1,13 +1,12 @@
 import { createAuthClient } from "better-auth/react";
 import {
   inferAdditionalFields,
-  magicLinkClient,
 } from "better-auth/client/plugins";
 import { href } from "@/routing/href.ts";
 import type { auth } from "@/lib/auth";
 
 const authClient = createAuthClient({
-  plugins: [magicLinkClient(), inferAdditionalFields<typeof auth>()],
+  plugins: [inferAdditionalFields<typeof auth>()],
 });
 
 export type AuthApi = {

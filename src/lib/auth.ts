@@ -1,9 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { magicLink } from "better-auth/plugins";
 import { db } from "@/adapters/db.ts";
 import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
 import { env, isProd } from "@/adapters/env.ts";
+import { renderSecretLinkEmail } from '@/adapters/renderEmail';
 
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
@@ -40,8 +40,15 @@ export const auth = betterAuth({
       await emailApi.send({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,
-        subject: "Reset your password",
-        html: `Click the link to reset your password: <a href="${url}">비밀번호 리셋하기</a>`,
+        subject: "코칭 소스페소 비밀번호 변경하기",
+        html: await renderSecretLinkEmail({
+          title: `비밀번호 변경`,
+          description: "비밀번호를 변경하시려면 다음 링크를 클릭해주세요.",
+          cta: {
+            href: url,
+            text: '비밀번호 변경하기'
+          }
+        }),
       });
     },
   },
@@ -51,27 +58,15 @@ export const auth = betterAuth({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,
         subject: "코칭 소스페소에 가입하기",
-        html: `소스페소에 가입하시려면 다음 링크를 클릭하세요 <a href="${url}">로그인하기</a>`,
+        html: await renderSecretLinkEmail({
+          title: `${user.name} 님 어서오세요`,
+          description: "가입을 완료하시려면 다음 링크를 눌러 이메일을 인증해주세요",
+          cta: {
+            href: url,
+            text: '이메일 인증하기'
+          }
+        }),
       });
     },
-  },
-  plugins: [
-    magicLink({
-      sendMagicLink: async ({
-        email,
-        url,
-      }: {
-        email: string;
-        token: string;
-        url: string;
-      }) => {
-        emailApi.send({
-          to: email,
-          from: LIFE_LIFTER_ADMIN_EMAIL,
-          subject: "코칭 소스페소에 로그인",
-          html: `로그인하시려면 다음 링크를 클릭하세요 <a href="${url}">로그인하기</a>`,
-        });
-      },
-    }),
-  ],
+  }
 });

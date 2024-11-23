@@ -16,6 +16,7 @@
 | `pnpm e2e ...`             | playwright로 backend를 포함한 e2e test를 돌립니다. |
 | `pnpm storybook ...`       | 스토리북 서버를 엽니다.                            |
 | `pnpm build-storybook ...` | 스토리북을 빌드합니다.                             |
+| `pnpm email ...`           | 이메일 프리뷰를 띄웁니다                           |
 
 ## 개발환경 셋업
 
