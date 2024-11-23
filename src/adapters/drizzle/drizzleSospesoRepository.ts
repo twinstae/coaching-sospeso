@@ -1,11 +1,10 @@
 import type { SospesoRepositoryI } from "@/sospeso/repository";
 import * as schema from "./schema.ts";
 import { eq } from "drizzle-orm";
-import { calcStatus, type Sospeso } from "@/sospeso/domain.ts";
+import { calcStatus, type Sospeso, type SospesoApplicationStatus } from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
 import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
-import { TEST_USER_ID } from "@/auth/fixtures.ts";
 
 const sospesoSchema = v.object({
   id: v.string(),
@@ -153,31 +152,38 @@ export function createDrizzleSospesoRepository(
       };
     },
     async retrieveApplicationList() {
-      const result = await db.query.sospeso
+      const result = await db.query.sospesoApplication
         .findMany({
           with: {
-            applicationList: true,
-            consuming: true,
-            issuing: true,
+            applicant: {
+              columns: {
+                id: true,
+                nickname: true
+              }
+            },
+            sospeso: {
+              columns: {
+                id: true,
+                to: true
+              }
+            },
           },
         })
-        .then((items) => items.map(dbModelToDomainModel));
 
-      return result.flatMap((sospeso) => {
-        return sospeso.applicationList.map((application) => {
-          return {
-            id: application.id,
-            sospesoId: sospeso.id,
-            to: sospeso.to,
-            status: application.status,
-            appliedAt: application.appliedAt,
-            content: application.content,
-            applicant: {
-              id: TEST_USER_ID,
-              nickname: "김토끼",
-            },
-          };
-        });
+      return result.map((application) => {
+        const applicant = application.applicant;
+        return {
+          id: application.id,
+          sospesoId: application.sospesoId,
+          to: application.sospeso.to,
+          status: application.status as SospesoApplicationStatus,
+          appliedAt: application.appliedAt,
+          content: application.content,
+          applicant: {
+            id: applicant.id,
+            nickname: applicant.nickname
+          }
+        }
       });
     },
     async updateOrSave(sospesoId, update) {
