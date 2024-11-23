@@ -15,7 +15,7 @@ export function SospesoList({
   }[];
 }) {
   return (
-    <table className="table max-w-3xl m-auto bg-base-100">
+    <table className="table">
       <thead>
         <tr>
           <th>From.</th>

@@ -324,12 +324,10 @@ afterAll(async () => {
     .where(like(schema.user.email, "%@test.kr"))
     .run();
 
-  // const repo = await createDrizzleTestSospesoRepository(Object.fromEntries(Array.from({ length: 100}).map((_, i) => {
+  // await createDrizzleTestSospesoRepository(Object.fromEntries(Array.from({ length: 100}).map((_, i) => {
   //   const sospeso = randomSospeso(pick(["issued", "issued", "consumed", "consumed", "pending"]))
   //   return [sospeso.id, sospeso]
   // })))
-
-  // console.log(await repo.retrieveSospesoList())
 });
 
 runSospesoActionsTest(

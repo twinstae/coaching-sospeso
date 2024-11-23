@@ -3,8 +3,13 @@ import { sospesoRepo } from "@/actions";
 import { SospesoList } from "@/components/SospesoList";
 import Layout from "@/layouts/Layout.astro";
 import { Link } from "@/routing/Link.tsx";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
+import { Pagination } from "@/shared/Pagination";
 
-const sospesoList = await sospesoRepo.retrieveSospesoList();
+const params = parseRouteParamsFromUrl("홈", new URL(Astro.url));
+const page = Math.max(params.page ?? 1, 1);
+
+const { sospesoList, totalPage } = await sospesoRepo.retrieveSospesoList(page);
 
 if (!sospesoList) {
   return new Response(null, {
@@ -15,31 +20,40 @@ if (!sospesoList) {
 ---
 
 <Layout title="코칭 소스페소">
-  <div class="hero bg-base-200 py-40">
-    <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-5xl font-bold mb-12">코칭 소스페소</h1>
-        <p class="mb-4">
-          소스페소라는 맡겨둔 커피라는 뜻의 이탈리아어입니다. 커피값을 누군가
-          먼저 계산해두고 영수증을 걸어두면, 조건에 맞는 누구나 그 커피를 마실
-          수 있습니다. 경제적 여유가 없는 노인, 노숙자 등등...
-        </p>
-        <p>
-          코칭 소스페소도 비슷합니다. 도움을 받을 경제적 여력이 없는 사회
-          초년생과 취약 계층을 위해 누군가 코칭비를 미리 지불하면. 조건에 맞는
-          사람이라면 누구나 코칭을 받고 도움을 받을 수 있습니다.
-        </p>
+  {
+    page === 1 && (
+      <div class="hero bg-base-200 py-40">
+        <div class="hero-content text-center">
+          <div class="max-w-md">
+            <h1 class="text-5xl font-bold mb-12">코칭 소스페소</h1>
+            <p class="mb-4">
+              소스페소라는 맡겨둔 커피라는 뜻의 이탈리아어입니다. 커피값을
+              누군가 먼저 계산해두고 영수증을 걸어두면, 조건에 맞는 누구나 그
+              커피를 마실 수 있습니다. 경제적 여유가 없는 노인, 노숙자 등등...
+            </p>
+            <p>
+              코칭 소스페소도 비슷합니다. 도움을 받을 경제적 여력이 없는 사회
+              초년생과 취약 계층을 위해 누군가 코칭비를 미리 지불하면. 조건에
+              맞는 사람이라면 누구나 코칭을 받고 도움을 받을 수 있습니다.
+            </p>
 
-        <Link
-          className="btn btn-primary mt-16"
-          routeKey="소스페소-발행"
-          params={undefined}
-        >
-          소스페소 발행하러 가기
-        </Link>
+            <Link
+              className="btn btn-primary mt-16"
+              routeKey="소스페소-발행"
+              params={undefined}
+            >
+              소스페소 발행하러 가기
+            </Link>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    )
+  }
 
-  <SospesoList sospesoList={sospesoList} />
+  <section
+    class="max-w-3xl m-auto mt-16 bg-base-100 flex flex-col items-center gap-4 rounded-lg"
+  >
+    <SospesoList sospesoList={sospesoList} />
+    <Pagination routeKey="홈" params={{}} current={page} end={totalPage} />
+  </section>
 </Layout>

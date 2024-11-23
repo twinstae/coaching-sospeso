@@ -12,13 +12,13 @@ export type DynamicRoute = {
 
 type Route = StaticRoute | DynamicRoute;
 
-const pageSchema = v.pipe(v.number(), v.integer(), v.minValue(0));
+const pageSchema = v.pipe(v.unknown(), v.transform(Number) ,v.number(), v.integer());
 
 export const routes = {
   홈: {
     path: "/",
     paramsSchema: v.object({
-      page: pageSchema,
+      page: v.optional(pageSchema),
     }),
   },
   "소스페소-발행": {

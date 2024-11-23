@@ -1,6 +1,9 @@
-import type { SospesoRepositoryI } from "@/sospeso/repository";
+import {
+  SOSPESO_PER_PAGE,
+  type SospesoRepositoryI,
+} from "@/sospeso/repository";
 import * as schema from "./schema.ts";
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import {
   calcStatus,
   type Sospeso,
@@ -82,7 +85,11 @@ export function createDrizzleSospesoRepository(
   db: LibSQLDatabase<typeof schema>,
 ): SospesoRepositoryI {
   return {
-    async retrieveSospesoList() {
+    async retrieveSospesoList(page: number) {
+      const { totalCount } = (await db
+        .select({ totalCount: count(schema.sospeso.id) })
+        .from(schema.sospeso)
+        .get()) ?? { totalCount: 1 };
       const result = await db.query.sospeso
         .findMany({
           with: {
@@ -90,10 +97,12 @@ export function createDrizzleSospesoRepository(
             consuming: true,
             issuing: true,
           },
+          limit: SOSPESO_PER_PAGE,
+          offset: (page - 1) * SOSPESO_PER_PAGE,
         })
         .then((items) => items.map(dbModelToDomainModel));
 
-      return result.map((sospeso) => {
+      const sospesoList = result.map((sospeso) => {
         const status = calcStatus(sospeso);
         return {
           id: sospeso.id,
@@ -103,6 +112,11 @@ export function createDrizzleSospesoRepository(
           issuedAt: sospeso.issuing.issuedAt,
         };
       });
+     
+      return {
+        sospesoList,
+        totalPage: Math.max(Math.ceil(totalCount / SOSPESO_PER_PAGE), 1),
+      };
     },
     async retrieveSospesoDetail(sospesoId) {
       const result = await db.query.sospeso.findFirst({

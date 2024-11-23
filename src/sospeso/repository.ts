@@ -46,7 +46,10 @@ type SospesoApplicationListItemDto = {
 };
 
 export interface SospesoRepositoryI {
-  retrieveSospesoList(): Promise<SospesoListItemDto[]>;
+  retrieveSospesoList(page: number): Promise<{
+    sospesoList: SospesoListItemDto[],
+    totalPage: number;
+  }>;
   retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto | undefined>;
   retrieveApplicationList(): Promise<SospesoApplicationListItemDto[]>;
   updateOrSave(
@@ -55,14 +58,16 @@ export interface SospesoRepositoryI {
   ): Promise<void>;
 }
 
+export const SOSPESO_PER_PAGE = 10
+
 export const createFakeSospesoRepository = (
   initState: Record<string, Sospeso> = {},
 ): SospesoRepositoryI => {
   let _fakeState = initState;
 
   return {
-    async retrieveSospesoList(): Promise<SospesoListItemDto[]> {
-      return Object.values(_fakeState).map((sospeso) => {
+    async retrieveSospesoList(page) {
+      const sospesoList = Object.values(_fakeState).map((sospeso) => {
         const status = calcStatus(sospeso);
         return {
           id: sospeso.id,
@@ -72,6 +77,13 @@ export const createFakeSospesoRepository = (
           issuedAt: sospeso.issuing.issuedAt,
         };
       });
+
+      const start = (page - 1) * SOSPESO_PER_PAGE;
+      const end = (page - 1) * SOSPESO_PER_PAGE + SOSPESO_PER_PAGE + 1;
+      return {
+        sospesoList: sospesoList.slice(start, end),
+        totalPage: Math.ceil(sospesoList.length / SOSPESO_PER_PAGE)
+      }
     },
     async retrieveSospesoDetail(sospesoId) {
       const sospeso = _fakeState[sospesoId];
