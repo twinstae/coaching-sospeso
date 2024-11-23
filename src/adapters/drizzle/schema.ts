@@ -149,7 +149,9 @@ export const sospesoApplicationRelations = relations(
 
 export const sospesoConsuming = sqliteTable("sospeso_consuming", {
   id: text("id").primaryKey(),
-  sospesoId: text("sospeso_id").references(() => sospeso.id),
+  sospesoId: text("sospeso_id")
+    .references(() => sospeso.id)
+    .notNull(),
   consumedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
   content: text("content").notNull(),
   memo: text("memo").notNull(),
@@ -183,6 +185,6 @@ export const payment = sqliteTable("payment", {
   totalAmount: integer("total_amount").notNull(),
   expiredDate: integer("expired_date", { mode: "timestamp_ms" }).notNull(),
   afterLinkUrl: text("after_link_url").notNull(),
-  command: text("command", { mode: "json"}).notNull(),
-  paymentResult: text("payment_result", { mode: "json"}),
+  command: text("command", { mode: "json" }).notNull(),
+  paymentResult: text("payment_result", { mode: "json" }),
 });

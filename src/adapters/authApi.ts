@@ -39,13 +39,13 @@ export type AuthApi = {
   logout: () => Promise<void>;
 };
 
-const SIGNUP_LOGIN_CALLBACK_URL = "/"
+const SIGNUP_LOGIN_CALLBACK_URL = "/";
 
 export const authApi: AuthApi = {
   async sendEmailVerification({ email }) {
     await authClient.sendVerificationEmail({
       email,
-      callbackURL: SIGNUP_LOGIN_CALLBACK_URL
+      callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
     });
   },
   signUp: {

@@ -33,7 +33,7 @@ function dbModelToDomainModel(dbModel: {
 }
 
 export function createDrizzlePaymentRepository(
-  db: LibSQLDatabase<typeof schema>
+  db: LibSQLDatabase<typeof schema>,
 ): PaymentRepositoryI {
   return {
     async retrievePayment(paymentId: string) {

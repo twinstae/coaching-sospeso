@@ -1,7 +1,11 @@
 import type { SospesoRepositoryI } from "@/sospeso/repository";
 import * as schema from "./schema.ts";
 import { eq } from "drizzle-orm";
-import { calcStatus, type Sospeso, type SospesoApplicationStatus } from "@/sospeso/domain.ts";
+import {
+  calcStatus,
+  type Sospeso,
+  type SospesoApplicationStatus,
+} from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
 import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
@@ -152,23 +156,22 @@ export function createDrizzleSospesoRepository(
       };
     },
     async retrieveApplicationList() {
-      const result = await db.query.sospesoApplication
-        .findMany({
-          with: {
-            applicant: {
-              columns: {
-                id: true,
-                nickname: true
-              }
-            },
-            sospeso: {
-              columns: {
-                id: true,
-                to: true
-              }
+      const result = await db.query.sospesoApplication.findMany({
+        with: {
+          applicant: {
+            columns: {
+              id: true,
+              nickname: true,
             },
           },
-        })
+          sospeso: {
+            columns: {
+              id: true,
+              to: true,
+            },
+          },
+        },
+      });
 
       return result.map((application) => {
         const applicant = application.applicant;
@@ -181,9 +184,9 @@ export function createDrizzleSospesoRepository(
           content: application.content,
           applicant: {
             id: applicant.id,
-            nickname: applicant.nickname
-          }
-        }
+            nickname: applicant.nickname,
+          },
+        };
       });
     },
     async updateOrSave(sospesoId, update) {
@@ -292,6 +295,7 @@ export function createDrizzleSospesoRepository(
           if (consuming) {
             await tx.insert(schema.sospesoConsuming).values({
               id: consuming.id,
+              sospesoId,
               consumedAt: consuming.consumedAt,
               consumerId: consuming.consumerId,
               coachId: consuming.coachId,

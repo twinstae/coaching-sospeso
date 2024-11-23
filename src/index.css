@@ -80,4 +80,26 @@ body {
     color: var(--tooltip-text-color);
     width: max-content;
   }
+
+  .stamp {
+    --stamp-border-width: 2px;
+    position: relative;
+    display: inline-block;
+    color: red;
+    padding: 4px 8px;
+    background-color: white;
+    box-shadow: inset 0px 0px 0px var(--stamp-border-width) red;
+    opacity: 0.8;
+    transform: rotate(-10deg);
+  }
+  .stamp:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfpcXB5vUsmFDsvAAUK7s_dnsXSm15x2wcmmlZp7i7wYf3SKclg6xT07dBJwDb6Kku8zaEFPGVfOcXTzL5VpmULPX7po6i_cWNbux43sLoQQKXHR9WvBG4LQIyX-SHDUrZcmwqicQMOvz5TwYzDHKpwE1otso45bATsDJPKWRTvJZHCufPP3VSI5WEWZw/s320/5O74VI6.jpg");
+    mix-blend-mode: lighten;
+  }
 }

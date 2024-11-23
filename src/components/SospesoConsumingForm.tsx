@@ -38,7 +38,7 @@ export function SospesoConsumingForm({
 
   return (
     <Form
-      className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8"
+      className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4"
       aria-labelledby={formTitleId}
       form={{
         schema: consumingSchema,

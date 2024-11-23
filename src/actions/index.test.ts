@@ -5,7 +5,7 @@ import { like } from "drizzle-orm";
 import * as schema from "@/adapters/drizzle/schema.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
 import { generateNanoId } from "@/adapters/generateId.ts";
-import { TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
+import { TEST_ADMIN_USER, TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
 import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures.ts";
 import type { Sospeso } from "@/sospeso/domain.ts";
 import {
@@ -76,7 +76,6 @@ function runSospesoActionsTest(
         TEST_SOSPESO_LIST_ITEM.id,
       );
 
-      console.log(payment);
       const { paymentLink } = await paymentApi.generatePaymentLink(payment);
 
       expect(paymentLink).toBe(
@@ -267,6 +266,10 @@ async function createDrizzleTestSospesoRepository(
     .insert(schema.user)
     .values(TEST_USER)
     .onConflictDoNothing();
+  await testDbReallySeriously
+    .insert(schema.user)
+    .values(TEST_ADMIN_USER)
+    .onConflictDoNothing();
 
   const repo = createDrizzleSospesoRepository(testDbReallySeriously);
 
@@ -282,27 +285,6 @@ async function createDrizzleTestSospesoRepository(
 
   return repo;
 }
-
-afterAll(async () => {
-  const testDbReallySeriously = drizzle({
-    schema,
-    logger: false,
-    connection: {
-      url: "file:test.db",
-    },
-  });
-
-  // prod db에 실행하면 절대 안 됨
-  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
-  await testDbReallySeriously.delete(schema.sospesoApplication).all();
-  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
-  await testDbReallySeriously.delete(schema.sospeso).all();
-
-  await testDbReallySeriously
-    .delete(schema.user)
-    .where(like(schema.user.email, "%@test.kr"))
-    .run();
-});
 
 async function createDrizzleTestPaymentRepository(
   initState: Record<string, Payment>,
@@ -328,8 +310,8 @@ afterAll(async () => {
     },
   });
 
-  // prod db에 실행하면 절대 안 됨
-  // sospeso
+  // // prod db에 실행하면 절대 안 됨
+  // // sospeso
   await testDbReallySeriously.delete(schema.sospesoConsuming).all();
   await testDbReallySeriously.delete(schema.sospesoApplication).all();
   await testDbReallySeriously.delete(schema.sospesoIssuing).all();
@@ -341,6 +323,13 @@ afterAll(async () => {
     .delete(schema.user)
     .where(like(schema.user.email, "%@test.kr"))
     .run();
+
+  // const repo = await createDrizzleTestSospesoRepository(Object.fromEntries(Array.from({ length: 100}).map((_, i) => {
+  //   const sospeso = randomSospeso(pick(["issued", "issued", "consumed", "consumed", "pending"]))
+  //   return [sospeso.id, sospeso]
+  // })))
+
+  // console.log(await repo.retrieveSospesoList())
 });
 
 runSospesoActionsTest(

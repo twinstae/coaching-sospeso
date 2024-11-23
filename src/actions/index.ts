@@ -23,6 +23,9 @@ import {
 } from "@/adapters/payplePaymentApi";
 import { isProd } from "@/adapters/env";
 import { isAdmin } from "@/auth/domain";
+import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository";
+import { db } from "@/adapters/db";
+import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaypmentRepository";
 
 export const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
@@ -153,8 +156,8 @@ export function buildSospesoActions(
   } satisfies Record<string, ActionDefinition>;
 }
 
-export const sospesoRepo = createFakeSospesoRepository({});
-export const paymentRepo = createFakePaymentRepository({});
+export const sospesoRepo = createDrizzleSospesoRepository(db);
+export const paymentRepo = createDrizzlePaymentRepository(db);
 
 export const server = buildActionServer(
   buildSospesoActions(sospesoRepo, paymentRepo),

@@ -11,7 +11,7 @@ import {
 import { toastifyToastApi } from "@/adapters/toastApi";
 import { renderTL } from "@/siheom/renderTL.tsx";
 
-const STAMP_ALT = "사용됨";
+const STAMP_ALT = "사용함";
 
 describe("SospesoDetail", () => {
   test("소스페소의 기본 정보를 볼 수 있다", async () => {
@@ -36,7 +36,7 @@ describe("SospesoDetail", () => {
     renderTL(<SospesoDetail sospeso={CONSUMED_SOSPESO} />);
 
     await expectTL(queryTL.link("신청하기")).not.toBeVisible();
-    await expectTL(queryTL.img(STAMP_ALT)).toBeVisible();
+    await expectTL(queryTL.text(STAMP_ALT)).toBeVisible();
   });
 
   // -> 대기 중 pending

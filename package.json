@@ -45,6 +45,7 @@
     "valibot": "1.0.0-beta.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@playwright/test": "^1.49.0",
     "@storybook/addon-essentials": "^8.4.5",
     "@storybook/addon-interactions": "^8.4.5",

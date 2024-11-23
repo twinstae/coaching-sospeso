@@ -12,5 +12,5 @@ export const applicationStatusToLabelDict: Record<
 export const sospesoStatusToLabelDict: Record<SospesoStatus, string> = {
   issued: "발행됨",
   pending: "대기중",
-  consumed: "사용됨",
+  consumed: "사용함",
 };

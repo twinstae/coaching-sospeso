@@ -1,7 +1,7 @@
 import { formatDate } from "@/adapters/dateApi";
 import { Link } from "@/routing/Link.tsx";
 import type { SospesoStatus } from "@/sospeso/domain";
-import { sospesoStatusToLabelDict } from "@/sospeso/label";
+import { clsx } from "clsx";
 
 export function SospesoList({
   sospesoList,
@@ -15,20 +15,46 @@ export function SospesoList({
   }[];
 }) {
   return (
-    <ul className="flex flex-col items-center">
-      {sospesoList.map((sospeso) => (
-        <li key={sospeso.id}>
-          <Link
-            className="link link-primary"
-            routeKey="소스페소-상세"
-            params={{ sospesoId: sospeso.id }}
+    <table className="table max-w-3xl m-auto bg-base-100">
+      <thead>
+        <tr>
+          <th>From.</th>
+          <th>To.</th>
+          <th>발행일</th>
+          <th>상태</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {sospesoList.map((sospeso) => (
+          <tr
+            key={sospeso.id}
+            className={clsx(sospeso.status === "pending" && "opacity-70")}
           >
-            From. {sospeso.from} To. {sospeso.to} 발행일{" "}
-            {formatDate(sospeso.issuedAt, "yyyy년 M월 d일")}
-            {" " + sospesoStatusToLabelDict[sospeso.status]}
-          </Link>
-        </li>
-      ))}
-    </ul>
+            <td>{sospeso.from}</td>
+            <td>{sospeso.to}</td>
+            <td>{formatDate(sospeso.issuedAt, "yyyy년 M월 d일")}</td>
+            <td>
+              {sospeso.status === "issued" ? (
+                <div className="badge">발행됨</div>
+              ) : sospeso.status === "pending" ? (
+                <div className="badge"> 대기중</div>
+              ) : (
+                <div className="stamp">사용함</div>
+              )}
+            </td>
+            <td>
+              <Link
+                className="btn btn-sm"
+                routeKey="소스페소-상세"
+                params={{ sospesoId: sospeso.id }}
+              >
+                보러가기→
+              </Link>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }

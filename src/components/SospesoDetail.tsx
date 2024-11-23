@@ -39,7 +39,7 @@ export function SospesoDetail({
   toastApi?: ToastApiI;
 }) {
   return (
-    <div>
+    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
       <p>From. {sospeso.from}</p>
       <p>To. {sospeso.to}</p>
       {sospeso.status === "issued" && (
@@ -73,7 +73,7 @@ export function SospesoDetail({
           </TooltipProvider>
         )}
 
-        {sospeso.status === "consumed" && <img alt="사용됨" />}
+        {sospeso.status === "consumed" && <div className="stamp">사용함</div>}
 
         {sospeso.status === "consumed" && (
           <div>
