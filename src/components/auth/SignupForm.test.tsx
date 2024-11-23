@@ -5,6 +5,7 @@ import { signUpBus, SignUpForm } from "./SignUpForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 import { getA11ySnapshot } from "@/siheom/getA11ySnapshot.ts";
 import { renderTL } from "@/siheom/renderTL.tsx";
+import { href } from '@/routing/href.ts';
 
 const TEST_EMAIL = "taehee.kim@life-lifter.com";
 
@@ -39,6 +40,10 @@ describe("SignUpForm", () => {
         alert [text="010-1234-5678 같은 휴대폰 번호를 입력해주세요"] 
         textbox: "별명"  [value=]
         alert [text="별명을 꼭 입력해주세요"] 
+        link: "이용약관 (필수)"  
+        checkbox: "이용약관 (필수)"  [checked=false]
+        link: "개인정보처리방침 (필수)"  
+        checkbox: "개인정보처리방침 (필수)"  [checked=false]
         button: "회원가입하기""
     `);
 
@@ -76,7 +81,7 @@ describe("SignUpForm", () => {
     expect(result).toEqual({});
   });
 
-  test("필수 정보를 모두 입력하면 회원가입할 수 있다", async () => {
+  test("동의하지 않으면 가입할 수 없다", async () => {
     let result = {};
     renderTL(
       <SafeEventHandler
@@ -99,6 +104,49 @@ describe("SignUpForm", () => {
     await queryTL.textbox("별명").fill("김토끼");
 
     await queryTL.button("회원가입하기").click();
+
+    await expectTL(queryTL.checkbox(/이용약관/i)).toHaveErrorMessage(
+      "약관에 동의하지 않으면 가입할 수 없습니다",
+    );
+
+    await expectTL(queryTL.link(/이용약관/i)).toHaveAttribute("href", href("이용약관", undefined))
+    await queryTL.checkbox(/이용약관/i).click();
+    await queryTL.button("회원가입하기").click();
+
+
+    await expectTL(
+      queryTL.checkbox(/개인정보처리방침/i),
+    ).toHaveErrorMessage("개인청보처리방침에 동의하지 않으면 가입할 수 없습니다");
+    await expectTL(queryTL.link(/개인정보처리방침/i)).toHaveAttribute("href", href("개인정보처리방침", undefined))
+
+    expect(result).toEqual({});
+  });
+
+  test("필수 정보를 모두 입력하면 회원가입할 수 있다", async () => {
+    let result = {};
+    renderTL(
+      <SafeEventHandler
+        bus={signUpBus}
+        onEvent={(command) => {
+          result = command;
+        }}
+      >
+        <SignUpForm />
+      </SafeEventHandler>,
+    );
+
+    await queryTL.textbox("이메일").fill(TEST_EMAIL);
+
+    await queryTL.textbox("비밀번호").fill("!1q2w3e4r!");
+    await queryTL.textbox("비밀번호 확인").fill("!1q2w3e4r!");
+
+    await queryTL.textbox("이름(실명)").fill("김태희");
+    await queryTL.textbox("전화번호").fill("010-4827-1733");
+    await queryTL.textbox("별명").fill("김토끼");
+
+    await queryTL.checkbox(/이용약관/i).click();    
+    await queryTL.checkbox(/개인정보처리방침/i).click();
+
     await queryTL.button("회원가입하기").click();
 
     expect(result).toEqual({
@@ -108,6 +156,8 @@ describe("SignUpForm", () => {
       password: "!1q2w3e4r!",
       passwordAgain: "!1q2w3e4r!",
       phone: "010-4827-1733",
+      privacy: true,
+      usage: true
     });
   });
 });

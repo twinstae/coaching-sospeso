@@ -92,6 +92,12 @@ export const routes = {
   "소스페소-신청완료": {
     path: "/sospeso/applicationSuccess",
   },
+  "이용약관": {
+    path: "/terms/usage",
+  },
+  "개인정보처리방침": {
+    path: "/terms/privacy",
+  },
   "파라미터-테스트": {
     path: "/test/[testId]",
     paramsSchema: v.object({

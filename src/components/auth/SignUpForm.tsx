@@ -3,7 +3,9 @@ import * as v from "valibot";
 import { Form } from "@/shared/form/Form.tsx";
 import { createSafeEvent } from "@/event/SafeEventBus.ts";
 import { TextField } from "@/shared/form/TextField.tsx";
+import { Checkbox } from "@/shared/form/Checkbox.tsx";
 import { emailSchema, passwordSchema, phoneSchema } from "@/auth/schema";
+import { Link } from "@/routing/Link";
 
 const signUpSchema = v.pipe(
   v.object({
@@ -13,6 +15,8 @@ const signUpSchema = v.pipe(
     name: v.pipe(v.string(), v.minLength(1, "실명이 꼭 있어야 해요")),
     phone: phoneSchema,
     nickname: v.pipe(v.string(), v.minLength(1, "별명을 꼭 입력해주세요")),
+    usage: v.boolean(),
+    privacy: v.boolean(),
   }),
   v.forward(
     v.partialCheck(
@@ -21,6 +25,22 @@ const signUpSchema = v.pipe(
       "두 비밀번호가 다릅니다",
     ),
     ["passwordAgain"],
+  ),
+  v.forward(
+    v.partialCheck(
+      [["usage"]],
+      (input) => input.usage === true,
+      "약관에 동의하지 않으면 가입할 수 없습니다",
+    ),
+    ["usage"],
+  ),
+  v.forward(
+    v.partialCheck(
+      [["privacy"]],
+      (input) => input.privacy === true,
+      "개인청보처리방침에 동의하지 않으면 가입할 수 없습니다",
+    ),
+    ["privacy"],
   ),
 );
 
@@ -43,6 +63,8 @@ export function SignUpForm() {
               name: "",
               phone: "",
               nickname: "",
+              usage: false,
+              privacy: false,
             },
             bus: signUpBus,
           }}
@@ -80,6 +102,36 @@ export function SignUpForm() {
             autoComplete="tel-national"
           />
           <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
+
+          <Checkbox
+            label={
+              <>
+                <Link
+                  className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
+                  routeKey={"이용약관"}
+                  params={undefined}
+                  target='_blank'
+                >이용약관 <span className="text-red-600">(필수)</span>
+                </Link>
+              </>
+            }
+            name="usage"
+          />
+          <Checkbox
+            label={
+              <>
+                <Link
+                  className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
+                  routeKey={"개인정보처리방침"}
+                  params={undefined}
+                  target='_blank'
+                >
+                  개인정보처리방침 <span className="text-red-600">(필수)</span>
+                </Link>
+              </>
+            }
+            name="privacy"
+          />
 
           <button className="btn btn-primary w-full" type="submit">
             회원가입하기

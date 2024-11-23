@@ -81,6 +81,10 @@ body {
     width: max-content;
   }
 
+  a {
+    text-underline-offset: 0.2em;
+  }
+
   .stamp {
     --stamp-border-width: 2px;
     position: relative;
@@ -92,6 +96,7 @@ body {
     opacity: 0.8;
     transform: rotate(-10deg);
   }
+
   .stamp:after {
     content: "";
     position: absolute;
