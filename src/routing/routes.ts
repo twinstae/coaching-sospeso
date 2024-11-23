@@ -89,6 +89,12 @@ export const routes = {
       email: v.pipe(v.string(), v.email()),
     }),
   },
+  프로필: {
+    path: "/auth/me",
+  },
+  "개인정보-변경": {
+    path: "/auth/me/update",
+  },
   "소스페소-신청완료": {
     path: "/sospeso/applicationSuccess",
   },

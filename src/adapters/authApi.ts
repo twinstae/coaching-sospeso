@@ -37,6 +37,8 @@ export type AuthApi = {
     resetPassword: (newPassword: string) => Promise<void>;
   };
   logout: () => Promise<void>;
+
+  updateUser: (command: { nickname: string }) => Promise<void>;
 };
 
 const SIGNUP_LOGIN_CALLBACK_URL = "/";
@@ -92,6 +94,7 @@ export const authApi: AuthApi = {
 
       return "success";
     },
+
     async google() {
       const { error } = await authClient.signIn.social({
         provider: "google",
@@ -155,6 +158,14 @@ export const authApi: AuthApi = {
   },
   async logout() {
     const { error } = await authClient.signOut();
+
+    if (error) {
+      throw error;
+    }
+  },
+
+  async updateUser({ nickname }) {
+    const { error } = await authClient.updateUser({ nickname });
 
     if (error) {
       throw error;

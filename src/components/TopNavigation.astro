@@ -13,9 +13,9 @@ const user = Astro.locals.user;
   <div class="flex-none">
     {
       user ? (
-        <button id="logout-button">
-          <span class="font-bold">{user.nickname}</span> 로그아웃
-        </button>
+        <Link routeKey="프로필" params={undefined} className="btn btn-ghost">
+          프로필
+        </Link>
       ) : (
         <Link routeKey="로그인" params={{}} className="btn btn-ghost">
           로그인

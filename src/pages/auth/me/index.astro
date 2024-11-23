@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Link } from "@/routing/Link";
+
+const user = Astro.locals.user;
+---
+
+<Layout title="코칭 소스페소 프로필">
+  {
+    user ? (
+      <div class="flex flex-col">
+        <Link
+          routeKey="개인정보-변경"
+          params={undefined}
+          className="text-center"
+        >
+          개인정보 변경
+        </Link>
+        <button id="logout-button">
+          <span class="font-bold">{user.nickname}</span> 로그아웃
+        </button>
+      </div>
+    ) : null
+  }
+</Layout>

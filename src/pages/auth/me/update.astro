@@ -1,0 +1,23 @@
+---
+import { UpdateUserForm } from "@/components/auth/UpdateUserForm";
+import Layout from "@/layouts/Layout.astro";
+
+const user = Astro.locals.user;
+---
+
+<Layout title="코칭 소스페소 개인정보 변경">
+  <UpdateUserForm user={user} />
+</Layout>
+
+<script>
+  import { authApi } from "@/adapters/authApi";
+  import { updateUserBus } from "@/components/auth/UpdateUserForm";
+  import { href } from "@/routing/href";
+  import { navigate } from "astro:transitions/client";
+
+  updateUserBus.on(window.document.body, (command) => {
+    authApi.updateUser(command).then(() => {
+      navigate(href("프로필", undefined));
+    });
+  });
+</script>
