@@ -112,7 +112,7 @@ export function createDrizzleSospesoRepository(
           issuedAt: sospeso.issuing.issuedAt,
         };
       });
-     
+
       return {
         sospesoList,
         totalPage: Math.max(Math.ceil(totalCount / SOSPESO_PER_PAGE), 1),

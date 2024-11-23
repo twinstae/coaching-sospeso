@@ -5,11 +5,8 @@ import type {
   SospesoStatus,
 } from "./domain.ts";
 import { Faker, ko } from "@faker-js/faker";
-import {
-  TEST_ADMIN_USER_ID,
-  TEST_USER,
-  TEST_USER_ID,
-} from "@/auth/fixtures.ts";
+import { TEST_ADMIN_USER_ID, TEST_USER_ID } from "@/auth/fixtures.ts";
+import invariant from "@/invariant.ts";
 
 const generateId = generateNanoId;
 export const TEST_SOSPESO_ID = "DaLNnQs8nfVgs0";
@@ -140,7 +137,10 @@ const TEST_TO_LIST = [
 ];
 
 export function pick<T>(candidates: T[]): T {
-  return candidates[Math.floor(Math.random() * candidates.length)];
+  const result = candidates[Math.floor(Math.random() * candidates.length)];
+  invariant(result, "candidates가 비어 있습니다!");
+
+  return result;
 }
 
 const faker = new Faker({ locale: [ko] });

@@ -47,7 +47,7 @@ type SospesoApplicationListItemDto = {
 
 export interface SospesoRepositoryI {
   retrieveSospesoList(page: number): Promise<{
-    sospesoList: SospesoListItemDto[],
+    sospesoList: SospesoListItemDto[];
     totalPage: number;
   }>;
   retrieveSospesoDetail(sospesoId: string): Promise<SospesoDto | undefined>;
@@ -58,7 +58,7 @@ export interface SospesoRepositoryI {
   ): Promise<void>;
 }
 
-export const SOSPESO_PER_PAGE = 10
+export const SOSPESO_PER_PAGE = 10;
 
 export const createFakeSospesoRepository = (
   initState: Record<string, Sospeso> = {},
@@ -82,8 +82,8 @@ export const createFakeSospesoRepository = (
       const end = (page - 1) * SOSPESO_PER_PAGE + SOSPESO_PER_PAGE + 1;
       return {
         sospesoList: sospesoList.slice(start, end),
-        totalPage: Math.ceil(sospesoList.length / SOSPESO_PER_PAGE)
-      }
+        totalPage: Math.ceil(sospesoList.length / SOSPESO_PER_PAGE),
+      };
     },
     async retrieveSospesoDetail(sospesoId) {
       const sospeso = _fakeState[sospesoId];

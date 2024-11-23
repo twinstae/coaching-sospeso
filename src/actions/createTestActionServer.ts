@@ -1,11 +1,6 @@
-import {
-  ActionError,
-  ActionInputError,
-  type ActionAPIContext,
-} from "astro:actions";
 import type { z } from "astro/zod";
 import type { Sospeso } from "@/sospeso/domain";
-import { buildSospesoActions } from "./index.ts";
+import { buildSospesoActions, type ActionContext } from "./actions.ts";
 import type { SospesoRepositoryI } from "@/sospeso/repository.ts";
 import type { ActionDefinition } from "./buildActionServer.ts";
 import { type PaymentRepositoryI } from "@/payment/repository.ts";
@@ -13,7 +8,7 @@ import type { Payment } from "@/payment/domain.ts";
 
 type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
   input: z.input<TInputSchema>,
-  context?: ActionAPIContext,
+  context?: ActionContext,
 ) => Promise<Awaited<TOutput>>;
 
 type InferDefinedTestActions<T> = {
@@ -32,20 +27,19 @@ function defineTestAction<TInput, TOutput>({
 }: ActionDefinition<TInput, TOutput>) {
   return async (unparsedInput: unknown, context: unknown) => {
     if (unparsedInput instanceof FormData) {
-      throw new ActionError({
-        code: "UNSUPPORTED_MEDIA_TYPE",
-        message: "This action only accepts JSON.",
-      });
+      throw new Error("This action only accepts JSON.");
     }
 
     const parsed = await input.safeParseAsync(
       JSON.parse(JSON.stringify(unparsedInput)),
     );
     if (!parsed.success) {
-      throw new ActionInputError(parsed.error.issues);
+      throw new Error(
+        parsed.error.issues.map((issue) => issue.message).join("\n"),
+      );
     }
 
-    return await handler(parsed.data, context as ActionAPIContext);
+    return await handler(parsed.data, context as any);
   };
 }
 

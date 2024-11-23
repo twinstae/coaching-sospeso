@@ -1,10 +1,10 @@
 ---
-import { sospesoRepo } from "@/actions";
-import { SospesoList } from "@/components/SospesoList";
+import { sospesoRepo } from "@/actions/actions.ts";
+import { SospesoList } from "@/components/SospesoList.tsx";
 import Layout from "@/layouts/Layout.astro";
 import { Link } from "@/routing/Link.tsx";
-import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
-import { Pagination } from "@/shared/Pagination";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams.ts";
+import { Pagination } from "@/shared/Pagination.tsx";
 
 const params = parseRouteParamsFromUrl("홈", new URL(Astro.url));
 const page = Math.max(params.page ?? 1, 1);

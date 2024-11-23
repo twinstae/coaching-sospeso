@@ -12,7 +12,12 @@ export type DynamicRoute = {
 
 type Route = StaticRoute | DynamicRoute;
 
-const pageSchema = v.pipe(v.unknown(), v.transform(Number) ,v.number(), v.integer());
+const pageSchema = v.pipe(
+  v.unknown(),
+  v.transform(Number),
+  v.number(),
+  v.integer(),
+);
 
 export const routes = {
   홈: {

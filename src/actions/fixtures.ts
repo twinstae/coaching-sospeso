@@ -1,5 +1,5 @@
-import { TEST_USER_ID } from "@/auth/fixtures";
-import type { ActionAPIContext } from "astro:actions";
+import { TEST_USER_ID } from "@/auth/fixtures.ts";
+import type { ActionContext } from "./actions.ts";
 
 const TEST_NOW = new Date("2024-11-06T00:00:00Z");
 
@@ -7,7 +7,7 @@ export const NOT_LOGGED_IN_CONTEXT = {
   locals: {
     now: TEST_NOW,
   },
-} as ActionAPIContext;
+} as ActionContext;
 
 export const LOGGED_IN_CONTEXT = {
   locals: {
@@ -18,7 +18,7 @@ export const LOGGED_IN_CONTEXT = {
     },
     now: TEST_NOW,
   },
-} as ActionAPIContext;
+} as ActionContext;
 
 export const ADMIN_CONTEXT = {
   locals: {
@@ -29,4 +29,4 @@ export const ADMIN_CONTEXT = {
     },
     now: TEST_NOW,
   },
-} as ActionAPIContext;
+} as ActionContext;

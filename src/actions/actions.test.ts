@@ -20,13 +20,13 @@ import {
 
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { ADMIN_CONTEXT, LOGGED_IN_CONTEXT } from "./fixtures.ts";
-import { paymentApi } from "./index.ts";
+import { paymentApi } from "./actions.ts";
 import {
   createFakePaymentRepository,
   type PaymentRepositoryI,
 } from "@/payment/repository.ts";
 import type { Payment } from "@/payment/domain.ts";
-import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaypmentRepository.ts";
+import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
 
 const generateId = generateNanoId;
 

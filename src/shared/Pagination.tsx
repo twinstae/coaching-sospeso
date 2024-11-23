@@ -1,7 +1,7 @@
 import invariant from "@/invariant.ts";
 import { Link } from "@/routing/Link";
 import type { DynamicRoute, RouteKeys, routes } from "@/routing/routes";
-import clsx from 'clsx';
+import clsx from "clsx";
 import type * as v from "valibot";
 
 function range(start: number, end: number) {
@@ -15,7 +15,7 @@ export function Pagination<RouteKey extends RouteKeys>({
   current,
   end,
 }: {
-  className?: string,
+  className?: string;
   current: number;
   end: number;
   routeKey: RouteKey;
