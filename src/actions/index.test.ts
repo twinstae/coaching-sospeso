@@ -254,7 +254,7 @@ function runSospesoActionsTest(
 
 const testDbReallySeriously = drizzle({
   schema,
-  logger: true,
+  logger: false,
   connection: {
     url: "file:test.db",
   },
