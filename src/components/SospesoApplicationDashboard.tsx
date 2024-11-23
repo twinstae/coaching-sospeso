@@ -1,4 +1,4 @@
-import { useBooleanFlag, withOpenFeature } from '@/adapters/clientFlagApi';
+import { useBooleanFlag, withOpenFeature } from "@/adapters/clientFlagApi";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { Link } from "@/routing/Link.tsx";
 import { type SospesoApplicationStatus } from "@/sospeso/domain.ts";
@@ -33,58 +33,71 @@ export const sospesoRejectEventBus = createSafeEvent(
   detailSchema,
 );
 
-export const SospesoApplicationDashboard = withOpenFeature(({
-  applicationList,
-}: {
-  applicationList: SospesoApplicationDto[];
-}) => {
-  const isFlagOn = useBooleanFlag('isFlagOn', false)
-  return (
-    <div className="overflow-x-auto card shadow-lg min-h-96">
-      {String(isFlagOn)}
-      <table className="table">
-        <thead>
-          <tr className="bg-primary text-primary-content">
-            <th>수혜자 조건</th>
-            <th>신청한 날짜</th>
-            <th>신청한 사람</th>
-            <th>내용</th>
-            <th>상태</th>
-          </tr>
-        </thead>
-        <tbody>
-          {applicationList.map((application) => (
-            <tr key={application.id}>
-              <td>{application.to}</td>
-              <td>{application.appliedAt.toDateString()}</td>
-              <td>{application.applicant.nickname}</td>
-              <td>{application.content}</td>
-              <td>
-                <div className="dropdown dropdown-end">
-                  <div
-                    tabIndex={0}
-                    role="button"
-                    className={clsx(
-                      "badge",
-                      application.status === "rejected" && "badge-error",
-                      application.status === "approved" && "badge-success",
-                      application.status === "applied" && "badge-info",
-                    )}
-                  >
-                    {applicationStatusToLabelDict[application.status]}
-                  </div>
-                  {(application.status === "applied" ||
-                    application.status === "approved") && (
-                    <ul
+export const SospesoApplicationDashboard = withOpenFeature(
+  ({ applicationList }: { applicationList: SospesoApplicationDto[] }) => {
+    const isFlagOn = useBooleanFlag("isFlagOn", false);
+    return (
+      <div className="overflow-x-auto card shadow-lg min-h-96">
+        {String(isFlagOn)}
+        <table className="table">
+          <thead>
+            <tr className="bg-primary text-primary-content">
+              <th>수혜자 조건</th>
+              <th>신청한 날짜</th>
+              <th>신청한 사람</th>
+              <th>내용</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            {applicationList.map((application) => (
+              <tr key={application.id}>
+                <td>{application.to}</td>
+                <td>{application.appliedAt.toDateString()}</td>
+                <td>{application.applicant.nickname}</td>
+                <td>{application.content}</td>
+                <td>
+                  <div className="dropdown dropdown-end">
+                    <div
                       tabIndex={0}
-                      className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                      role="button"
+                      className={clsx(
+                        "badge",
+                        application.status === "rejected" && "badge-error",
+                        application.status === "approved" && "badge-success",
+                        application.status === "applied" && "badge-info",
+                      )}
                     >
-                      {application.status === "applied" && (
+                      {applicationStatusToLabelDict[application.status]}
+                    </div>
+                    {(application.status === "applied" ||
+                      application.status === "approved") && (
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                      >
+                        {application.status === "applied" && (
+                          <li>
+                            <button
+                              type="button"
+                              onClick={(event) => {
+                                sospesoApproveEventBus.dispatch(
+                                  event.currentTarget,
+                                  {
+                                    sospesoId: application.sospesoId,
+                                    applicationId: application.id,
+                                  },
+                                );
+                              }}
+                            >
+                              승인하기
+                            </button>
+                          </li>
+                        )}
                         <li>
                           <button
-                            type="button"
                             onClick={(event) => {
-                              sospesoApproveEventBus.dispatch(
+                              sospesoRejectEventBus.dispatch(
                                 event.currentTarget,
                                 {
                                   sospesoId: application.sospesoId,
@@ -93,47 +106,31 @@ export const SospesoApplicationDashboard = withOpenFeature(({
                               );
                             }}
                           >
-                            승인하기
+                            거절하기
                           </button>
                         </li>
-                      )}
-                      <li>
-                        <button
-                          onClick={(event) => {
-                            sospesoRejectEventBus.dispatch(
-                              event.currentTarget,
-                              {
+                        {application.status === "approved" && (
+                          <li>
+                            <Link
+                              routeKey="어드민-소스페소-사용"
+                              params={{
                                 sospesoId: application.sospesoId,
-                                applicationId: application.id,
-                              },
-                            );
-                          }}
-                        >
-                          거절하기
-                        </button>
-                      </li>
-                      {application.status === "approved" && (
-                        <li>
-                          <Link
-                            routeKey="어드민-소스페소-사용"
-                            params={{
-                              sospesoId: application.sospesoId,
-                              consumerId: application.applicant.id,
-                            }}
-                          >
-                            사용하기
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  )}
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-) 
+                                consumerId: application.applicant.id,
+                              }}
+                            >
+                              사용하기
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  },
+);

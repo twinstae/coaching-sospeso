@@ -3,7 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/adapters/db.ts";
 import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
 import { env, isProd } from "@/adapters/env.ts";
-import { renderSecretLinkEmail } from '@/adapters/renderEmail';
+import { renderSecretLinkEmail } from "@/adapters/renderEmail";
 
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
@@ -46,8 +46,8 @@ export const auth = betterAuth({
           description: "비밀번호를 변경하시려면 다음 링크를 클릭해주세요.",
           cta: {
             href: url,
-            text: '비밀번호 변경하기'
-          }
+            text: "비밀번호 변경하기",
+          },
         }),
       });
     },
@@ -60,13 +60,14 @@ export const auth = betterAuth({
         subject: "코칭 소스페소에 가입하기",
         html: await renderSecretLinkEmail({
           title: `${user.name} 님 어서오세요`,
-          description: "가입을 완료하시려면 다음 링크를 눌러 이메일을 인증해주세요",
+          description:
+            "가입을 완료하시려면 다음 링크를 눌러 이메일을 인증해주세요",
           cta: {
             href: url,
-            text: '이메일 인증하기'
-          }
+            text: "이메일 인증하기",
+          },
         }),
       });
     },
-  }
+  },
 });

@@ -1,6 +1,6 @@
-import { Template, type TemplateProps } from '@/shared/email/SecretLink';
-import { render } from 'jsx-email';
+import { Template, type TemplateProps } from "@/shared/email/SecretLink";
+import { render } from "jsx-email";
 
-export function renderSecretLinkEmail(props: TemplateProps){
-    return render(<Template {...props}/>)
+export function renderSecretLinkEmail(props: TemplateProps) {
+  return render(<Template {...props} />);
 }
