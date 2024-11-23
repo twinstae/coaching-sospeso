@@ -3,7 +3,7 @@ import { href } from "@/routing/href";
 import type { SospesoIssuingCommand } from "@/sospeso/domain";
 import { addHours } from "date-fns/addHours";
 
-export type PaidPaymentT = {
+export type PaidPayment = {
   id: string;
   status: "paid";
   goodsTitle: string; // 상품 이름
@@ -15,7 +15,7 @@ export type PaidPaymentT = {
   paymentResult: Record<string, string>; // 결제 결과 원본
 };
 
-export type PaymentT =
+export type Payment =
   | {
       id: string;
       status: "initiated";
@@ -26,7 +26,7 @@ export type PaymentT =
       command: any;
       afterLinkUrl: string; // 결제 완료 후 이동할 URL
     }
-  | PaidPaymentT;
+  | PaidPayment;
 
 const EXPIRE_TIME_IN_HOURS = 24;
 
@@ -40,7 +40,7 @@ export function createSospesoIssuingPayment({
   now: Date;
   totalAmount: number;
   command: SospesoIssuingCommand;
-}): PaymentT {
+}): Payment {
   return {
     id: sospesoId,
     status: "initiated",
@@ -51,20 +51,20 @@ export function createSospesoIssuingPayment({
     expiredDate: addHours(now, EXPIRE_TIME_IN_HOURS),
     command,
     afterLinkUrl: `${env.APP_HOST}${href("소스페소-상세", { sospesoId: command.sospesoId })}`,
-  } satisfies PaymentT;
+  } satisfies Payment;
 }
 
 export function completePayment(
-  payment: PaymentT,
+  payment: Payment,
   paymentResult: Record<string, string>,
-): PaidPaymentT {
+): PaidPayment {
   return {
     ...payment,
     status: "paid",
     paymentResult,
-  } satisfies PaidPaymentT;
+  } satisfies PaidPayment;
 }
 
-export function isPaid(payment: PaymentT): payment is PaidPaymentT {
+export function isPaid(payment: Payment): payment is PaidPayment {
   return payment.status === "paid";
 }

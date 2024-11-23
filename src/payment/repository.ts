@@ -1,23 +1,23 @@
 import invariant from "@/invariant.ts";
-import type { PaymentT } from "./domain.ts";
+import type { Payment } from "./domain.ts";
 
 export interface PaymentRepositoryI {
   updateOrSave(
     paymentId: string,
-    update: (payment: PaymentT | undefined) => PaymentT,
+    update: (payment: Payment | undefined) => Payment,
   ): Promise<void>;
-  retrievePayment(paymentId: string): Promise<PaymentT>;
+  retrievePayment(paymentId: string): Promise<Payment>;
 }
 
 export const createFakePaymentRepository = (
-  initState: Record<string, PaymentT> = {},
+  initState: Record<string, Payment> = {},
 ): PaymentRepositoryI => {
   let _fakeState = initState;
 
   return {
     async updateOrSave(
       paymentId: string,
-      update: (payment: PaymentT | undefined) => PaymentT,
+      update: (payment: Payment | undefined) => Payment,
     ): Promise<void> {
       _fakeState[paymentId] = update(_fakeState[paymentId]);
     },

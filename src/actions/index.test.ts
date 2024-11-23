@@ -21,22 +21,48 @@ import {
 import { buildTestActionServer } from "./createTestActionServer.ts";
 import { ADMIN_CONTEXT, LOGGED_IN_CONTEXT } from "./fixtures.ts";
 import { paymentApi } from "./index.ts";
+import {
+  createFakePaymentRepository,
+  type PaymentRepositoryI,
+} from "@/payment/repository.ts";
+import type { Payment } from "@/payment/domain.ts";
+import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaypmentRepository.ts";
 
 const generateId = generateNanoId;
 
 function runSospesoActionsTest(
   name: string,
-  createRepository: (
+  createSospesoRepository: (
     initState: Record<string, Sospeso>,
   ) => Promise<SospesoRepositoryI>,
+  createPaymentRepository: (
+    initState: Record<string, Payment>,
+  ) => Promise<PaymentRepositoryI>,
 ) {
-  function createTestActionServer(initState: Record<string, Sospeso>) {
-    return buildTestActionServer(createRepository, initState);
+  function createTestActionServer({
+    sospeso,
+    payment,
+  }: {
+    sospeso: Record<string, Sospeso>;
+    payment?: Record<string, Payment>;
+  }) {
+    return buildTestActionServer({
+      sospeso: {
+        createSospesoRepository,
+        initState: sospeso,
+      },
+      payment: {
+        createPaymentRepository,
+        initState: payment ?? {},
+      },
+    });
   }
 
   describe("sospesoActionServer: " + name, () => {
     test("소스페소 결제 링크를 생성할 수 있다", async () => {
-      const { actionServer, paymentRepo } = await createTestActionServer({});
+      const { actionServer, paymentRepo } = await createTestActionServer({
+        sospeso: {},
+      });
 
       await actionServer.createIssuingSospesoPayment(
         {
@@ -50,6 +76,7 @@ function runSospesoActionsTest(
         TEST_SOSPESO_LIST_ITEM.id,
       );
 
+      console.log(payment);
       const { paymentLink } = await paymentApi.generatePaymentLink(payment);
 
       expect(paymentLink).toBe(
@@ -60,7 +87,9 @@ function runSospesoActionsTest(
     test("소스페소에 신청할 수 있다", async () => {
       const id = generateId();
       const { actionServer, sospesoRepo } = await createTestActionServer({
-        [id]: { ...issuedSospeso, id },
+        sospeso: {
+          [id]: { ...issuedSospeso, id },
+        },
       });
       const before = await sospesoRepo.retrieveApplicationList();
 
@@ -98,7 +127,9 @@ function runSospesoActionsTest(
 
     test("approveSospesoApplication", async () => {
       const { actionServer, sospesoRepo } = await createTestActionServer({
-        [appliedSospeso.id]: appliedSospeso,
+        sospeso: {
+          [appliedSospeso.id]: appliedSospeso,
+        },
       });
       const applicationId = appliedSospeso.applicationList[0]!.id;
 
@@ -125,7 +156,9 @@ function runSospesoActionsTest(
 
     test("rejectSospesoApplication", async () => {
       const { actionServer, sospesoRepo } = await createTestActionServer({
-        [appliedSospeso.id]: appliedSospeso,
+        sospeso: {
+          [appliedSospeso.id]: appliedSospeso,
+        },
       });
       const applicationId = appliedSospeso.applicationList[0]!.id;
 
@@ -152,7 +185,9 @@ function runSospesoActionsTest(
 
     test("관리자가 아니면 승인도 거절도 할 수 없다", async () => {
       const { actionServer, sospesoRepo } = await createTestActionServer({
-        [appliedSospeso.id]: appliedSospeso,
+        sospeso: {
+          [appliedSospeso.id]: appliedSospeso,
+        },
       });
       const applicationId = appliedSospeso.applicationList[0]!.id;
 
@@ -186,7 +221,9 @@ function runSospesoActionsTest(
     test("consumeSospeso", async () => {
       // 기존에 이미 승인된 소스페소가 있었음
       const { actionServer, sospesoRepo } = await createTestActionServer({
-        [approvedSospeso.id]: approvedSospeso,
+        sospeso: {
+          [approvedSospeso.id]: approvedSospeso,
+        },
       });
 
       const before = await sospesoRepo.retrieveSospesoDetail(
@@ -215,15 +252,17 @@ function runSospesoActionsTest(
   });
 }
 
-async function createDrizzleTestRepository(initState: Record<string, Sospeso>) {
-  const testDbReallySeriously = drizzle({
-    schema,
-    logger: false,
-    connection: {
-      url: "file:test.db",
-    },
-  });
+const testDbReallySeriously = drizzle({
+  schema,
+  logger: true,
+  connection: {
+    url: "file:test.db",
+  },
+});
 
+async function createDrizzleTestSospesoRepository(
+  initState: Record<string, Sospeso>,
+) {
   await testDbReallySeriously
     .insert(schema.user)
     .values(TEST_USER)
@@ -265,8 +304,53 @@ afterAll(async () => {
     .run();
 });
 
-runSospesoActionsTest("fake", async (initState) =>
-  createFakeSospesoRepository(initState),
+async function createDrizzleTestPaymentRepository(
+  initState: Record<string, Payment>,
+) {
+  const repo = createDrizzlePaymentRepository(testDbReallySeriously);
+
+  // prod db에 실행하면 절대 안 됨
+  await testDbReallySeriously.delete(schema.payment).all();
+
+  for (const payment of Object.values(initState)) {
+    await repo.updateOrSave(payment.id, () => payment);
+  }
+
+  return repo;
+}
+
+afterAll(async () => {
+  const testDbReallySeriously = drizzle({
+    schema,
+    logger: false,
+    connection: {
+      url: "file:test.db",
+    },
+  });
+
+  // prod db에 실행하면 절대 안 됨
+  // sospeso
+  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
+  await testDbReallySeriously.delete(schema.sospesoApplication).all();
+  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
+  await testDbReallySeriously.delete(schema.sospeso).all();
+  // payment
+  await testDbReallySeriously.delete(schema.payment).all();
+
+  await testDbReallySeriously
+    .delete(schema.user)
+    .where(like(schema.user.email, "%@test.kr"))
+    .run();
+});
+
+runSospesoActionsTest(
+  "fake",
+  async (initState) => createFakeSospesoRepository(initState),
+  async (initState) => createFakePaymentRepository(initState),
 );
 
-runSospesoActionsTest("drizzle sqlite", createDrizzleTestRepository);
+runSospesoActionsTest(
+  "drizzle sqlite",
+  createDrizzleTestSospesoRepository,
+  createDrizzleTestPaymentRepository,
+);

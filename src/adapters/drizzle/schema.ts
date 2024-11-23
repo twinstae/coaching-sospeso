@@ -174,3 +174,15 @@ export const sospesoConsumingRelations = relations(
     }),
   }),
 );
+
+export const payment = sqliteTable("payment", {
+  id: text("id").primaryKey(),
+  status: text("status").notNull(),
+  goodsTitle: text("goods_title").notNull(),
+  goodsDescription: text("goods_description").notNull(),
+  totalAmount: integer("total_amount").notNull(),
+  expiredDate: integer("expired_date", { mode: "timestamp_ms" }).notNull(),
+  afterLinkUrl: text("after_link_url").notNull(),
+  command: text("command", { mode: "json"}).notNull(),
+  paymentResult: text("payment_result", { mode: "json"}),
+});

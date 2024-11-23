@@ -3,10 +3,10 @@ import * as v from "valibot";
 import { formatDate } from "./dateApi.ts";
 import { env } from "./env.ts";
 import invariant from "@/invariant.ts";
-import type { PaymentT } from "@/payment/domain.ts";
+import type { Payment } from "@/payment/domain.ts";
 
 export type PayplePaymentApiI = {
-  generatePaymentLink: (payment: PaymentT) => Promise<{
+  generatePaymentLink: (payment: Payment) => Promise<{
     paymentLink: string;
   }>;
 };
@@ -25,7 +25,7 @@ const linkGenerationResultSchema = v.object({
 });
 
 export const payplePaymentApi = {
-  generatePaymentLink: async (payment: PaymentT) => {
+  generatePaymentLink: async (payment: Payment) => {
     const partnerAuthPayload = {
       cst_id: env.PAYPLE_CST_ID,
       custKey: env.PAYPLE_CUST_KEY,
@@ -92,7 +92,7 @@ export const payplePaymentApi = {
 } satisfies PayplePaymentApiI;
 
 export const fakePayplePaymentApi = {
-  generatePaymentLink: async (payment: PaymentT) => {
+  generatePaymentLink: async (payment: Payment) => {
     return {
       paymentLink:
         "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg?id=" +
