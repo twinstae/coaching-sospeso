@@ -3,8 +3,11 @@ import * as v from "valibot";
 import { Form } from "@/shared/form/Form";
 import { TextField } from "@/shared/form/TextField";
 import { createSafeEvent } from "@/event/SafeEventBus";
+import { phoneSchema } from "@/auth/schema";
 
 const updateUserSchema = v.object({
+  name: v.pipe(v.string(), v.minLength(1, "실명이 꼭 있어야 해요")),
+  phone: phoneSchema,
   nickname: v.pipe(v.string(), v.minLength(1, "별명을 꼭 입력해주세요")),
 });
 
@@ -13,13 +16,11 @@ export const updateUserBus = createSafeEvent("UpdateUser", updateUserSchema);
 export function UpdateUserForm({
   user,
 }: {
-  user:
-    | {
-        id: string;
-        nickname: string;
-        role: "user" | "admin";
-      }
-    | undefined;
+  user: {
+    name: string;
+    nickname: string;
+    phone: string;
+  };
 }) {
   return (
     <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
@@ -31,11 +32,25 @@ export function UpdateUserForm({
           form={{
             schema: updateUserSchema,
             defaultValues: {
-              nickname: user ? user.nickname : "",
+              name: user.name,
+              nickname: user.nickname,
+              phone: user.phone,
             },
             bus: updateUserBus,
           }}
         >
+          <TextField
+            label="이름(실명)"
+            name="name"
+            autoComplete="name"
+            placeholder="홍길동"
+          />
+          <TextField
+            label="전화번호"
+            name="phone"
+            placeholder="010-1234-5678"
+            autoComplete="tel-national"
+          />
           <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
           <button className="btn btn-primary w-full" type="submit">
             프로필 수정하기
