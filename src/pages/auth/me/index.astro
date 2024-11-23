@@ -1,0 +1,39 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { auth } from "@/lib/auth";
+import { Link } from "@/routing/Link";
+
+const data = await auth.api.getSession({
+  headers: Astro.request.headers,
+});
+
+const currentUser: {
+  name: string;
+  nickname: string;
+  phone: string;
+} | null = data?.user
+  ? {
+      name: data.user.name,
+
+      phone: data.user.phone,
+      nickname: data.user.nickname,
+    }
+  : null;
+---
+
+<Layout title="코칭 소스페소 프로필">
+  {
+    currentUser ? (
+      <div class="flex flex-col text-center">
+        <Link routeKey="개인정보-변경" params={undefined} className=" link">
+          개인정보 변경
+        </Link>
+        <span>이름(실명): {currentUser.name}</span>
+        <span>전화번호: {currentUser.phone}</span>
+        <button id="logout-button">
+          <span class="font-bold">{currentUser.nickname}</span> 로그아웃
+        </button>
+      </div>
+    ) : null
+  }
+</Layout>

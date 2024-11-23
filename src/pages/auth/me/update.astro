@@ -1,0 +1,38 @@
+---
+import { UpdateUserForm } from "@/components/auth/UpdateUserForm";
+import Layout from "@/layouts/Layout.astro";
+import { auth } from "@/lib/auth";
+
+const data = await auth.api.getSession({
+  headers: Astro.request.headers,
+});
+
+const currentUser: {
+  name: string;
+  nickname: string;
+  phone: string;
+} | null = data?.user
+  ? {
+      name: data.user.name,
+      phone: data.user.phone,
+      nickname: data.user.nickname,
+    }
+  : null;
+---
+
+<Layout title="코칭 소스페소 개인정보 변경">
+  {currentUser ? <UpdateUserForm user={currentUser} /> : null}
+</Layout>
+
+<script>
+  import { authApi } from "@/adapters/authApi";
+  import { updateUserBus } from "@/components/auth/UpdateUserForm";
+  import { href } from "@/routing/href";
+  import { navigate } from "astro:transitions/client";
+
+  updateUserBus.on(window.document.body, (command) => {
+    authApi.updateUser(command).then(() => {
+      navigate(href("프로필", undefined));
+    });
+  });
+</script>
