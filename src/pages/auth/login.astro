@@ -1,7 +1,13 @@
 ---
 import { LoginForm } from "@/components/auth/LoginForm.tsx";
 import Layout from "@/layouts/Layout.astro";
-import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
+import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams.ts";
+
+const user = Astro.locals.user;
+
+if (user) {
+  return Astro.redirect("/");
+}
 
 const { error } = parseRouteParamsFromUrl("로그인", new URL(Astro.url));
 ---
@@ -33,9 +39,8 @@ const { error } = parseRouteParamsFromUrl("로그인", new URL(Astro.url));
       }
 
       if (result === "email-not-verified") {
-        authApi.sendEmailVerification({ email: command.email });
         toastApi.toast(
-          "아직 인증이 되지 않았어요. 인증 이메일을 다시 전송했으니, 확인해주세요.",
+          "아직 인증이 되지 않았어요. 이메일을 확인해주세요.",
           "error",
         );
 

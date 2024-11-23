@@ -1,7 +1,7 @@
 ---
 import { Link } from "@/routing/Link.tsx";
 
-const session = Astro.locals.session;
+const user = Astro.locals.user;
 ---
 
 <div class="navbar bg-base-100">
@@ -12,9 +12,9 @@ const session = Astro.locals.session;
   </div>
   <div class="flex-none">
     {
-      session ? (
+      user ? (
         <button id="logout-button">
-          <span class="font-bold">{session.nickname}</span> 로그아웃
+          <span class="font-bold">{user.nickname}</span> 로그아웃
         </button>
       ) : (
         <Link routeKey="로그인" params={{}} className="btn btn-ghost">

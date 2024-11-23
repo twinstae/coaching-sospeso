@@ -3,11 +3,9 @@ import { paymentApi, paymentRepo } from "@/actions";
 import Layout from "@/layouts/Layout.astro";
 import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
 
-const session = Astro.locals.session;
+const user = Astro.locals.user;
 
-if (!session) {
-  // TODO! 로그인 페이지로 리다이렉트 시키기
-  //  https://docs.astro.build/en/guides/routing/#dynamic-redirects
+if (!user) {
   return Astro.redirect("/auth/login");
 }
 

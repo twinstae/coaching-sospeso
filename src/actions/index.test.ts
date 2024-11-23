@@ -19,7 +19,7 @@ import {
 } from "@/sospeso/repository.ts";
 
 import { buildTestActionServer } from "./createTestActionServer.ts";
-import { LOGGED_IN_CONTEXT } from "./fixtures.ts";
+import { ADMIN_CONTEXT, LOGGED_IN_CONTEXT } from "./fixtures.ts";
 import { paymentApi } from "./index.ts";
 
 const generateId = generateNanoId;
@@ -35,7 +35,7 @@ function runSospesoActionsTest(
   }
 
   describe("sospesoActionServer: " + name, () => {
-    test("createIssuingSospesoPayment", async () => {
+    test("소스페소 결제 링크를 생성할 수 있다", async () => {
       const { actionServer, paymentRepo } = await createTestActionServer({});
 
       await actionServer.createIssuingSospesoPayment(
@@ -57,7 +57,7 @@ function runSospesoActionsTest(
       );
     });
 
-    test("applySospeso", async () => {
+    test("소스페소에 신청할 수 있다", async () => {
       const id = generateId();
       const { actionServer, sospesoRepo } = await createTestActionServer({
         [id]: { ...issuedSospeso, id },
@@ -108,10 +108,13 @@ function runSospesoActionsTest(
         "applied",
       );
 
-      await actionServer.approveSospesoApplication({
-        sospesoId: appliedSospeso.id,
-        applicationId: applicationId,
-      });
+      await actionServer.approveSospesoApplication(
+        {
+          sospesoId: appliedSospeso.id,
+          applicationId: applicationId,
+        },
+        ADMIN_CONTEXT,
+      );
 
       const after = await sospesoRepo.retrieveApplicationList();
 
@@ -132,15 +135,51 @@ function runSospesoActionsTest(
         "applied",
       );
 
-      await actionServer.rejectSospesoApplication({
-        sospesoId: appliedSospeso.id,
-        applicationId: applicationId,
-      });
+      await actionServer.rejectSospesoApplication(
+        {
+          sospesoId: appliedSospeso.id,
+          applicationId: applicationId,
+        },
+        ADMIN_CONTEXT,
+      );
 
       const after = await sospesoRepo.retrieveApplicationList();
 
       expect(after.find((item) => item.id === applicationId)?.status).toBe(
         "rejected",
+      );
+    });
+
+    test("관리자가 아니면 승인도 거절도 할 수 없다", async () => {
+      const { actionServer, sospesoRepo } = await createTestActionServer({
+        [appliedSospeso.id]: appliedSospeso,
+      });
+      const applicationId = appliedSospeso.applicationList[0]!.id;
+
+      await expect(
+        actionServer.approveSospesoApplication(
+          {
+            sospesoId: appliedSospeso.id,
+            applicationId: applicationId,
+          },
+          LOGGED_IN_CONTEXT,
+        ),
+      ).rejects.toThrowError("관리자가 아닙니다!");
+
+      await expect(
+        actionServer.rejectSospesoApplication(
+          {
+            sospesoId: appliedSospeso.id,
+            applicationId: applicationId,
+          },
+          LOGGED_IN_CONTEXT,
+        ),
+      ).rejects.toThrowError("관리자가 아닙니다!");
+
+      const after = await sospesoRepo.retrieveApplicationList();
+
+      expect(after.find((item) => item.id === applicationId)?.status).toBe(
+        "applied",
       );
     });
 
@@ -156,15 +195,18 @@ function runSospesoActionsTest(
 
       expect(before?.status).toBe("pending");
 
-      await actionServer.consumeSospeso({
-        sospesoId: approvedSospeso.id,
-        consumerId: TEST_USER_ID, // TODO user.id
-        coachId: TEST_USER_ID, // user.id
-        consumingId: generateId(),
-        consumedAt: new Date(),
-        content: "너무 도움이 되었어요!",
-        memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
-      });
+      await actionServer.consumeSospeso(
+        {
+          sospesoId: approvedSospeso.id,
+          consumerId: TEST_USER_ID, // TODO user.id
+          coachId: TEST_USER_ID, // user.id
+          consumingId: generateId(),
+          consumedAt: new Date(),
+          content: "너무 도움이 되었어요!",
+          memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
+        },
+        ADMIN_CONTEXT,
+      );
 
       const after = await sospesoRepo.retrieveSospesoDetail(approvedSospeso.id);
 

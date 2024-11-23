@@ -22,6 +22,7 @@ import {
   payplePaymentApi,
 } from "@/adapters/payplePaymentApi";
 import { isProd } from "@/adapters/env";
+import { isAdmin } from "@/auth/domain";
 
 export const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
@@ -35,8 +36,9 @@ export function buildSospesoActions(
         sospesoId: z.string(),
         applicationId: z.string(),
       }),
-      handler: async (input) => {
-        // TODO! 승인 권한 체크
+      handler: async (input, { locals: { user } }) => {
+        invariant(user, "로그인을 해야 합니다");
+        invariant(isAdmin(user), "관리자가 아닙니다!");
 
         return sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
@@ -51,8 +53,9 @@ export function buildSospesoActions(
         sospesoId: z.string(),
         applicationId: z.string(),
       }),
-      handler: async (input) => {
-        // TODO! 거절 권한 체크
+      handler: async (input, { locals: { user } }) => {
+        invariant(user, "로그인을 해야 합니다");
+        invariant(isAdmin(user), "관리자가 아닙니다!");
 
         return sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
@@ -76,8 +79,8 @@ export function buildSospesoActions(
         from: z.string(),
         to: z.string(),
       }),
-      handler: async (input, { locals: { session, now } }) => {
-        const issuerId = session?.id;
+      handler: async (input, { locals: { user, now } }) => {
+        const issuerId = user?.id;
 
         invariant(issuerId, "로그인해야 소스페소를 발급할 수 있어요!");
 
@@ -107,8 +110,9 @@ export function buildSospesoActions(
         appliedAt: z.coerce.date(),
         content: z.string(),
       }),
-      handler: async (input, context) => {
-        const applicantId = context.locals.session?.id;
+      handler: async (input, { locals: { user } }) => {
+        invariant(user, "로그인을 해야 합니다");
+        const applicantId = user.id;
 
         invariant(applicantId, "로그인해야 소스페소를 발급할 수 있어요!");
 
@@ -134,7 +138,9 @@ export function buildSospesoActions(
         content: z.string(),
         memo: z.string(),
       }),
-      handler: async (input) => {
+      handler: async (input, { locals: { user } }) => {
+        invariant(user, "로그인을 해야 합니다");
+
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
 

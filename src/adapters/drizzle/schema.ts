@@ -5,7 +5,6 @@ import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  nickname: text("nickname").notNull().default("손님"),
   email: text("email").notNull().unique(),
   emailVerified: integer("emailVerified", {
     mode: "boolean",
@@ -17,6 +16,15 @@ export const user = sqliteTable("user", {
   updatedAt: integer("updatedAt", {
     mode: "timestamp",
   }).notNull(),
+  nickname: text("nickname").notNull(),
+  role: text("role").default("user"),
+  banned: integer("banned", {
+    mode: "boolean",
+  }),
+  banReason: text("banReason"),
+  banExpires: integer("banExpires", {
+    mode: "timestamp",
+  }),
 });
 
 export const session = sqliteTable("session", {
@@ -36,6 +44,7 @@ export const session = sqliteTable("session", {
   userId: text("userId")
     .notNull()
     .references(() => user.id),
+  impersonatedBy: text("impersonatedBy"),
 });
 
 export const account = sqliteTable("account", {

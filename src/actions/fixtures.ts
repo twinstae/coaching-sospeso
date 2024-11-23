@@ -11,8 +11,21 @@ export const NOT_LOGGED_IN_CONTEXT = {
 
 export const LOGGED_IN_CONTEXT = {
   locals: {
-    session: {
+    user: {
       id: TEST_USER_ID,
+      nickname: "김토끼",
+      role: "user",
+    },
+    now: TEST_NOW,
+  },
+} as ActionAPIContext;
+
+export const ADMIN_CONTEXT = {
+  locals: {
+    user: {
+      id: TEST_USER_ID,
+      nickname: "김코치",
+      role: "admin",
     },
     now: TEST_NOW,
   },

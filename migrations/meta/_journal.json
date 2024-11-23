@@ -8,6 +8,13 @@
       "when": 1732279477345,
       "tag": "0000_lame_pandemic",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1732332295739,
+      "tag": "0001_keen_silvermane",
+      "breakpoints": true
     }
   ]
 }

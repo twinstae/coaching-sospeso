@@ -11,7 +11,7 @@ import {
   calcStatus,
 } from "./domain.ts";
 import { SOSPESO_PRICE } from "./constants.ts";
-import { TEST_USER_ID } from "@/auth/fixtures.ts";
+import { TEST_ADMIN_USER_ID, TEST_USER_ID } from "@/auth/fixtures.ts";
 import { generateNanoId } from "@/adapters/generateId.ts";
 
 const generateId = generateNanoId;
@@ -147,20 +147,30 @@ describe("sospeso", () => {
     ]);
   });
 
-  const consumedSospeso = consumeSospeso(approvedSospeso, {
+  const CONSUME_COMMAND = {
     sospesoId: issuedSospeso.id,
     consumingId: generateNanoId(),
     consumedAt: new Date(),
     content: "너무 도움이 되었어요! 덕분에 취직도 잘할듯?",
     memo: "장소: 약수역, 시간: 2022년 12월 11일, 어찌저찌 큰 도움이 되셨다고.",
-    consumerId: "", // TODO! 실제 user id
-    coachId: "", // TODO! 실제 user id
-  });
+    consumerId: TEST_USER_ID,
+    coachId: TEST_ADMIN_USER_ID,
+  };
+  const consumedSospeso = consumeSospeso(approvedSospeso, CONSUME_COMMAND);
 
   test("승인된 소스페소를 사용 처리할 수 있다", () => {
     expect(isConsumed(approvedSospeso)).toBe(false);
 
     expect(isConsumed(consumedSospeso)).toBe(true);
+  });
+
+  test("승인된 신청자가 아니면 사용할 수 없다", () => {
+    expect(() =>
+      consumeSospeso(approvedSospeso, {
+        ...CONSUME_COMMAND,
+        consumerId: generateNanoId(),
+      }),
+    ).toThrowError("승인된 사람만 소스페소를 사용할 수 있습니다");
   });
 
   // 소스페소 상태 3가지 "issued" | "pending" | "consumed"

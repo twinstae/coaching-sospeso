@@ -39,11 +39,13 @@ export type AuthApi = {
   logout: () => Promise<void>;
 };
 
+const SIGNUP_LOGIN_CALLBACK_URL = "/"
+
 export const authApi: AuthApi = {
   async sendEmailVerification({ email }) {
     await authClient.sendVerificationEmail({
       email,
-      callbackURL: href("홈", { page: 1 }), // The redirect URL after verification
+      callbackURL: SIGNUP_LOGIN_CALLBACK_URL
     });
   },
   signUp: {
@@ -53,6 +55,7 @@ export const authApi: AuthApi = {
         password,
         name,
         nickname,
+        role: "user",
       });
 
       if (error?.message === "User with this email already exists") {
@@ -71,7 +74,7 @@ export const authApi: AuthApi = {
       const { error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: href("홈", { page: 1 }),
+        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
       });
 
       if (error) {
@@ -92,7 +95,7 @@ export const authApi: AuthApi = {
     async google() {
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: href("홈", { page: 1 }),
+        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
       });
 
       if (error) {
@@ -105,7 +108,7 @@ export const authApi: AuthApi = {
     async twitter() {
       const { error } = await authClient.signIn.social({
         provider: "twitter",
-        callbackURL: href("홈", { page: 1 }),
+        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
       });
 
       if (error) {
@@ -118,7 +121,7 @@ export const authApi: AuthApi = {
     async github() {
       const { error } = await authClient.signIn.social({
         provider: "github",
-        callbackURL: href("홈", { page: 1 }),
+        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
       });
 
       if (error) {

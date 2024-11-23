@@ -2,9 +2,9 @@
 import { SospesoApplyingForm } from "@/components/SospesoApplyingForm.tsx";
 import Layout from "@/layouts/Layout.astro";
 
-const session = Astro.locals.session;
+const user = Astro.locals.user;
 
-if (!session) {
+if (!user) {
   return Astro.redirect("/auth/login");
 }
 ---

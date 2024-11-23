@@ -11,9 +11,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // console.log("user", result);
   if (result) {
     const { user } = result;
-    context.locals.session = {
+    context.locals.user = {
       id: user.id,
       nickname: user.nickname,
+      role: user.role as "admin" | "user",
     };
 
     return next();

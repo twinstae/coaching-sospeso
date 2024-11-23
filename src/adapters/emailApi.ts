@@ -39,15 +39,14 @@ export const plunkEmailApi = {
       }),
     };
 
-    fetch(
-      "https://api.useplunk.com/v1/send",
-      options,
-    ).then((response) => response.json())
-     .then((result) => {
-      console.log("plunk send result: ", result);
-     }).catch(error => {
-      console.error(error)
-     });
+    fetch("https://api.useplunk.com/v1/send", options)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("plunk send result: ", result);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
 } satisfies EmailApiI;
 

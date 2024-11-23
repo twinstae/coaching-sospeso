@@ -31,6 +31,10 @@ export const auth = betterAuth({
         type: "string",
         required: true,
       },
+      role: {
+        type: "string",
+        required: true,
+      },
     },
   },
   emailAndPassword: {
@@ -53,6 +57,7 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
+    sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url }) => {
       emailApi.send({
         to: user.email,

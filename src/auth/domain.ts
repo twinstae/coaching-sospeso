@@ -2,6 +2,7 @@
 export type User = {
   id: string;
   name: string;
+  role: "user" | "admin";
   nickname: string;
   email: string;
   emailVerified: boolean;
@@ -9,3 +10,9 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type AdminUser = User & { role: "admin" };
+
+export function isAdmin(user: { role: User["role"] }): user is AdminUser {
+  return user.role === "admin";
+}

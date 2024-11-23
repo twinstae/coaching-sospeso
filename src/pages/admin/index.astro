@@ -1,7 +1,18 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { SospesoApplicationDashboard } from "@/components/SospesoApplicationDashboard";
-import { sospesoRepo } from "@/actions";
+import { SospesoApplicationDashboard } from "@/components/SospesoApplicationDashboard.tsx";
+import { sospesoRepo } from "@/actions/index.ts";
+import { isAdmin } from '@/auth/domain.ts';
+
+const user = Astro.locals.user;
+
+if (!user) {
+  return Astro.redirect("/auth/login");
+}
+
+if (!isAdmin(user)) {
+  return Astro.redirect("/403");
+}
 
 const applicationList = await sospesoRepo.retrieveApplicationList();
 

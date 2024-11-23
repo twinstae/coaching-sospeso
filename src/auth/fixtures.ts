@@ -1,4 +1,5 @@
 import { generateNanoId } from "@/adapters/generateId";
+import type { User } from "./domain";
 
 export const TEST_USER_ID = generateNanoId();
 export const TEST_USER = {
@@ -10,4 +11,18 @@ export const TEST_USER = {
   image: "",
   createdAt: new Date(),
   updatedAt: new Date(),
-};
+  role: "user",
+} satisfies User;
+
+export const TEST_ADMIN_USER_ID = generateNanoId();
+export const TEST_ADMIN_USER = {
+  id: TEST_ADMIN_USER_ID,
+  name: "김태희",
+  nickname: "김코치",
+  email: TEST_ADMIN_USER_ID + "@test.kr",
+  emailVerified: true,
+  image: "",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  role: "admin",
+} satisfies User;

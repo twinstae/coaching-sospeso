@@ -117,7 +117,6 @@ export const createFakeSospesoRepository = (
             appliedAt: application.appliedAt,
             content: application.content,
             applicant: {
-              // TODO! user가 만들어져야
               id: TEST_USER.id,
               nickname: TEST_USER.nickname,
             },

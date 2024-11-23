@@ -49,6 +49,15 @@ export function isApproved(sospeso: Sospeso) {
   );
 }
 
+export function getApprovedApplicantId(sospeso: Sospeso): string {
+  const result = sospeso.applicationList.find(
+    (application) => application.status === "approved",
+  )?.applicantId;
+
+  invariant(result, "승인된 사람이 없습니다!");
+  return result;
+}
+
 export function isConsumed(
   sospeso: Sospeso,
 ): sospeso is Sospeso & { consuming: SospesoConsuming } {
@@ -208,6 +217,10 @@ export function consumeSospeso(
     "소스페소와 커맨드의 id가 다릅니다!",
   );
   invariant(isApproved(sospeso), "승인되지 않은 소스페소입니다!");
+  invariant(
+    getApprovedApplicantId(sospeso) === command.consumerId,
+    "승인된 사람만 소스페소를 사용할 수 있습니다",
+  );
 
   return {
     ...sospeso,
