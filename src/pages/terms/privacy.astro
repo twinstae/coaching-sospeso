@@ -2,6 +2,468 @@
 import Layout from "@/layouts/Layout.astro";
 ---
 
-<Layout title="코칭 소스페소 : 개인정보처리방침">
-  <h1>개인정보처리방침</h1>
+<Layout title="코칭 소스페소 개인정보처리방침">
+  <style is:inline>
+    h1 {
+      font-size: 28px;
+    }
+
+    h2 {
+      margin-top: 1em;
+      font-size: 22px;
+    }
+
+    h1,
+    h2 {
+      margin-bottom: 0.25em;
+      font-weight: 600;
+      cursor: text;
+    }
+
+    p {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
+    ul,
+    ol {
+      margin: 0px 0.1em 0px -26px;
+      padding: 0px 0px 0px 48px;
+    }
+    p,
+    ol,
+    ul {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+    ul {
+      display: block;
+      list-style-type: disc;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      padding-inline-start: 20px;
+      unicode-bidi: isolate;
+    }
+
+    ol ul {
+      list-style-type: circle;
+      margin-block-start: 0px;
+      margin-block-end: 0px;
+    }
+
+    ol {
+      list-style-type: decimal;
+      margin: 0px 0.1em 0px -26px;
+      padding: 0px 0px 0px 48px;
+    }
+
+    ol li::before {
+      background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iOCIgeT0iNyIgd2lkdGg9IjMiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiM0RTVDNkUiLz4KPHJlY3QgeD0iOCIgeT0iMTEiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNEU1QzZFIi8+CjxyZWN0IHg9IjgiIHk9IjE1IiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzRFNUM2RSIvPgo8cmVjdCB4PSIxMyIgeT0iNyIgd2lkdGg9IjMiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiM0RTVDNkUiLz4KPHJlY3QgeD0iMTMiIHk9IjExIiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzRFNUM2RSIvPgo8cmVjdCB4PSIxMyIgeT0iMTUiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNEU1QzZFIi8+Cjwvc3ZnPgo=)
+        0px 2px no-repeat;
+      content: "";
+      display: inline-block;
+      cursor: grab;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      left: -40px;
+      opacity: 0;
+      transition: opacity 200ms ease-in-out;
+    }
+
+    li p:first-child {
+      margin: 0px;
+      word-break: break-word;
+    }
+  </style>
+  <article class="card bg-base-100 shadow-xl p-8 m-auto max-w-xl mt-4">
+    <h1 dir="ltr">코칭 소스페소 개인정보처리 방침</h1>
+    <div>
+      <div id="content" class="ProseMirror">
+        <h2>
+          <span class="heading-content">전문</span>
+        </h2>
+        <p>
+          라이프리프터 코칭센터(이하 ‘단체’)는 이용자의 개인정보 보호를 가장
+          중요한 가치로 생각합니다. 「개인정보 보호법」, 「정보통신망 이용촉진
+          및 정보보호 등에 관한 법률」 등 개인정보 보호에 관한 법령을 준수하기
+          위해 노력하고 있습니다.
+        </p><p>
+          단체는 본 개인정보처리방침을 통하여 이용자가 제공하는 개인정보가
+          어떠한 용도와 방식으로 이용되고 있으며, 개인정보 보호를 위해 어떠한
+          조치를 취하고 있는지 알려드리려 합니다. 개인정보처리방침은 법령 등이
+          변경되거나, 단체와 이용자 간의 민주적인 절차에 따라 변경할 수
+          있습니다. 변경하는 경우에는 미리 이용자와 단체가 모두 참여하는 논의를
+          거칩니다. 변경된 사안은 서비스 화면에도 게시하고, 제공하신 연락처를
+          통해 고지해드립니다.
+        </p><h2>
+          <span class="heading-content">제1조 개인정보의 수집 및 이용 목적</span
+          >
+        </h2>
+        <p>
+          단체는 다음의 목적을 위하여 개인정보를 처리하며, 개인정보 책임자를
+          제외하고서는 업무에 필요한 정보만 제공 받습니다.
+        </p>
+        <ol>
+          <li>
+            <p>서비스 제공 및 계약 이행</p><ul>
+              <li>
+                <p>소스페소 발행, 신청, 코칭 매칭 서비스 제공</p>
+              </li><li><p>코칭 일정 조율 및 진행</p></li><li>
+                <p>결제 및 환불, 정산 등</p>
+              </li><li><p>소스페소 발행 및 사용 내역 관리</p></li>
+            </ul>
+          </li><li>
+            <p>회원 관리</p><ul>
+              <li>
+                <p>회원제 서비스 이용에 따른 본인 확인과 식별을 위한 정보</p>
+              </li><li><p>불만처리 등 민원처리</p></li><li>
+                <p>고지사항 전달</p>
+              </li>
+            </ul>
+          </li><li>
+            <p>서비스 개선 및 통계, 연구</p><ul>
+              <li>
+                <p>
+                  서비스 개선과 공익적 연구를 위한 이용 패턴 분석과 코칭 성과
+                  분석
+                </p>
+              </li><li>
+                <p>코치의 수퍼 비전과 상호 피드백과 감시</p>
+              </li>
+            </ul>
+          </li>
+        </ol><h2>
+          <span class="heading-content">제2조 수집하는 개인정보 항목</span>
+        </h2>
+        <ol>
+          <li>
+            <p>회원가입을 위한 공통 필수항목</p><ul>
+              <li><p>이메일 주소</p></li><li>
+                <p>성명</p>
+              </li><li><p>닉네임</p></li><li>
+                <p>휴대전화번호 등의 연락처</p>
+              </li><li><p>비밀번호</p></li><li>
+                <p>구글, 트위터, 깃허브 등으로 연결된 계정 정보</p>
+              </li>
+            </ul>
+          </li><li>
+            <p>발행자 추가 수집항목</p><ul>
+              <li><p>(필수) 결제 정보와 기록</p></li><li>
+                <p>(필수) 소스페소 발행자로 노출되는 별명</p>
+              </li>
+            </ul>
+          </li><li>
+            <p>수혜자 추가 수집항목</p><ul>
+              <li><p>(필수) 수혜 자격 증명을 위한 정보</p></li><li>
+                <p>(필수) 코칭 희망 시간대</p>
+              </li>
+            </ul>
+          </li><li>
+            <p>코치 추가 수집항목</p><ul>
+              <li><p>(필수) 계좌 정보</p></li><li>
+                <p>(선택) 코칭 가능 시간대</p>
+              </li>
+            </ul>
+          </li><li>
+            <p>서비스 이용 과정에서 자동으로 생성되는 익명화된 정보</p><ul>
+              <li><p>IP Address</p></li><li>
+                <p>쿠키</p>
+              </li><li><p>접속 로그와 서비스 이용 기록</p></li><li>
+                <p>사용 기기 정보</p>
+              </li><li><p>에러나 장애 기록</p></li>
+            </ul>
+          </li>
+        </ol><h2>
+          <span class="heading-content">제3조 개인정보의 보유 및 이용기간</span>
+        </h2>
+        <ol>
+          <li>
+            <p>회원 정보</p><ul>
+              <li><p>회원 탈퇴 시까지 보유</p></li><li>
+                <p>
+                  단, 관계 법령에 따라 보존할 필요가 있는 경우 해당 기간 동안
+                  보관
+                </p><ul>
+                  <li>
+                    <p>계약 또는 청약철회 등에 관한 기록: 5년</p>
+                  </li><li>
+                    <p>대금결제 및 재화 등의 공급에 관한 기록: 5년</p>
+                  </li><li>
+                    <p>소비자의 불만 또는 분쟁처리에 관한 기록: 3년</p>
+                  </li><li><p>표시·광고에 관한 기록: 6개월</p></li>
+                </ul>
+              </li>
+            </ul>
+          </li><li>
+            <p>소스페소 발행 기록</p>
+            <ol>
+              <li>
+                <p>결제 정보</p>
+                <ol>
+                  <li>
+                    <p>
+                      회계와 정산, 환불 등의 정보는 전자상거래등에서의
+                      소비자보호에 관한 법률과 전자금융거래법 등을 따라 5년 동안
+                      보존합니다.
+                    </p>
+                  </li>
+                </ol>
+              </li><li>
+                <p>
+                  소스페소 발행자로 노출하는 별명은 개인정보와는 별개로 저장되며
+                  탈퇴하더라도 삭제되지 않습니다. 서비스 종료 시까지 유지됩니다.
+                </p>
+              </li>
+            </ol>
+          </li><li>
+            <p>수혜자 자격 증명 자료</p>
+            <ol>
+              <li>
+                <p>소스페소 사용의 증거로서 서비스 종료 시까지 보존합니다.</p>
+              </li>
+            </ol>
+          </li><li>
+            <p>코칭 기록</p><ul>
+              <li>
+                <p>
+                  코칭 일지나 실험 결과 등의 익명화되지 않은 자료는 코칭 완료 후
+                  5년간 보관하며, 익명화된 통계나 논문, 보고서 등은 파기되지
+                  않습니다.
+                </p>
+              </li><li>
+                <p>소스페소 사용 증명을 위한 코칭 후기: 서비스 종료 시까지</p>
+              </li>
+            </ul>
+          </li><li>
+            <p>서비스 이용 로그 등</p>
+            <ol>
+              <li>
+                <p>
+                  통신비밀보호법을 따라서 최대 3개월 동안 보존하고, 그 전에도
+                  사용 목적이 사라지면 삭제합니다
+                </p>
+              </li>
+            </ol>
+          </li>
+        </ol><h2>
+          <span class="heading-content"
+            >제4조 개인정보의 제3자 제공 및 위탁 처리</span
+          >
+        </h2>
+        <p>
+          단체는 원칙적으로 이용자의 개인정보를 단체 내부의 코치나 관리자 외에
+          제3자에게 제공하지 않습니다.
+        </p><p>
+          서비스 개발자나 외부 기여자들도 테스트를 위한 가짜 정보를 이용해서
+          개발하고 있습니다. 다만, 아래의 경우에는 예외로 합니다.
+        </p>
+        <ol>
+          <li>
+            <p>
+              실제 개인정보와 관련된 문제 해결을 위해 도움을 제공하는 외부
+              전문가
+            </p>
+            <ol>
+              <li>
+                <p>이 경우에도 접근한 항목과 기록 등을 투명하게 고지합니다</p>
+              </li>
+            </ol>
+          </li><li>
+            <p>공익 목적을 위한 익명화된 공개 연구나 보고서, 논문 등</p>
+            <ol>
+              <li>
+                <p>
+                  이 경우에도 이름이나 이메일, 전화번호 등의 식별 가능한 정보는
+                  공유하지 않습니다. 당사자에게 미리 허락을 받고, 이용 내역을
+                  고지합니다.
+                </p>
+              </li>
+            </ol>
+          </li><li>
+            <p>
+              법령의 규정에 의거하거나, 수사 목적으로 법령에 정해진 절차와
+              방법에 따라 수사기관의 요구가 있는 경우
+            </p>
+          </li>
+        </ol><p>
+          또한 단체는 원활한 개인정보 업무 처리를 위하여 다음과 같이 개인정보
+          처리업무를 위탁하고 있습니다.
+        </p>
+        <ol>
+          <li>
+            <p>소스페소의 결제와 정산, 환불 등의 처리</p>
+            <ol>
+              <li><p>위탁받는 자 (수탁자) : 페이플</p></li><li>
+                <p>위탁하는 업무의 내용 : 결제 서비스</p>
+              </li>
+            </ol>
+          </li>
+        </ol><h2>
+          <span class="heading-content">제5조 개인정보의 파기</span>
+        </h2>
+        <p>
+          단체는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가
+          불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다.
+        </p>
+        <ol>
+          <li>
+            <p>파기절차</p><ul>
+              <li>
+                <p>
+                  불필요한 개인정보는 각 보유 기간의 종료일로부터 5일 이내 파기
+                </p>
+              </li><li>
+                <p>
+                  홈페이지에서 입력한 정보는 목적이 달성된 후 별도의 DB로 옮겨져
+                  내부 방침 및 기타 관련 법령에 따라 일정기간 저장된 후 파기
+                </p>
+              </li>
+            </ul>
+          </li><li>
+            <p>파기방법</p><ul>
+              <li>
+                <p>전자적 파일: 복구 불가능한 방법으로 영구 삭제</p>
+              </li><li><p>인쇄물: 파쇄기로 파쇄하여 처리</p></li>
+            </ul>
+          </li>
+        </ol><h2>
+          <span class="heading-content">제6조 이용자의 권리와 그 행사방법</span>
+        </h2>
+        <p>이용자는 개인정보 관련하여 다음과 같은 권리를 행사할 수 있습니다.</p>
+        <ol>
+          <li><p>개인정보 열람 요구</p></li><li>
+            <p>오류 등이 있을 경우 정정 요구</p>
+          </li><li><p>삭제 요구</p></li><li>
+            <p>처리 정지 요구</p>
+          </li><li>
+            <p>개인정보 사용 방법에 대한 공개적인 논의 요구</p>
+          </li>
+        </ol><p>
+          권리 행사는 단체에 대해 서면, 전화, 전자우편 등을 통하여 하실 수
+          있으며 단체는 이에 대해 지체없이 조치하겠습니다.
+        </p><p>
+          정보주체는 개인정보 보호법 등 관계 법령을 위반하여 단체가 처리하고
+          있는 정보주체 본인이나 타인의 개인정보 및 사생활을 침해하여서는 아니
+          됩니다.
+        </p><h2>
+          <span class="heading-content">제7조 개인정보의 안전성 확보 조치</span>
+        </h2>
+        <p>
+          단체는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고
+          있습니다.
+        </p>
+        <ol>
+          <li>
+            <p>관리적 조치</p><ul>
+              <li>
+                <p>개인정보 취급자 최소화</p><ul>
+                  <li>
+                    <p>
+                      원칙적으로 내부에서도 개인정보처리 책임자(김태희)만이 실제
+                      정보가 포함된 DB 등에 접근할 수 있으며. 외부 기여자와
+                      개발자는 접근할 수 없게 하고 있습니다.
+                    </p>
+                  </li>
+                </ul>
+              </li><li>
+                <p>법에 따라 필요한 정기적인 내부 교육</p>
+              </li><li><p>내부관리계획 수립·시행</p></li>
+            </ul>
+          </li><li>
+            <p>기술적 조치</p><ul>
+              <li><p>개인정보 암호화</p></li><li>
+                <p>보안프로그램 설치·운영</p>
+              </li><li><p>접근통제시스템 운영</p></li><li>
+                <p>SSL 보안 서버 구축</p>
+              </li><li><p>기술적 조치 내역의 구체적인 공개</p></li>
+            </ul>
+          </li><li>
+            <p>물리적 조치</p><ul>
+              <li>
+                <p>전산실, 자료 보관실 등의 접근통제 및 기록, 접근 내역 고지</p>
+              </li>
+            </ul>
+          </li>
+        </ol><h2>
+          <span class="heading-content"
+            >제8조 개인정보 자동 수집 장치의 설치·운영 및 거부</span
+          >
+        </h2>
+        <p>
+          단체는 활동 기록이나, 접속 기록, 에러 보고 등을 자동으로 수집하고
+          있습니다.
+        </p><p>
+          사용자의 나이나 성별 등을 수집하지 않으며 데이터는 익명화되어, GDPR과
+          CCPA 등의 해외 규정과도 호환되는 특정 사용자를 식별할 수 없는 방식을
+          사용합니다. 쿠키는 데이터 분석이 아닌 로그인과 계정 관리만을 위해
+          사용합니다.
+        </p><h2>
+          <span class="heading-content">제9조 개인정보 보호책임자</span>
+        </h2>
+        <p>
+          단체는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와
+          관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이
+          개인정보 보호책임자를 지정하고 있습니다.
+        </p>
+        <ol>
+          <li>
+            <p>개인정보 보호책임자</p><ul>
+              <li><p>성명: 김태희</p></li><li>
+                <p>직책: 개발자</p>
+              </li><li>
+                <p>
+                  이메일: <a href="mailto:taehee.kim@life-lifter.com"
+                    >taehee.kim@life-lifter.com</a
+                  >
+                </p>
+              </li><li><p>휴대전화: 010-4827-1733</p></li>
+            </ul>
+          </li>
+        </ol>
+        <h2>
+          <span class="heading-content">제10조 개인정보 처리방침 변경</span>
+        </h2>
+        <p>
+          본 개인정보처리방침은 2024년 11월 23일부터 적용됩니다. 법령·정책 또는
+          보안기술의 변경에 따라 내용의 추가·삭제 및 수정이 있을 시에는
+          변경사항의 시행 일자 7일 전부터 공지사항을 통하여 고지할 것입니다.
+        </p>
+        <h2>
+          <span class="heading-content">제11조 권익침해 구제방법</span>
+        </h2>
+        <p>
+          개인정보침해로 인한 구제를 받기 위하여 다음 기관에 분쟁해결이나 상담
+          등을 신청할 수 있습니다.
+        </p>
+        <ol>
+          <li>
+            <p>개인정보침해신고센터: (국번없이) 118 (privacy.kisa.or.kr)</p>
+          </li><li>
+            <p>
+              개인정보분쟁조정위원회: 1833-6972 (<a
+                href="http://www.kopico.go.kr"
+                class="use-hover-preview"
+                rel="noopener noreferrer nofollow">www.kopico.go.kr</a
+              >)
+            </p>
+          </li><li>
+            <p>
+              대검찰청 사이버수사과: (국번없이) 1301 (<a
+                href="http://www.spo.go.kr"
+                class="use-hover-preview"
+                rel="noopener noreferrer nofollow">www.spo.go.kr</a
+              >)
+            </p>
+          </li><li>
+            <p>
+              경찰청 사이버안전국: (국번없이) 182 (cyberbureau.police.go.kr)
+            </p>
+          </li>
+        </ol><p></p>
+      </div>
+    </div>
+  </article>
 </Layout>
