@@ -45,13 +45,13 @@ export type AuthApi = {
   }) => Promise<void>;
 };
 
-const SIGNUP_LOGIN_CALLBACK_URL = "/";
+const SIGNUP_CALLBACK_URL = "/auth/me/update";
 
 export const authApi: AuthApi = {
   async sendEmailVerification({ email }) {
     await authClient.sendVerificationEmail({
       email,
-      callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
+      callbackURL: SIGNUP_CALLBACK_URL,
     });
   },
   signUp: {
@@ -81,7 +81,7 @@ export const authApi: AuthApi = {
       const { error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
+        callbackURL: SIGNUP_CALLBACK_URL,
       });
 
       if (error) {
@@ -103,7 +103,7 @@ export const authApi: AuthApi = {
     async google() {
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
+        callbackURL: SIGNUP_CALLBACK_URL,
       });
 
       if (error) {
@@ -116,7 +116,7 @@ export const authApi: AuthApi = {
     async twitter() {
       const { error } = await authClient.signIn.social({
         provider: "twitter",
-        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
+        callbackURL: SIGNUP_CALLBACK_URL,
       });
 
       if (error) {
@@ -129,7 +129,7 @@ export const authApi: AuthApi = {
     async github() {
       const { error } = await authClient.signIn.social({
         provider: "github",
-        callbackURL: SIGNUP_LOGIN_CALLBACK_URL,
+        callbackURL: SIGNUP_CALLBACK_URL,
       });
 
       if (error) {
