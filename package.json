@@ -21,6 +21,7 @@
     "@ariakit/react": "^0.4.14",
     "@astrojs/check": "^0.9.4",
     "@astrojs/react": "^3.6.3",
+    "@astrojs/sitemap": "^3.2.1",
     "@astrojs/vercel": "^7.8.2",
     "@hookform/resolvers": "^3.9.1",
     "@libsql/client": "^0.14.0",
