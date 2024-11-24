@@ -1,7 +1,7 @@
 import { TEST_USER_ID } from "@/auth/fixtures.ts";
 import type { ActionContext } from "./actions.ts";
 
-const TEST_NOW = new Date("2024-11-06T00:00:00Z");
+export const TEST_NOW = new Date("2024-11-06T00:00:00Z");
 
 export const NOT_LOGGED_IN_CONTEXT = {
   locals: {

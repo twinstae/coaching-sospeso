@@ -24,7 +24,7 @@ if (!user) {
 
   sospesoApplyingEventBus.on(window.document.body, (command) => {
     actions
-      .applySospeso({ ...command, sospesoId: sospesoId, appliedAt: new Date() })
+      .applySospeso({ ...command, sospesoId: sospesoId })
       .then((result) => {
         if (result.error) {
           return console.error(result.error);

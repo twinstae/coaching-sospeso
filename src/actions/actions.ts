@@ -111,10 +111,9 @@ export function buildSospesoActions(
       input: z.object({
         sospesoId: z.string(),
         applicationId: z.string(),
-        appliedAt: z.coerce.date(),
         content: z.string(),
       }),
-      handler: async (input, { locals: { user } }) => {
+      handler: async (input, { locals: { user, now } }) => {
         invariant(user, "로그인을 해야 합니다");
         const applicantId = user.id;
 
@@ -126,6 +125,7 @@ export function buildSospesoActions(
           const appliedSospeso = domain.applySospeso(sospeso, {
             ...input,
             applicantId,
+            appliedAt: now
           });
 
           return appliedSospeso;
@@ -138,17 +138,16 @@ export function buildSospesoActions(
         consumerId: z.string(),
         coachId: z.string(),
         consumingId: z.string(),
-        consumedAt: z.coerce.date(),
         content: z.string(),
         memo: z.string(),
       }),
-      handler: async (input, { locals: { user } }) => {
+      handler: async (input, { locals: { user, now } }) => {
         invariant(user, "로그인을 해야 합니다");
 
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
 
-          const appliedSospeso = domain.consumeSospeso(sospeso, { ...input });
+          const appliedSospeso = domain.consumeSospeso(sospeso, { ...input, consumedAt: now });
 
           return appliedSospeso;
         });

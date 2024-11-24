@@ -7,6 +7,7 @@ import type {
 import { Faker, ko } from "@faker-js/faker";
 import { TEST_ADMIN_USER_ID, TEST_USER_ID } from "@/auth/fixtures.ts";
 import invariant from "@/invariant.ts";
+import { TEST_NOW } from '@/actions/fixtures.ts';
 
 const generateId = generateNanoId;
 export const TEST_SOSPESO_ID = "DaLNnQs8nfVgs0";
@@ -50,8 +51,6 @@ export const CONSUMED_SOSPESO = {
     content: "탐토에게 테스트 코칭을 받아서 너무 좋았어요!",
   },
 } as const;
-
-const TEST_NOW = new Date("2024-11-06T00:00:00Z");
 
 export const TEST_APPLIED_APPLICATION = {
   id: generateId(),

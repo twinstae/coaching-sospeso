@@ -19,7 +19,7 @@ import {
 } from "@/sospeso/repository.ts";
 
 import { buildTestActionServer } from "./createTestActionServer.ts";
-import { ADMIN_CONTEXT, LOGGED_IN_CONTEXT } from "./fixtures.ts";
+import { ADMIN_CONTEXT, LOGGED_IN_CONTEXT, TEST_NOW } from "./fixtures.ts";
 import { paymentApi } from "./actions.ts";
 import {
   createFakePaymentRepository,
@@ -95,13 +95,11 @@ function runSospesoActionsTest(
       expect(before).toMatchObject([]);
 
       const TEST_APPLICATION_ID = generateId();
-      const TEST_NOW = new Date();
       await actionServer.applySospeso(
         {
           sospesoId: id,
           applicationId: TEST_APPLICATION_ID,
-          content: "저 퀴어 문화 축제 갔다 왔어요",
-          appliedAt: TEST_NOW,
+          content: "저 퀴어 문화 축제 갔다 왔어요"
         },
         LOGGED_IN_CONTEXT,
       );
@@ -237,7 +235,6 @@ function runSospesoActionsTest(
           consumerId: TEST_USER_ID, // TODO user.id
           coachId: TEST_USER_ID, // user.id
           consumingId: generateId(),
-          consumedAt: new Date(),
           content: "너무 도움이 되었어요!",
           memo: "장소 시간 어쩌구 코칭 일지 링크 등등",
         },
