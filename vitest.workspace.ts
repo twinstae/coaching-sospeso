@@ -25,6 +25,7 @@ export default defineWorkspace([
     test: {
       include: [
         "src/actions/**/*.test.ts",
+        "src/services/**/*.test.ts",
         "src/sospeso/**/*.test.ts",
         "src/auth/**/*.test.ts",
         "src/payment/**/*.test.ts",
