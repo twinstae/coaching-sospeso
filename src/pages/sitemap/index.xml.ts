@@ -1,9 +1,9 @@
 import { sospesoRepo } from "@/actions/actions";
+import { env } from "@/adapters/env";
 import { href } from "@/routing/href";
 import { routes } from "@/routing/routes";
 import type { APIRoute } from "astro";
 
-export const SITE_URL = "https://coaching-sospeso.org";
 export const HOME_PRIORITY = 1;
 export const TERMS_PRIORITY = 0.6;
 export const SOSPESO_DETAIL_PRIORITY = 0.8;
@@ -18,7 +18,7 @@ const makeSitemapUrls = (sitemapData: { url: string; priority: number }[]) =>
     .map(
       (sitemap) => `
     <url>
-      <loc>${new URL(sitemap.url, SITE_URL).href}</loc>
+      <loc>${new URL(encodeURI(sitemap.url), env.APP_HOST).href}</loc>
       <priority>${sitemap.priority}</priority>
     </url>
   `,

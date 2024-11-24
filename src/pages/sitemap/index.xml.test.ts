@@ -2,15 +2,16 @@ import { describe, expect, test } from "vitest";
 import {
   GET,
   HOME_PRIORITY,
-  SITE_URL,
   SOSPESO_DETAIL_PRIORITY,
   TERMS_PRIORITY,
 } from "./index.xml";
 import { href } from "@/routing/href";
 import { routes } from "@/routing/routes";
+import { env } from "@/adapters/env";
 
 describe("sitemap", () => {
   test("sitemap XML을 생성할 수 있다", async () => {
+    const siteUrl = env.APP_HOST;
     const expectedStaticUrls = [
       { url: routes["홈"].path, priority: HOME_PRIORITY },
       { url: routes["개인정보처리방침"].path, priority: TERMS_PRIORITY },
@@ -32,13 +33,13 @@ describe("sitemap", () => {
 
     // 정적 페이지 URL 확인
     expectedStaticUrls.forEach(({ url, priority }) => {
-      expect(sitemapXml).toContain(`<loc>${SITE_URL}${url}</loc>`);
+      expect(sitemapXml).toContain(`<loc>${siteUrl}${url}</loc>`);
       expect(sitemapXml).toContain(`<priority>${priority}</priority>`);
     });
 
     // 소스페소 상세 페이지 URL 확인
     mockApplications.forEach(({ sospesoId }) => {
-      const sospesoUrl = new URL(href("소스페소-상세", { sospesoId }), SITE_URL)
+      const sospesoUrl = new URL(href("소스페소-상세", { sospesoId }), siteUrl)
         .href;
       expect(sitemapXml).toContain(`<loc>${sospesoUrl}</loc>`);
       expect(sitemapXml).toContain(
