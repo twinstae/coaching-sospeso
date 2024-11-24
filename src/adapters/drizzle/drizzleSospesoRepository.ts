@@ -8,6 +8,7 @@ import {
   calcStatus,
   type Sospeso,
   type SospesoApplicationStatus,
+  type SospesoStatus,
 } from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
@@ -85,31 +86,36 @@ export function createDrizzleSospesoRepository(
   db: LibSQLDatabase<typeof schema>,
 ): SospesoRepositoryI {
   return {
-    async retrieveSospesoList(page: number) {
+    async retrieveSospesoList({ page, status }) {
       const { totalCount } = (await db
         .select({ totalCount: count(schema.sospeso.id) })
         .from(schema.sospeso)
+        .where(
+          status === undefined ? undefined : eq(schema.sospeso.status, status),
+        )
         .get()) ?? { totalCount: 1 };
-      const result = await db.query.sospeso
-        .findMany({
-          with: {
-            applicationList: true,
-            consuming: true,
-            issuing: true,
+
+      const result = await db.query.sospeso.findMany({
+        with: {
+          issuing: {
+            columns: {
+              issuedAt: true,
+            },
           },
-          limit: SOSPESO_PER_PAGE,
-          offset: (page - 1) * SOSPESO_PER_PAGE,
-        })
-        .then((items) => items.map(dbModelToDomainModel));
+        },
+        where:
+          status === undefined ? undefined : eq(schema.sospeso.status, status),
+        limit: SOSPESO_PER_PAGE,
+        offset: (page - 1) * SOSPESO_PER_PAGE,
+      });
 
       const sospesoList = result.map((sospeso) => {
-        const status = calcStatus(sospeso);
         return {
           id: sospeso.id,
           from: sospeso.from,
-          status,
+          status: sospeso.status as SospesoStatus,
           to: sospeso.to,
-          issuedAt: sospeso.issuing.issuedAt,
+          issuedAt: sospeso.issuing!.issuedAt,
         };
       });
 
@@ -223,6 +229,7 @@ export function createDrizzleSospesoRepository(
             id: after.id,
             from: after.from,
             to: after.to,
+            status: calcStatus(after),
           });
 
           if (before.issuing !== after.issuing) {
@@ -284,6 +291,7 @@ export function createDrizzleSospesoRepository(
             id: after.id,
             from: after.from,
             to: after.to,
+            status: calcStatus(after),
           });
 
           await tx.insert(schema.sospesoIssuing).values({

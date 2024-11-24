@@ -10,7 +10,10 @@ import { Pagination } from "@/shared/Pagination.tsx";
 const params = parseRouteParamsFromUrl("홈", new URL(Astro.url));
 const page = Math.max(params.page ?? 1, 1);
 
-const { sospesoList, totalPage } = await sospesoRepo.retrieveSospesoList(page);
+const { sospesoList, totalPage } = await sospesoRepo.retrieveSospesoList({
+  page,
+  status: params.status,
+});
 
 if (!sospesoList) {
   return new Response(null, {
@@ -56,6 +59,11 @@ if (!sospesoList) {
   >
     <SospesoFilter />
     <SospesoList sospesoList={sospesoList} />
-    <Pagination routeKey="홈" params={{}} current={page} end={totalPage} />
+    <Pagination
+      routeKey="홈"
+      params={{ status: params.status }}
+      current={page}
+      end={totalPage}
+    />
   </section>
 </Layout>

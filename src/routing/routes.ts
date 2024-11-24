@@ -29,7 +29,9 @@ export const routes = {
     path: "/",
     paramsSchema: v.object({
       page: v.optional(pageSchema),
-      status: v.optional(v.picklist(["issued", "pending", "consumed"])),
+      status: v.optional(
+        v.undefinedable(v.picklist(["issued", "pending", "consumed"])),
+      ),
     }),
   },
   "소스페소-발행": {
