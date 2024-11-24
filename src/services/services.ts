@@ -1,16 +1,23 @@
-import { sospesoRepo } from "@/actions/actions";
 import invariant from "@/invariant";
 import { issueSospeso, type SospesoIssuingCommand } from "@/sospeso/domain";
+import type { SospesoRepositoryI } from "@/sospeso/repository";
 
 export const sospesoServices = {
-  issueSospeso: async (
-    command: SospesoIssuingCommand,
-    user?: {
-      id: string;
-      nickname: string;
-      role: "user" | "admin";
-    },
-  ) => {
+  issueSospeso: async ({
+    sospesoRepo,
+    command,
+    context: { user },
+  }: {
+    sospesoRepo: SospesoRepositoryI;
+    command: SospesoIssuingCommand;
+    context: {
+      user?: {
+        id: string;
+        nickname: string;
+        role: "user" | "admin";
+      };
+    };
+  }) => {
     invariant(user, "로그인을 해야 합니다");
     const applicantId = user.id;
 
