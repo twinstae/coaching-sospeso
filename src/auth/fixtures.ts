@@ -12,6 +12,7 @@ export const TEST_USER = {
   createdAt: new Date(),
   updatedAt: new Date(),
   role: "user",
+  phone: "010-1234-5678",
 } satisfies User;
 
 export const TEST_ADMIN_USER_ID = generateNanoId();
@@ -25,4 +26,5 @@ export const TEST_ADMIN_USER = {
   createdAt: new Date(),
   updatedAt: new Date(),
   role: "admin",
+  phone: "010-1234-5678",
 } satisfies User;

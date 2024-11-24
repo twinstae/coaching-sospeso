@@ -19,11 +19,19 @@ const pageSchema = v.pipe(
   v.integer(),
 );
 
+// {page: "1"}
+// /?page=1
+// /?page=2&status=
+// string => "issued" | "pending" | "consumed"
+
 export const routes = {
   홈: {
     path: "/",
     paramsSchema: v.object({
       page: v.optional(pageSchema),
+      status: v.optional(
+        v.undefinedable(v.picklist(["issued", "pending", "consumed"])),
+      ),
     }),
   },
   "소스페소-발행": {

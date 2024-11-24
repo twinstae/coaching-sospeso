@@ -3,6 +3,7 @@ import {
   calcStatus,
   type Sospeso,
   type SospesoApplicationStatus,
+  type SospesoStatus,
 } from "./domain";
 
 type SospesoDto =
@@ -46,7 +47,10 @@ type SospesoApplicationListItemDto = {
 };
 
 export interface SospesoRepositoryI {
-  retrieveSospesoList(page: number): Promise<{
+  retrieveSospesoList(params: {
+    page: number;
+    status: SospesoStatus | undefined;
+  }): Promise<{
     sospesoList: SospesoListItemDto[];
     totalPage: number;
   }>;
@@ -66,8 +70,8 @@ export const createFakeSospesoRepository = (
   let _fakeState = initState;
 
   return {
-    async retrieveSospesoList(page) {
-      const sospesoList = Object.values(_fakeState).map((sospeso) => {
+    async retrieveSospesoList({ page, status }) {
+      const _sospesoList = Object.values(_fakeState).map((sospeso) => {
         const status = calcStatus(sospeso);
         return {
           id: sospeso.id,
@@ -77,6 +81,11 @@ export const createFakeSospesoRepository = (
           issuedAt: sospeso.issuing.issuedAt,
         };
       });
+
+      const sospesoList =
+        status === undefined
+          ? _sospesoList
+          : _sospesoList.filter((sospeso) => sospeso.status === status);
 
       const start = (page - 1) * SOSPESO_PER_PAGE;
       const end = (page - 1) * SOSPESO_PER_PAGE + SOSPESO_PER_PAGE + 1;

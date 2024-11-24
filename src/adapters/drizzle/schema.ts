@@ -94,6 +94,7 @@ export const sospeso = sqliteTable("sospeso", {
   id: text("id").primaryKey(),
   from: text("from").notNull(),
   to: text("to").notNull(),
+  status: text("status").notNull().default("issued"),
 });
 
 export const sospesoRelations = relations(sospeso, ({ one, many }) => ({
