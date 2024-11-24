@@ -12,7 +12,7 @@ import {
 } from "@/sospeso/repository.ts";
 
 import { generateNanoId } from "@/adapters/generateId.ts";
-import { sospesoServices } from "./services";
+import { createSospesoServices } from "./services";
 import { TEST_NOW } from "@/actions/fixtures";
 import { SOSPESO_PRICE } from "@/sospeso/constants";
 
@@ -54,8 +54,9 @@ function runSospesoServicesTest(
         sospeso: {},
       });
 
+      const sospesoServices = createSospesoServices(sospesoRepo);
+
       await sospesoServices.issueSospeso({
-        sospesoRepo,
         command: issuingSospeso,
         context: {
           user: {
