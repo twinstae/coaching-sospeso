@@ -74,6 +74,7 @@ export function SignUpForm() {
             name="email"
             autoComplete="email"
             placeholder="gildong@gmail.com"
+            maxLength={411}
           />
           <TextField
             label="비밀번호"
@@ -81,6 +82,7 @@ export function SignUpForm() {
             type="password"
             autoComplete="new-password"
             minLength={10}
+            maxLength={128}
           />
           <TextField
             label="비밀번호 확인"
@@ -88,20 +90,23 @@ export function SignUpForm() {
             type="password"
             autoComplete="new-password"
             minLength={10}
+            maxLength={128}
           />
           <TextField
             label="이름(실명)"
             name="name"
             autoComplete="name"
             placeholder="홍길동"
+            maxLength={20}
           />
           <TextField
             label="전화번호"
             name="phone"
             placeholder="010-1234-5678"
             autoComplete="tel-national"
+            maxLength={13}
           />
-          <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
+          <TextField label="별명" name="nickname" placeholder="다정한 토끼" maxLength={12} />
 
           <Checkbox
             label={

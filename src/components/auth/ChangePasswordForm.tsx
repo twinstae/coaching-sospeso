@@ -28,7 +28,7 @@ export function ChangePasswordForm() {
             bus: changePasswordBus,
           }}
         >
-          <TextField label="이메일" name="email" autoComplete="email" />
+          <TextField label="이메일" name="email" autoComplete="email" maxLength={411} />
           <button className="btn btn-outline w-full" type="submit">
             비밀번호 변경 이메일 보내기
           </button>

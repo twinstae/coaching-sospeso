@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/adapters/db.ts";
+import { pgDb } from "@/adapters/db.ts";
 import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
 import { env, isProd } from "@/adapters/env.ts";
 import { renderSecretLinkEmail } from "@/adapters/renderEmail";
@@ -8,8 +8,8 @@ import { renderSecretLinkEmail } from "@/adapters/renderEmail";
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
 export const auth = betterAuth({
-  database: drizzleAdapter(db, {
-    provider: "sqlite",
+  database: drizzleAdapter(pgDb, {
+    provider: "pg",
   }),
   socialProviders: {
     google: {

@@ -2,7 +2,7 @@ import {
   SOSPESO_PER_PAGE,
   type SospesoRepositoryI,
 } from "@/sospeso/repository";
-import * as schema from "./schema.ts";
+import * as schema from "./pgSchema.ts";
 import { count, eq } from "drizzle-orm";
 import {
   calcStatus,
@@ -12,7 +12,7 @@ import {
 } from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
-import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
+import type { pgDb } from '../db.ts';
 
 const sospesoSchema = v.object({
   id: v.string(),
@@ -83,7 +83,7 @@ function dbModelToDomainModel(dbModel: {
 }
 
 export function createDrizzleSospesoRepository(
-  db: LibSQLDatabase<typeof schema>,
+  db: typeof pgDb,
 ): SospesoRepositoryI {
   return {
     async retrieveSospesoList({ page, status }) {
@@ -92,8 +92,7 @@ export function createDrizzleSospesoRepository(
         .from(schema.sospeso)
         .where(
           status === undefined ? undefined : eq(schema.sospeso.status, status),
-        )
-        .get()) ?? { totalCount: 1 };
+        ).execute()).at(0) ?? { totalCount: 1 };
 
       const result = await db.query.sospeso.findMany({
         with: {

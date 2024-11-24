@@ -44,14 +44,17 @@ export function UpdateUserForm({
             name="name"
             autoComplete="name"
             placeholder="홍길동"
+            maxLength={20}
           />
           <TextField
             label="전화번호"
             name="phone"
             placeholder="010-1234-5678"
             autoComplete="tel-national"
+            maxLength={13}
           />
-          <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
+          <TextField label="별명" name="nickname" placeholder="다정한 토끼"
+            maxLength={12} />
           <button className="btn btn-primary w-full" type="submit">
             프로필 수정하기
           </button>

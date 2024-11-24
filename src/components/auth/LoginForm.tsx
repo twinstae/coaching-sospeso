@@ -35,13 +35,14 @@ export function LoginForm({ error }: { error: "email_not_found" | undefined }) {
             bus: magicLinkLoginBus,
           }}
         >
-          <TextField label="이메일" name="email" autoComplete="email" />
+          <TextField label="이메일" name="email" autoComplete="email" maxLength={411} />
           <TextField
             label="비밀번호"
             name="password"
             type="password"
             autoComplete="current-password"
             minLength={10}
+            maxLength={128}
           />
           <button className="btn btn-outline w-full" type="submit">
             이메일로 계속하기

@@ -20,6 +20,9 @@ importers:
       '@astrojs/vercel':
         specifier: ^7.8.2
         version: 7.8.2(astro@4.16.14(@types/node@22.9.3)(rollup@4.24.3)(typescript@5.6.3))(react@18.3.1)
+      '@electric-sql/pglite':
+        specifier: ^0.2.13
+        version: 0.2.13
       '@hookform/resolvers':
         specifier: ^3.9.1
         version: 3.9.1(react-hook-form@7.53.2(react@18.3.1))
@@ -45,8 +48,8 @@ importers:
         specifier: 4.16.14
         version: 4.16.14(@types/node@22.9.3)(rollup@4.24.3)(typescript@5.6.3)
       better-auth:
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 1.0.2
+        version: 1.0.2
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -55,7 +58,7 @@ importers:
         version: 16.4.5
       drizzle-orm:
         specifier: ^0.36.4
-        version: 0.36.4(@libsql/client@0.14.0)(@types/react@18.3.12)(kysely@0.27.4)(react@18.3.1)
+        version: 0.36.4(@electric-sql/pglite@0.2.13)(@libsql/client@0.14.0)(@types/react@18.3.12)(kysely@0.27.4)(react@18.3.1)
       jsx-email:
         specifier: ^2.1.5
         version: 2.1.5(@jsx-email/app-preview@2.0.3(@types/node@22.9.3)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react@18.3.1))(@jsx-email/plugin-inline@1.0.1)(@jsx-email/plugin-minify@1.0.1)(@jsx-email/plugin-pretty@1.0.0)(@types/node@22.9.3)(@types/react@18.3.12)(react@18.3.1)
@@ -433,6 +436,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@electric-sql/pglite@0.2.13':
+    resolution: {integrity: sha512-YRY806NnScVqa21/1L1vaysSQ+0/cAva50z7vlwzaGiBOTS9JhdzIRHN0KfgMhobFAphbznZJ7urMso4RtMBIQ==}
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -2898,8 +2904,8 @@ packages:
   bcp-47-match@2.0.3:
     resolution: {integrity: sha512-JtTezzbAibu8G0R9op9zb3vcWZd9JF6M0xOYGPn0fNCd7wOpRB1mU2mH9T8gaBGbAAyIIVgB2G7xG0GP98zMAQ==}
 
-  better-auth@1.0.0:
-    resolution: {integrity: sha512-R//T+jrIMZk1hScFk4b+Z0hDPCh/vj4p9UyErWdRVsZQy5yn1bA/suHw76uLTeYdwDvoyvhbsgdoQ9MQ1z3Q/w==}
+  better-auth@1.0.2:
+    resolution: {integrity: sha512-3sOmwK3s4tvxg4nHbatCczxgW7+1nsB7JnFutFZ9Q4/0Ww8Gqv0PsC7Z5aU4JN0S9urVFBV16o02JZvbT/9DXw==}
 
   better-call@0.3.2:
     resolution: {integrity: sha512-ZYUADh4S4JF3QOIgC0QAm4N9Ifb7v3rOEcwkIxr3UXxd+GCrGmEzv7VDe35o1ldX0Zcb9CX3QfT0jdJoMIKA9w==}
@@ -6487,6 +6493,8 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
+  '@electric-sql/pglite@0.2.13': {}
+
   '@emmetio/abbreviation@2.3.3':
     dependencies:
       '@emmetio/scanner': 1.0.4
@@ -8913,7 +8921,7 @@ snapshots:
 
   bcp-47-match@2.0.3: {}
 
-  better-auth@1.0.0:
+  better-auth@1.0.2:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       '@noble/ciphers': 0.6.0
@@ -9304,8 +9312,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.36.4(@libsql/client@0.14.0)(@types/react@18.3.12)(kysely@0.27.4)(react@18.3.1):
+  drizzle-orm@0.36.4(@electric-sql/pglite@0.2.13)(@libsql/client@0.14.0)(@types/react@18.3.12)(kysely@0.27.4)(react@18.3.1):
     optionalDependencies:
+      '@electric-sql/pglite': 0.2.13
       '@libsql/client': 0.14.0
       '@types/react': 18.3.12
       kysely: 0.27.4

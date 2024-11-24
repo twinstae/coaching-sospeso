@@ -8,12 +8,14 @@ export function TextField<InputT extends Record<string, any>>({
   name,
   type = "text",
   className,
+  maxLength,
   ...props
 }: {
   label: string;
   name: keyof InputT & string;
   type?: "text" | "email" | "password" | "tel";
-} & Omit<ComponentProps<"input">, "onChange" | "onBlur" | "value">) {
+  maxLength: number;
+} & Omit<ComponentProps<"input">, "onChange" | "onBlur" | "value" | "maxLength">) {
   const { control } = useFormContext();
   const {
     field,
@@ -42,6 +44,7 @@ export function TextField<InputT extends Record<string, any>>({
           onChange={field.onChange} // send value to hook form
           onBlur={field.onBlur} // notify when input is touched/blur
           value={field.value ?? ""} // input value
+          maxLength={maxLength}
           ref={field.ref} // send input ref, so we can focus on input when error appear
           aria-invalid={isInvalid}
           aria-describedby={isInvalid ? errorId : undefined}

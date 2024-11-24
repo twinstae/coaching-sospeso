@@ -34,6 +34,7 @@ export function ResetPasswordForm() {
             type="password"
             autoComplete="new-password"
             minLength={10}
+            maxLength={128}
           />
           <button className="btn btn-outline w-full" type="submit">
             비밀번호 변경하기

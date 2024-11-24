@@ -1,8 +1,9 @@
-import { afterAll, describe, expect, test } from "vitest";
-import { drizzle } from "drizzle-orm/libsql";
+import { afterAll, beforeAll, describe, expect, test } from "vitest";
+import { drizzle } from "drizzle-orm/pglite";
 import { like } from "drizzle-orm";
+import { migrate } from 'drizzle-orm/pglite/migrator';
 
-import * as schema from "@/adapters/drizzle/schema.ts";
+import * as schema from "@/adapters/drizzle/pgSchema.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
 import { generateNanoId } from "@/adapters/generateId.ts";
 import { TEST_ADMIN_USER, TEST_USER, TEST_USER_ID } from "@/auth/fixtures.ts";
@@ -27,6 +28,8 @@ import {
 } from "@/payment/repository.ts";
 import type { Payment } from "@/payment/domain.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
+import type { pgDb } from '@/adapters/db.ts';
+
 
 const generateId = generateNanoId;
 
@@ -249,12 +252,14 @@ function runSospesoActionsTest(
 }
 
 const testDbReallySeriously = drizzle({
-  schema,
-  logger: false,
-  connection: {
-    url: "file:test.db",
-  },
-});
+  schema
+}) satisfies typeof pgDb;
+
+beforeAll(async () => {
+  await migrate(testDbReallySeriously, {
+    migrationsFolder: './migrations'
+  })
+})
 
 async function createDrizzleTestSospesoRepository(
   initState: Record<string, Sospeso>,
@@ -271,10 +276,10 @@ async function createDrizzleTestSospesoRepository(
   const repo = createDrizzleSospesoRepository(testDbReallySeriously);
 
   // prod db에 실행하면 절대 안 됨
-  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
-  await testDbReallySeriously.delete(schema.sospesoApplication).all();
-  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
-  await testDbReallySeriously.delete(schema.sospeso).all();
+  await testDbReallySeriously.delete(schema.sospesoConsuming);
+  await testDbReallySeriously.delete(schema.sospesoApplication);
+  await testDbReallySeriously.delete(schema.sospesoIssuing);
+  await testDbReallySeriously.delete(schema.sospeso);
 
   for (const sospeso of Object.values(initState)) {
     await repo.updateOrSave(sospeso.id, () => sospeso);
@@ -289,7 +294,7 @@ async function createDrizzleTestPaymentRepository(
   const repo = createDrizzlePaymentRepository(testDbReallySeriously);
 
   // prod db에 실행하면 절대 안 됨
-  await testDbReallySeriously.delete(schema.payment).all();
+  await testDbReallySeriously.delete(schema.payment);
 
   for (const payment of Object.values(initState)) {
     await repo.updateOrSave(payment.id, () => payment);
@@ -299,27 +304,18 @@ async function createDrizzleTestPaymentRepository(
 }
 
 afterAll(async () => {
-  const testDbReallySeriously = drizzle({
-    schema,
-    logger: false,
-    connection: {
-      url: "file:test.db",
-    },
-  });
-
   // // prod db에 실행하면 절대 안 됨
   // // sospeso
-  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
-  await testDbReallySeriously.delete(schema.sospesoApplication).all();
-  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
-  await testDbReallySeriously.delete(schema.sospeso).all();
+  await testDbReallySeriously.delete(schema.sospesoConsuming);
+  await testDbReallySeriously.delete(schema.sospesoApplication);
+  await testDbReallySeriously.delete(schema.sospesoIssuing);
+  await testDbReallySeriously.delete(schema.sospeso);
   // payment
-  await testDbReallySeriously.delete(schema.payment).all();
+  await testDbReallySeriously.delete(schema.payment);
 
   await testDbReallySeriously
     .delete(schema.user)
-    .where(like(schema.user.email, "%@test.kr"))
-    .run();
+    .where(like(schema.user.email, "%@test.kr"));
 
   // await createDrizzleTestSospesoRepository(
   //   Object.fromEntries(
@@ -339,8 +335,14 @@ runSospesoActionsTest(
   async (initState) => createFakePaymentRepository(initState),
 );
 
+// runSospesoActionsTest(
+//   "drizzle sqlite",
+//   createDrizzleTestSospesoRepository,
+//   createDrizzleTestPaymentRepository,
+// );
+
 runSospesoActionsTest(
-  "drizzle sqlite",
+  "drizzle postgres",
   createDrizzleTestSospesoRepository,
   createDrizzleTestPaymentRepository,
 );

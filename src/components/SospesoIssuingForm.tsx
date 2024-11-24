@@ -39,11 +39,13 @@ export function SospesoIssuingForm({
           label="From."
           name="from"
           placeholder="ex) 탐정토끼, 김태희"
+          maxLength={12}
         />
         <TextField
           label="To."
           name="to"
           placeholder="ex) 퀴어 문화 축제 올 사람"
+          maxLength={24}
         />
 
         <button className="btn btn-primary w-full" type="submit">
