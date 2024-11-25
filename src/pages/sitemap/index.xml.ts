@@ -1,7 +1,8 @@
-import { sospesoRepo } from "@/actions/actions";
+import { sospesoRepo } from '@/actions/actions';
 import { env } from "@/adapters/env";
 import { href } from "@/routing/href";
 import { routes } from "@/routing/routes";
+import type { SospesoRepositoryI } from '@/sospeso/repository';
 import type { APIRoute } from "astro";
 
 export const HOME_PRIORITY = 1;
@@ -26,24 +27,32 @@ const makeSitemapUrls = (sitemapData: { url: string; priority: number }[]) =>
     .join("");
 
 // 소스페소 상세 페이지 우선순위 0.8, sitemapData 로 변환하는 함수
-const makeSitemapData = (sospesoList: { sospesoId: string }[]) =>
+const makeSitemapData = (sospesoList: { id: string }[]) =>
   sospesoList.map((sospeso) => ({
-    url: href("소스페소-상세", { sospesoId: sospeso.sospesoId }),
+    url: href("소스페소-상세", { sospesoId: sospeso.id }),
     priority: SOSPESO_DETAIL_PRIORITY,
   }));
 
-export const GET: APIRoute = async () => {
-  const applicationList = await sospesoRepo.retrieveApplicationList();
+export function createSitemapHandler(sospesoRepo: SospesoRepositoryI): APIRoute {
+  return async () => {
+    const { sospesoList } = await sospesoRepo.retrieveSospesoList({
+      page: 1,
+      status: undefined,
+      limit: 9999
+    });
+  
+    const sospesoSitemapData = makeSitemapData(sospesoList);
+  
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      ${makeSitemapUrls(STATIC_PAGES)}
+      ${makeSitemapUrls(sospesoSitemapData)}
+    </urlset>`;
+  
+    return new Response(sitemap, {
+      headers: { "Content-Type": "application/xml; charset=utf-8" },
+    });
+  }
+}
 
-  const sospesoSitemapData = makeSitemapData(applicationList);
-
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${makeSitemapUrls(STATIC_PAGES)}
-    ${makeSitemapUrls(sospesoSitemapData)}
-  </urlset>`;
-
-  return new Response(sitemap, {
-    headers: { "Content-Type": "application/xml; charset=utf-8" },
-  });
-};
+export const GET: APIRoute = createSitemapHandler(sospesoRepo);

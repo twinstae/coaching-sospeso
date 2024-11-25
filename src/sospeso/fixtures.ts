@@ -7,7 +7,7 @@ import type {
 import { Faker, ko } from "@faker-js/faker";
 import { TEST_ADMIN_USER_ID, TEST_USER_ID } from "@/auth/fixtures.ts";
 import invariant from "@/invariant.ts";
-import { TEST_NOW } from '@/actions/fixtures.ts';
+import { TEST_NOW } from "@/actions/fixtures.ts";
 
 const generateId = generateNanoId;
 export const TEST_SOSPESO_ID = "DaLNnQs8nfVgs0";
@@ -171,7 +171,14 @@ export function randomSospeso(status: SospesoStatus = "issued"): Sospeso {
           ? [
               {
                 id: generateId(),
-                status: pick(["applied", "approved"]),
+                status: "rejected",
+                content: "",
+                applicantId: TEST_USER_ID,
+                appliedAt: new Date(),
+              },
+              {
+                id: generateId(),
+                status: "applied",
                 content: "",
                 applicantId: TEST_USER_ID,
                 appliedAt: new Date(),

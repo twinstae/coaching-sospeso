@@ -50,6 +50,7 @@ export interface SospesoRepositoryI {
   retrieveSospesoList(params: {
     page: number;
     status: SospesoStatus | undefined;
+    limit?: number;
   }): Promise<{
     sospesoList: SospesoListItemDto[];
     totalPage: number;
@@ -70,7 +71,7 @@ export const createFakeSospesoRepository = (
   let _fakeState = initState;
 
   return {
-    async retrieveSospesoList({ page, status }) {
+    async retrieveSospesoList({ page, status, limit = SOSPESO_PER_PAGE }) {
       const _sospesoList = Object.values(_fakeState).map((sospeso) => {
         const status = calcStatus(sospeso);
         return {
@@ -87,11 +88,11 @@ export const createFakeSospesoRepository = (
           ? _sospesoList
           : _sospesoList.filter((sospeso) => sospeso.status === status);
 
-      const start = (page - 1) * SOSPESO_PER_PAGE;
-      const end = (page - 1) * SOSPESO_PER_PAGE + SOSPESO_PER_PAGE + 1;
+      const start = (page - 1) * limit;
+      const end = (page - 1) * limit + limit + 1;
       return {
         sospesoList: sospesoList.slice(start, end),
-        totalPage: Math.ceil(sospesoList.length / SOSPESO_PER_PAGE),
+        totalPage: Math.ceil(sospesoList.length / limit),
       };
     },
     async retrieveSospesoDetail(sospesoId) {
