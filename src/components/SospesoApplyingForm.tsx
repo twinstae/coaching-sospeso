@@ -2,18 +2,29 @@ import { generateNanoId, type generateIdI } from "@/adapters/generateId";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { Form } from "@/shared/form/Form";
 import { Textarea } from "@/shared/form/Textarea";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import * as v from "valibot";
-import type { ChangeEvent } from "react";
-import { Link } from "@/routing/Link.tsx";
+import { Checkbox } from "@/shared/form/Checkbox.tsx";
+import { Link } from "@/routing/Link";
 
-const applyingSchema = v.object({
-  applicationId: v.string(),
-  content: v.pipe(
-    v.string(),
-    v.minLength(1, "코치에게 쓸 편지를 입력해주세요"),
+const applyingSchema = v.pipe(
+  v.object({
+    applicationId: v.string(),
+    content: v.pipe(
+      v.string(),
+      v.minLength(1, "코치에게 쓸 편지를 입력해주세요"),
+    ),
+    usage: v.boolean(),
+  }),
+  v.forward(
+    v.partialCheck(
+      [["usage"]],
+      (input) => input.usage === true,
+      "이용약관에 동의하지 않으면 신청할 수 없습니다",
+    ),
+    ["usage"],
   ),
-});
+);
 
 export const sospesoApplyingEventBus = createSafeEvent(
   "sospeso-applying",
@@ -46,11 +57,7 @@ export function SospesoApplyingForm({
 }) {
   const id = useMemo(() => generateId(), [generateId]);
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-  }
+  
 
   return (
     <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
@@ -64,17 +71,22 @@ export function SospesoApplyingForm({
         }}
       >
         <Textarea label="코치에게 쓰는 편지" name="content" />
-        
-          <label className="label cursor-pointer">
-            <span className="label-text">코칭 약관에 동의하기</span>
-            <input type="checkbox" className="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
-          </label>
-
-          <Link routeKey="이용약관" params={undefined}>
-            코칭 약관 자세히 보기
-          </Link>
-        
-        <button className="btn btn-primary w-full" type="submit" disabled={!isChecked}>
+        <Checkbox
+            label={
+              <>
+                <Link
+                  className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
+                  routeKey={"이용약관"}
+                  params={undefined}
+                  target="_blank"
+                >
+                  이용약관 <span className="text-red-600">(필수)</span>
+                </Link>
+              </>
+            }
+            name="usage"
+          />
+        <button className="btn btn-primary w-full" type="submit">
           신청하기
         </button>
       </Form>
