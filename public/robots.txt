@@ -1,0 +1,7 @@
+User-agent: *
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /payment/
+
+Sitemap: https://coaching-sospeso.org/sitemap.xml
