@@ -8,7 +8,7 @@ import invariant from "@/invariant.ts";
 
 const paymentSchema = v.object({
   id: v.string(),
-  status: v.picklist(["initiated", "paid"]),
+  status: v.picklist(["initiated", "paid", "cancelled"]),
   goodsTitle: v.string(),
   goodsDescription: v.string(),
   totalAmount: v.pipe(v.number(), v.integer(), v.minValue(1)),
