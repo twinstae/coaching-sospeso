@@ -15,6 +15,18 @@ export type PaidPayment = {
   paymentResult: Record<string, string>; // 결제 결과 원본
 };
 
+export type CancelledPayment = {
+  id: string;
+  status: "cancelled";
+  goodsTitle: string; // 상품 이름
+  goodsDescription: string; // 상품 설명
+  totalAmount: number; // 상품의 가격
+  expiredDate: Date; // 링크 만료 일시
+  command: any;
+  afterLinkUrl: string; // 결제 완료 후 이동할 URL
+  paymentResult: Record<string, string>; // 결제 결과 원본
+};
+
 export type Payment =
   | {
       id: string;
@@ -26,7 +38,8 @@ export type Payment =
       command: any;
       afterLinkUrl: string; // 결제 완료 후 이동할 URL
     }
-  | PaidPayment;
+  | PaidPayment
+  | CancelledPayment;
 
 const EXPIRE_TIME_IN_HOURS = 24;
 
@@ -65,6 +78,21 @@ export function completePayment(
   } satisfies PaidPayment;
 }
 
+export function cancelPayment(
+  payment: Payment,
+  paymentResult: Record<string, string>,
+): CancelledPayment {
+  return {
+    ...payment,
+    status: "cancelled",
+    paymentResult,
+  } satisfies CancelledPayment;
+}
+
 export function isPaid(payment: Payment): payment is PaidPayment {
   return payment.status === "paid";
+}
+
+export function isCancelled(payment: Payment): payment is CancelledPayment {
+  return payment.status === "cancelled";
 }
