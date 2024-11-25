@@ -1,5 +1,7 @@
 ---
+import { sospesoRepo } from "@/actions/actions";
 import { SospesoApplyingForm } from "@/components/SospesoApplyingForm.tsx";
+import invariant from "@/invariant";
 import Layout from "@/layouts/Layout.astro";
 
 const user = Astro.locals.user;
@@ -7,10 +9,23 @@ const user = Astro.locals.user;
 if (!user) {
   return Astro.redirect("/auth/login");
 }
+
+const { sospesoId } = Astro.params;
+
+invariant(sospesoId, "404 NOT FOUND");
+
+const sospeso = await sospesoRepo.retrieveSospesoDetail(sospesoId);
+
+if (!sospeso) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not found",
+  });
+}
 ---
 
 <Layout title="소스페소 신청하기">
-  <SospesoApplyingForm client:load />
+  <SospesoApplyingForm sospeso={sospeso} client:load />
 </Layout>
 
 <script>
