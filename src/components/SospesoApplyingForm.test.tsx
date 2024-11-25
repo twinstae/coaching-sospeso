@@ -8,6 +8,7 @@ import {
 } from "./SospesoApplyingForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 import { generateNanoId } from "@/adapters/generateId.ts";
+import { ISSUED_SOSPESO } from "@/sospeso/fixtures.ts"
 
 const TEST_ID = generateNanoId();
 
@@ -22,7 +23,7 @@ describe("SospesoApplyingForm", () => {
           result = command;
         }}
       >
-        <SospesoApplyingForm />
+        <SospesoApplyingForm sospeso={ISSUED_SOSPESO} />
       </SafeEventHandler>,
     );
 
@@ -46,7 +47,7 @@ describe("SospesoApplyingForm", () => {
           result = command;
         }}
       >
-        <SospesoApplyingForm generateId={() => TEST_ID} />
+        <SospesoApplyingForm sospeso={ISSUED_SOSPESO} generateId={() => TEST_ID} />
       </SafeEventHandler>,
     );
 
