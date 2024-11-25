@@ -36,59 +36,55 @@ export function SospesoApplyingForm({
   generateId = generateNanoId,
 }: {
   sospeso:
-  | {
-    id: string;
-    from: string;
-    to: string;
-    status: "issued" | "pending";
-    consuming: undefined;
-  }
-| {
-    id: string;
-    from: string;
-    to: string;
-    status: "consumed";
-    consuming: {
-      consumer: { id: string; nickname: string };
-      content: string;
-    };
-  };
+    | {
+        id: string;
+        from: string;
+        to: string;
+        status: "issued" | "pending";
+        consuming: undefined;
+      }
+    | {
+        id: string;
+        from: string;
+        to: string;
+        status: "consumed";
+        consuming: {
+          consumer: { id: string; nickname: string };
+          content: string;
+        };
+      };
   generateId?: generateIdI;
 }) {
   const id = useMemo(() => generateId(), [generateId]);
 
-  
-
   return (
     <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
-      <h2 className="text-2xl font-semibold">
-        소스페소 신청하기
-      </h2>
+      <h2 className="text-2xl font-semibold">소스페소 신청하기</h2>
       <p>From. {sospeso.from}</p>
       <p>To. {sospeso.to}</p>
       <Form
         form={{
           schema: applyingSchema,
-          defaultValues: { applicationId: id, content: "" },
+          defaultValues: { applicationId: id, content: "", usage: false },
           bus: sospesoApplyingEventBus,
         }}
       >
         <Textarea label="코치에게 쓰는 편지" name="content" />
         <Checkbox
-            label={
-              <>
-                <Link
-                  className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
-                  routeKey={"이용약관"}
-                  params={undefined}
-                  target="_blank"
-                >
-                  이용약관 <span className="text-red-600">(필수)</span>
-                </Link>
-              </>
-            }
-            name="usage"
-          />
+          label={
+            <>
+              <Link
+                className="link link-primary hover:bg-base-200 rounded cursor-pointer transition-colors h-full py-1 px-2 -mx-1"
+                routeKey={"이용약관"}
+                params={undefined}
+                target="_blank"
+              >
+                이용약관 <span className="text-red-600">(필수)</span>
+              </Link>
+            </>
+          }
+          name="usage"
+        />
         <button className="btn btn-primary w-full" type="submit">
           신청하기
         </button>

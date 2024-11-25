@@ -8,7 +8,7 @@ import {
 } from "./SospesoApplyingForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 import { generateNanoId } from "@/adapters/generateId.ts";
-import { ISSUED_SOSPESO } from "@/sospeso/fixtures.ts"
+import { ISSUED_SOSPESO } from "@/sospeso/fixtures.ts";
 
 const TEST_ID = generateNanoId();
 
@@ -35,6 +35,15 @@ describe("SospesoApplyingForm", () => {
       "코치에게 쓸 편지를 입력해주세요",
     );
 
+    await queryTL
+      .textbox("코치에게 쓰는 편지")
+      .fill("퀴어 문화 축제 갔다왔어요~ Love wins all~");
+    await queryTL.button("신청하기").click();
+
+    await expectTL(queryTL.checkbox(/이용약관/i)).toHaveErrorMessage(
+      "이용약관에 동의하지 않으면 신청할 수 없습니다",
+    );
+
     expect(result).toEqual({});
   });
 
@@ -47,7 +56,10 @@ describe("SospesoApplyingForm", () => {
           result = command;
         }}
       >
-        <SospesoApplyingForm sospeso={ISSUED_SOSPESO} generateId={() => TEST_ID} />
+        <SospesoApplyingForm
+          sospeso={ISSUED_SOSPESO}
+          generateId={() => TEST_ID}
+        />
       </SafeEventHandler>,
     );
 
@@ -55,16 +67,15 @@ describe("SospesoApplyingForm", () => {
     await queryTL
       .textbox("코치에게 쓰는 편지")
       .fill("퀴어 문화 축제 갔다왔어요~ Love wins all~");
-    await queryTL.button("신청하기").click();
 
-    // then expect 뭐시기를 하면서 검증을 함!
-    await expectTL(
-      queryTL.textbox("코치에게 쓰는 편지"),
-    ).not.toHaveErrorMessage("코치에게 쓸 편지를 입력해주세요");
+    await queryTL.checkbox(/이용약관/i).click();
+
+    await queryTL.button("신청하기").click();
 
     expect(result).toEqual({
       applicationId: TEST_ID,
       content: "퀴어 문화 축제 갔다왔어요~ Love wins all~",
+      usage: true,
     });
   });
 });
