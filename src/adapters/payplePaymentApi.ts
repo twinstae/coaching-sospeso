@@ -3,12 +3,13 @@ import * as v from "valibot";
 import { formatDate } from "./dateApi.ts";
 import { env } from "./env.ts";
 import invariant from "@/invariant.ts";
-import type { Payment } from "@/payment/domain.ts";
+import type { PaidPayment, Payment } from "@/payment/domain.ts";
 
 export type PayplePaymentApiI = {
   generatePaymentLink: (payment: Payment) => Promise<{
     paymentLink: string;
   }>;
+  cancelPayment: (payment: PaidPayment) => Promise<void>;
 };
 
 const partnerAuthResultSchema = v.object({
@@ -89,6 +90,32 @@ export const payplePaymentApi = {
       paymentLink: linkGenerationResult.PCD_LINK_URL,
     };
   },
+  cancelPayment: async (payment: PaidPayment) => {
+    const partnerAuthPayload = {
+      cst_id: env.PAYPLE_CST_ID,
+      custKey: env.PAYPLE_CUST_KEY,
+      PCD_PAY_WORK: "LINKREG",
+    };
+
+    // 파트너 인증 https://docs.payple.kr/integration/domestic-linkpay
+    const partnerAuthResult = await fetch(env.PAYPLE_HOST + "/php/auth.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+      },
+      body: JSON.stringify(partnerAuthPayload),
+    })
+      .then((res) => res.json())
+      .then((body) => v.parse(partnerAuthResultSchema, body));
+
+    invariant(
+      partnerAuthResult.result === "success",
+      "파트너 인증에 실패했습니다! " + JSON.stringify(partnerAuthPayload),
+    );
+
+    // TODO: 결제 취소
+  },
 } satisfies PayplePaymentApiI;
 
 export const fakePayplePaymentApi = {
@@ -98,5 +125,7 @@ export const fakePayplePaymentApi = {
         "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg?id=" +
         payment.id,
     };
+  },
+  cancelPayment: async (payment: PaidPayment) => {
   },
 } satisfies PayplePaymentApiI;
