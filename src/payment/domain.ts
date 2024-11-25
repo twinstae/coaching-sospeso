@@ -79,13 +79,11 @@ export function completePayment(
 }
 
 export function cancelPayment(
-  payment: Payment,
-  paymentResult: Record<string, string>,
+  paidPayment: PaidPayment,
 ): CancelledPayment {
   return {
-    ...payment,
+    ...paidPayment,
     status: "cancelled",
-    paymentResult,
   } satisfies CancelledPayment;
 }
 

@@ -71,7 +71,7 @@ describe("payment", () => {
       command: SOSPESO_ISSUING_COMMAND,
     });
     const paidPayment = completePayment(payment, EXAMPLE_PAYMENT_PAYLOAD);
-    const result = cancelPayment(paidPayment, EXAMPLE_PAYMENT_PAYLOAD);
+    const result = cancelPayment(paidPayment);
     expect(result.status).toStrictEqual("cancelled");
   });
 });
