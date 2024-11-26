@@ -7,9 +7,12 @@ import {
 } from "@/sospeso/repository.ts";
 
 import { generateNanoId } from "@/adapters/generateId.ts";
-import { createSospesoServices } from "./services";
+import { createPaymentServices, createSospesoServices } from "./services";
 import { TEST_NOW } from "@/actions/fixtures";
 import { SOSPESO_PRICE } from "@/sospeso/constants";
+import { EXAMPLE_PAYMENT_PAYLOAD } from "@/payment/fixtures";
+import { createFakePaymentRepository, type PaymentRepositoryI } from "@/payment/repository";
+import { createSospesoIssuingPayment, type Payment } from "@/payment/domain";
 
 const generateId = generateNanoId;
 
@@ -51,6 +54,41 @@ function runSospesoServicesTest(
   });
 }
 
+function runPaymentServicesTest(
+  name: string,
+  createPaymentRepository: (
+    initState: Record<string, Payment>,
+  ) => Promise<PaymentRepositoryI>,
+) {
+  describe("paymentServices: " + name, () => {
+    test("결제를 완료할 수 있다.", async () => {
+      const paymentRepo = await createPaymentRepository({});
+      const paymentServices = createPaymentServices(paymentRepo);
+                  
+      await paymentRepo.updateOrSave(sospesoId, () => {
+        return createSospesoIssuingPayment({
+          sospesoId: sospesoId,
+          now: new Date(),
+          totalAmount: SOSPESO_PRICE,
+          command: event.command,
+        });
+      });
+      
+      await paymentServices.completePayment(
+        event.command.sospesoId,
+        EXAMPLE_PAYMENT_PAYLOAD,
+      );
+
+      const result = await paymentRepo.retrievePayment(event.command.sospesoId);
+      expect(result?.status).toBe("paid");
+    });
+  });
+}
+
 runSospesoServicesTest("fake", async (initState) =>
   createFakeSospesoRepository(initState),
+);
+
+runPaymentServicesTest("fake", async (initState) =>
+  createFakePaymentRepository(initState),
 );

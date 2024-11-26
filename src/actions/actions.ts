@@ -107,20 +107,7 @@ export function buildSospesoActions(
         });
       },
     }),
-    completeSospesoPayment: definePureAction({
-      input: z.object({
-        sospesoId: z.string(),
-        paymentResult: z.record(z.string(), z.string()),
-      }),
-      handler: async (input) => {
-        await paymentRepo.updateOrSave(input.sospesoId, (payment) => {
-          invariant(payment, "결제가 존재하지 않습니다! : " + input.sospesoId);
-          invariant(payment.status === "initiated", "이미 결제가 완료되었어요");
-          return completePayment(payment, input.paymentResult);
-        });
-      },
-    }),
-    cancelSospesoPayment: definePureAction({
+    cancelPayment: definePureAction({
       input: z.object({
         sospesoId: z.string(),
       }),
@@ -131,30 +118,8 @@ export function buildSospesoActions(
         await paymentRepo.updateOrSave(input.sospesoId, (payment) => {
           invariant(payment, "결제가 존재하지 않습니다! : " + input.sospesoId);
           invariant(isPaid(payment), "결제가 완료되어야 취소할 수 있어요!");
-
+          // TODO: 페이플에 결제 취소 요청
           return cancelPayment(payment);
-        });
-      },
-    }),
-    issueSospeso: definePureAction({
-      input: z.object({
-        sospesoId: z.string(),
-      }),
-      handler: async (input) => {
-        const payment = await paymentRepo.retrievePayment(input.sospesoId);
-        invariant(payment, "결제가 존재하지 않습니다!");
-        invariant(payment.status === "paid", "결제가 완료되어야 소스페소를 발행할 수 있어요!");
-
-        await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
-          invariant(sospeso === undefined, "이미 발행이 완료된 소스페소입니다!");
-          return domain.issueSospeso({
-            sospesoId: input.sospesoId,
-            issuedAt: payment.command.issuedAt,
-            from: payment.command.from,
-            to: payment.command.to,
-            issuerId: payment.command.issuerId,
-            paidAmount: SOSPESO_PRICE,
-          });
         });
       },
     }),
