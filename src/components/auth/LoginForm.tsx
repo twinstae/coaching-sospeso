@@ -10,6 +10,7 @@ import { Link } from "@/routing/Link.tsx";
 import { emailSchema, passwordSchema } from "@/auth/schema.ts";
 import { authApi } from "@/adapters/authApi.ts";
 import { SimpleErrorMessage } from "@/shared/form/SimpleErrorMessage";
+import { PasswordInput } from "@/shared/form/PasswordInput";
 
 const loginSchema = v.object({
   email: emailSchema,
@@ -36,12 +37,10 @@ export function LoginForm({ error }: { error: "email_not_found" | undefined }) {
           }}
         >
           <TextField label="이메일" name="email" autoComplete="email" />
-          <TextField
+          <PasswordInput
             label="비밀번호"
             name="password"
-            type="password"
             autoComplete="current-password"
-            minLength={10}
           />
           <button className="btn btn-outline w-full" type="submit">
             이메일로 계속하기

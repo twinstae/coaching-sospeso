@@ -5,7 +5,7 @@ import { expectTL } from "@/siheom/expectTL.ts";
 import { resetPasswordBus, ResetPasswordForm } from "./ResetPasswordForm.tsx";
 import { SafeEventHandler } from "@/event/SafeEventHandler.tsx";
 
-const TEST_PASSWORD = crypto.randomUUID();
+const TEST_PASSWORD = "very-1ong-valid-password!";
 
 describe("ResetPasswordForm", () => {
   test("이메일을 입력하지 않으면 로그인할 수 없다", async () => {
