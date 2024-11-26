@@ -25,7 +25,7 @@ import {
   createFakePaymentRepository,
   type PaymentRepositoryI,
 } from "@/payment/repository.ts";
-import type { Payment } from "@/payment/domain.ts";
+import { type Payment } from "@/payment/domain.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
 
 const generateId = generateNanoId;

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { completePayment, createSospesoIssuingPayment, isPaid } from "./domain";
+import { cancelPayment, completePayment, createSospesoIssuingPayment, isPaid } from "./domain";
 import { EXAMPLE_PAYMENT_PAYLOAD } from "./fixtures";
 import { TEST_SOSPESO_ID, TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures";
 import { TEST_USER_ID } from "@/auth/fixtures";
@@ -61,5 +61,17 @@ describe("payment", () => {
     });
 
     expect(isPaid(result)).toBe(true);
+  });
+
+  test("결제를 취소할 수 있다", () => {
+    const payment = createSospesoIssuingPayment({
+      sospesoId: TEST_PAYMENT_ID,
+      now: NOW,
+      totalAmount: 80000,
+      command: SOSPESO_ISSUING_COMMAND,
+    });
+    const paidPayment = completePayment(payment, EXAMPLE_PAYMENT_PAYLOAD);
+    const result = cancelPayment(paidPayment);
+    expect(result.status).toStrictEqual("cancelled");
   });
 });
