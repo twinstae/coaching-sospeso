@@ -28,6 +28,7 @@ export default defineWorkspace([
         "src/services/**/*.test.ts",
         "src/sospeso/**/*.test.ts",
         "src/auth/**/*.test.ts",
+        "src/pages/**/*.test.ts",
         "src/payment/**/*.test.ts",
         "src/pages/sitemap/*.test.ts",
         "src/user/**/*.test.ts",
