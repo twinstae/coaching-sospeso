@@ -140,19 +140,19 @@ export function buildSospesoActions(
       input: z.object({
         sospesoId: z.string(),
       }),
-      handler: async (input, { locals: { user, now } }) => {
-        invariant(user, "로그인을 해야 합니다");
-        invariant(isAdmin(user), "관리자가 아닙니다!");
+      handler: async (input) => {
+        const payment = await paymentRepo.retrievePayment(input.sospesoId);
+        invariant(payment, "결제가 존재하지 않습니다!");
+        invariant(payment.status === "paid", "결제가 완료되어야 소스페소를 발행할 수 있어요!");
 
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
-          invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
-
+          invariant(sospeso === undefined, "이미 발행이 완료된 소스페소입니다!");
           return domain.issueSospeso({
             sospesoId: input.sospesoId,
-            issuedAt: now,
-            from: sospeso.from,
-            to: sospeso.to,
-            issuerId: user.id,
+            issuedAt: payment.command.issuedAt,
+            from: payment.command.from,
+            to: payment.command.to,
+            issuerId: payment.command.issuerId,
             paidAmount: SOSPESO_PRICE,
           });
         });
