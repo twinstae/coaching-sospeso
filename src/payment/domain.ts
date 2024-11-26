@@ -10,7 +10,7 @@ export type PaidPayment = {
   goodsDescription: string; // 상품 설명
   totalAmount: number; // 상품의 가격
   expiredDate: Date; // 링크 만료 일시
-  command: any;
+  command: SospesoIssuingCommand;
   afterLinkUrl: string; // 결제 완료 후 이동할 URL
   paymentResult: Record<string, string>; // 결제 결과 원본
 };
@@ -22,7 +22,7 @@ export type CancelledPayment = {
   goodsDescription: string; // 상품 설명
   totalAmount: number; // 상품의 가격
   expiredDate: Date; // 링크 만료 일시
-  command: any;
+  command: SospesoIssuingCommand;
   afterLinkUrl: string; // 결제 완료 후 이동할 URL
   paymentResult: Record<string, string>; // 결제 결과 원본
 };
@@ -35,7 +35,7 @@ export type Payment =
       goodsDescription: string; // 상품 설명
       totalAmount: number; // 상품의 가격
       expiredDate: Date; // 링크 만료 일시
-      command: any;
+      command: SospesoIssuingCommand;
       afterLinkUrl: string; // 결제 완료 후 이동할 URL
     }
   | PaidPayment
