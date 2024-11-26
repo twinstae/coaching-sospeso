@@ -6,6 +6,7 @@ import { TextField } from "@/shared/form/TextField.tsx";
 import { Checkbox } from "@/shared/form/Checkbox.tsx";
 import { emailSchema, passwordSchema, phoneSchema } from "@/auth/schema";
 import { Link } from "@/routing/Link";
+import { PasswordInput } from "@/shared/form/PasswordInput";
 
 const signUpSchema = v.pipe(
   v.object({
@@ -75,19 +76,15 @@ export function SignUpForm() {
             autoComplete="email"
             placeholder="gildong@gmail.com"
           />
-          <TextField
+          <PasswordInput
             label="비밀번호"
             name="password"
-            type="password"
             autoComplete="new-password"
-            minLength={10}
           />
-          <TextField
+          <PasswordInput
             label="비밀번호 확인"
             name="passwordAgain"
-            type="password"
             autoComplete="new-password"
-            minLength={10}
           />
           <TextField
             label="이름(실명)"

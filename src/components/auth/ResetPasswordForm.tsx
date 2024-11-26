@@ -2,8 +2,8 @@ import * as v from "valibot";
 
 import { Form } from "@/shared/form/Form.tsx";
 import { createSafeEvent } from "@/event/SafeEventBus.ts";
-import { TextField } from "@/shared/form/TextField.tsx";
 import { passwordSchema } from "@/auth/schema.ts";
+import { PasswordInput } from "@/shared/form/PasswordInput";
 
 const resetPasswordSchema = v.object({
   password: passwordSchema,
@@ -28,12 +28,10 @@ export function ResetPasswordForm() {
             bus: resetPasswordBus,
           }}
         >
-          <TextField
+          <PasswordInput
             label="새 비밀번호"
             name="password"
-            type="password"
             autoComplete="new-password"
-            minLength={10}
           />
           <button className="btn btn-outline w-full" type="submit">
             비밀번호 변경하기
