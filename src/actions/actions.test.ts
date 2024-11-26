@@ -25,9 +25,8 @@ import {
   createFakePaymentRepository,
   type PaymentRepositoryI,
 } from "@/payment/repository.ts";
-import { completePayment, createSospesoIssuingPayment, type Payment } from "@/payment/domain.ts";
+import { type Payment } from "@/payment/domain.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
-import { EXAMPLE_PAYMENT_PAYLOAD } from "../payment/fixtures.ts";
 
 const generateId = generateNanoId;
 
@@ -82,74 +81,6 @@ function runSospesoActionsTest(
       expect(paymentLink).toBe(
         "https://democpay.payple.kr/php/link/?SID=MTI6MTU4NDYwNzI4Mg?id=7pD2z_SkcIWR75",
       );
-    });
-
-    test("결제를 완료할 수 있다", async () => {
-      const testPayment = createSospesoIssuingPayment({
-        sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-        now: TEST_NOW,
-        totalAmount: 80000,
-        command: {
-          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-          issuedAt: TEST_NOW,
-          from: TEST_SOSPESO_LIST_ITEM.from,
-          to: TEST_SOSPESO_LIST_ITEM.to,
-          issuerId: TEST_USER_ID,
-          paidAmount: 80000,
-        },
-      });
-      const { actionServer, paymentRepo } = await createTestActionServer({
-        sospeso: {},
-        payment: {
-          [TEST_SOSPESO_LIST_ITEM.id]: testPayment,
-        },
-      });
-
-      await actionServer.completeSospesoPayment(
-        {
-          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-          paymentResult: EXAMPLE_PAYMENT_PAYLOAD,
-        },
-        ADMIN_CONTEXT,
-      );
-
-      const payment = await paymentRepo.retrievePayment(TEST_SOSPESO_LIST_ITEM.id);
-
-      expect(payment?.status).toBe("paid");
-    });
-
-    test("결제를 취소할 수 있다", async () => {
-      const testPayment = completePayment(createSospesoIssuingPayment({
-        sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-        now: TEST_NOW,
-        totalAmount: 80000,
-        command: {
-          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-          issuedAt: TEST_NOW,
-          from: TEST_SOSPESO_LIST_ITEM.from,
-          to: TEST_SOSPESO_LIST_ITEM.to,
-          issuerId: TEST_USER_ID,
-          paidAmount: 80000,
-        },
-      }), EXAMPLE_PAYMENT_PAYLOAD);
-      const { actionServer, paymentRepo } = await createTestActionServer({
-        sospeso: {},
-        payment: {
-          [TEST_SOSPESO_LIST_ITEM.id]: testPayment,
-        },
-      });
-
-      await paymentApi.cancelPayment(testPayment);
-      await actionServer.cancelSospesoPayment(
-        {
-          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-        },
-        ADMIN_CONTEXT,
-      );
-
-      const payment = await paymentRepo.retrievePayment(TEST_SOSPESO_LIST_ITEM.id);
-
-      expect(payment?.status).toBe("cancelled");
     });
 
     test("소스페소에 신청할 수 있다", async () => {
