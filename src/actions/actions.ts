@@ -116,7 +116,6 @@ export function buildSospesoActions(
         await paymentRepo.updateOrSave(input.sospesoId, (payment) => {
           invariant(payment, "결제가 존재하지 않습니다! : " + input.sospesoId);
           invariant(payment.status === "initiated", "이미 결제가 완료되었어요");
-          // TODO: 결제 검증
           return completePayment(payment, input.paymentResult);
         });
       },
