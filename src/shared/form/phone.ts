@@ -11,14 +11,19 @@ export function formatPhoneNumber(value: string): string {
 
   invariant(cleaned.length <= 11, "전화번호는 11자 이하여야 합니다 : " + cleaned)
 
+  
+  if(cleaned.startsWith("02")) {
+    if (cleaned.length <= 5) return cleaned.replace(/(\d{2})(\d{1,3})/, "$1-$2")
+    if (cleaned.length <= 9) return cleaned.replace(/(\d{2})(\d{3})(\d{1,4})/, "$1-$2-$3")
+    return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3")
+  }
+
   if(cleaned.length <= 7) {
     return cleaned.replace(/(\d{3})(\d{1,4})/, "$1-$2")
   }
-  if(cleaned.length < 9) {
+
+  if(cleaned.length <= 9) {
     return cleaned.replace(/(\d{3})(\d{4})(\d{1,3})/, "$1-$2-$3")
-  }
-  if(cleaned.length === 9 && cleaned.startsWith("02")) {
-    return cleaned.replace(/(\d{2})(\d{3})(\d{4})/, "$1-$2-$3")
   }
   if(cleaned.length === 10) {
     return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
