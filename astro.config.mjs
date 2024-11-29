@@ -5,6 +5,8 @@ import react from "@astrojs/react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import vercel from "@astrojs/vercel/serverless";
 
+import sentry from "@sentry/astro";
+
 const ReactCompilerConfig = {
   target: "18",
 };
@@ -18,6 +20,10 @@ export default defineConfig({
           ? [["babel-plugin-react-compiler", ReactCompilerConfig]]
           : undefined,
       },
+    }),
+    sentry({
+      dsn: "https://6e899b9ae9fb445693112299c2c64fcc@glitchtip.life-lifter.com/1",
+      tracesSampleRate: 0.01,
     }),
   ],
   vite: {

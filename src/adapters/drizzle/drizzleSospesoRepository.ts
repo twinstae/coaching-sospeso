@@ -3,7 +3,8 @@ import {
   type SospesoRepositoryI,
 } from "@/sospeso/repository";
 import * as schema from "./schema.ts";
-import { count, eq } from "drizzle-orm";
+import { count } from 'drizzle-orm/sql/functions/aggregate';
+import { eq } from 'drizzle-orm/sql/expressions/conditions';
 import {
   calcStatus,
   type Sospeso,

@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from "vitest";
 import { drizzle } from "drizzle-orm/libsql";
-import { like } from "drizzle-orm";
+import { like } from "drizzle-orm/expressions";
 
 import * as schema from "@/adapters/drizzle/schema.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";

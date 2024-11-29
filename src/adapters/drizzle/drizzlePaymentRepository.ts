@@ -3,8 +3,8 @@ import * as v from "valibot";
 import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
 import type { Payment } from "@/payment/domain.ts";
 import type { PaymentRepositoryI } from "@/payment/repository.ts";
-import { eq } from "drizzle-orm/sql/expressions/conditions";
 import invariant from "@/invariant.ts";
+import { eq } from 'drizzle-orm/sql/expressions/conditions';
 
 const paymentSchema = v.object({
   id: v.string(),
