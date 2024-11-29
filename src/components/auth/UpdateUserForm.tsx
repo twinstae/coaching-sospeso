@@ -4,6 +4,7 @@ import { Form } from "@/shared/form/Form";
 import { TextField } from "@/shared/form/TextField";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { phoneSchema } from "@/auth/schema";
+import { PhoneField } from '@/shared/form/PhoneField';
 
 const updateUserSchema = v.object({
   name: v.pipe(v.string(), v.minLength(1, "실명이 꼭 있어야 해요")),
@@ -45,13 +46,13 @@ export function UpdateUserForm({
             autoComplete="name"
             placeholder="홍길동"
           />
-          <TextField
+          <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
+          <PhoneField
             label="전화번호"
             name="phone"
             placeholder="010-1234-5678"
             autoComplete="tel-national"
           />
-          <TextField label="별명" name="nickname" placeholder="다정한 토끼" />
           <button className="btn btn-primary w-full" type="submit">
             프로필 수정하기
           </button>

@@ -7,6 +7,7 @@ import { Checkbox } from "@/shared/form/Checkbox.tsx";
 import { emailSchema, passwordSchema, phoneSchema } from "@/auth/schema";
 import { Link } from "@/routing/Link";
 import { PasswordInput } from "@/shared/form/PasswordInput";
+import { PhoneField } from '@/shared/form/PhoneField';
 
 const signUpSchema = v.pipe(
   v.object({
@@ -92,7 +93,7 @@ export function SignUpForm() {
             autoComplete="name"
             placeholder="홍길동"
           />
-          <TextField
+          <PhoneField
             label="전화번호"
             name="phone"
             placeholder="010-1234-5678"
