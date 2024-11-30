@@ -13,7 +13,7 @@ export const Base: Story = {
     user: {
       name: "김토끼",
       nickname: "손님",
-      phone: ""
-    }
+      phone: "",
+    },
   },
 };

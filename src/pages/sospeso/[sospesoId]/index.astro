@@ -18,8 +18,6 @@ if (!sospeso) {
 }
 ---
 
-<Layout title="소스페소 상세">
-  <div>
-    <SospesoDetail sospeso={sospeso} client:load />
-  </div>
+<Layout title={"코칭 소스페소 : " + sospeso.to}>
+  <SospesoDetail sospeso={sospeso} client:load />
 </Layout>

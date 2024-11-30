@@ -33,8 +33,10 @@ export function DatePicker<InputT extends Record<string, any>>({
 
   return (
     <div>
-      <label className="flex flex-col items-start">
-        {label}
+      <label className="form-control">
+        <div className="label">
+          <span className="label-text">{label}</span>
+        </div>
         <input
           {...props}
           role="textbox"

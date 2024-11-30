@@ -27,6 +27,7 @@ export const ISSUED_SOSPESO = {
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   status: "issued", // 읽기 모델 "issued" | "pending" | "consumed"
+  issuedAt: TEST_ISSUED_AT,
   consuming: undefined,
 } as const;
 
@@ -35,6 +36,7 @@ export const PENDING_SOSPESO = {
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   status: "pending", // 읽기 모델 "issued" | "pending" | "consumed"
+  issuedAt: TEST_ISSUED_AT,
   consuming: undefined,
 } as const;
 
@@ -43,6 +45,7 @@ export const CONSUMED_SOSPESO = {
   from: "탐정토끼",
   to: "퀴어 문화 축제 올 사람",
   status: "consumed", // 읽기 모델 "issued" | "pending" | "consumed"
+  issuedAt: TEST_ISSUED_AT,
   consuming: {
     consumer: {
       id: "444",

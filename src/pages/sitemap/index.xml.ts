@@ -1,8 +1,8 @@
-import { sospesoRepo } from '@/actions/actions';
+import { sospesoRepo } from "@/actions/actions";
 import { env } from "@/adapters/env";
 import { href } from "@/routing/href";
 import { routes } from "@/routing/routes";
-import type { SospesoRepositoryI } from '@/sospeso/repository';
+import type { SospesoRepositoryI } from "@/sospeso/repository";
 import type { APIRoute } from "astro";
 
 export const HOME_PRIORITY = 1;
@@ -33,26 +33,28 @@ const makeSitemapData = (sospesoList: { id: string }[]) =>
     priority: SOSPESO_DETAIL_PRIORITY,
   }));
 
-export function createSitemapHandler(sospesoRepo: SospesoRepositoryI): APIRoute {
+export function createSitemapHandler(
+  sospesoRepo: SospesoRepositoryI,
+): APIRoute {
   return async () => {
     const { sospesoList } = await sospesoRepo.retrieveSospesoList({
       page: 1,
       status: undefined,
-      limit: 9999
+      limit: 9999,
     });
-  
+
     const sospesoSitemapData = makeSitemapData(sospesoList);
-  
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       ${makeSitemapUrls(STATIC_PAGES)}
       ${makeSitemapUrls(sospesoSitemapData)}
     </urlset>`;
-  
+
     return new Response(sitemap, {
       headers: { "Content-Type": "application/xml; charset=utf-8" },
     });
-  }
+  };
 }
 
 export const GET: APIRoute = createSitemapHandler(sospesoRepo);

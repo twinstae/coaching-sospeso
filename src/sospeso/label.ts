@@ -10,7 +10,7 @@ export const applicationStatusToLabelDict: Record<
 };
 
 export const sospesoStatusToLabelDict = {
-  issued: "발행됨",
-  pending: "대기중",
-  consumed: "사용함",
+  issued: "발행",
+  pending: "신청",
+  consumed: "사용",
 } satisfies Record<SospesoStatus, string>;

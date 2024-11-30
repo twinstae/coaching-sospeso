@@ -58,7 +58,7 @@ export default function SimpleSelect({
       >
         <SelectLabel className="label label-text">{label}</SelectLabel>
         <Select
-          className="select select-bordered aria-[invalid=true]:select-error w-full"
+          className="select select-bordered aria-[invalid=true]:select-error w-full items-center"
           name={field.name} // send down the input name
           onBlur={field.onBlur} // notify when input is touched/blur
           ref={field.ref} // send input ref, so we can focus on input when error appear

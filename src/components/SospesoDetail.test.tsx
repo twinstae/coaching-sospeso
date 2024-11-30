@@ -70,7 +70,7 @@ describe("SospesoDetail", () => {
       />,
     );
 
-    await queryTL.button("공유 링크 복사하기").click();
+    await queryTL.button("공유하기").click();
 
     await expectTL(
       queryTL.alert("복사 권한을 허용했는지 확인해 주세요."),
@@ -91,7 +91,7 @@ describe("SospesoDetail", () => {
     );
 
     // when 버튼을 클릭하면
-    await queryTL.button("공유 링크 복사하기").click();
+    await queryTL.button("공유하기").click();
 
     // then 클립보드에 링크가 복사된다
     expect(result).toBe("http://localhost:63315/sospeso/" + ISSUED_SOSPESO.id);

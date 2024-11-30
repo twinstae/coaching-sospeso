@@ -1,87 +1,13 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import "@/styles/markdown.css";
 ---
 
 <Layout title="코칭 소스페소 개인정보처리방침">
-  <style is:inline>
-    h1 {
-      font-size: 28px;
-    }
-
-    h2 {
-      margin-top: 1em;
-      font-size: 22px;
-    }
-
-    h1,
-    h2 {
-      margin-bottom: 0.25em;
-      font-weight: 600;
-      cursor: text;
-    }
-
-    p {
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
-    }
-
-    ul,
-    ol {
-      margin: 0px 0.1em 0px -26px;
-      padding: 0px 0px 0px 48px;
-    }
-    p,
-    ol,
-    ul {
-      margin-top: 1em;
-      margin-bottom: 1em;
-    }
-    ul {
-      display: block;
-      list-style-type: disc;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 0px;
-      margin-inline-end: 0px;
-      padding-inline-start: 20px;
-      unicode-bidi: isolate;
-    }
-
-    ol ul {
-      list-style-type: circle;
-      margin-block-start: 0px;
-      margin-block-end: 0px;
-    }
-
-    ol {
-      list-style-type: decimal;
-      margin: 0px 0.1em 0px -26px;
-      padding: 0px 0px 0px 48px;
-    }
-
-    ol li::before {
-      background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iOCIgeT0iNyIgd2lkdGg9IjMiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiM0RTVDNkUiLz4KPHJlY3QgeD0iOCIgeT0iMTEiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNEU1QzZFIi8+CjxyZWN0IHg9IjgiIHk9IjE1IiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzRFNUM2RSIvPgo8cmVjdCB4PSIxMyIgeT0iNyIgd2lkdGg9IjMiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiM0RTVDNkUiLz4KPHJlY3QgeD0iMTMiIHk9IjExIiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzRFNUM2RSIvPgo8cmVjdCB4PSIxMyIgeT0iMTUiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNEU1QzZFIi8+Cjwvc3ZnPgo=)
-        0px 2px no-repeat;
-      content: "";
-      display: inline-block;
-      cursor: grab;
-      width: 24px;
-      height: 24px;
-      position: absolute;
-      left: -40px;
-      opacity: 0;
-      transition: opacity 200ms ease-in-out;
-    }
-
-    li p:first-child {
-      margin: 0px;
-      word-break: break-word;
-    }
-  </style>
-  <article class="card bg-base-100 shadow-xl p-8 m-auto max-w-xl mt-4">
+  <article class="card bg-base-100 shadow-xl p-8 m-auto max-w-xl mt-4 markdown">
     <h1 dir="ltr">코칭 소스페소 개인정보처리 방침</h1>
     <div>
-      <div id="content" class="ProseMirror">
+      <div id="content">
         <h2>
           <span class="heading-content">전문</span>
         </h2>

@@ -125,7 +125,7 @@ export function buildSospesoActions(
           const appliedSospeso = domain.applySospeso(sospeso, {
             ...input,
             applicantId,
-            appliedAt: now
+            appliedAt: now,
           });
 
           return appliedSospeso;
@@ -147,7 +147,10 @@ export function buildSospesoActions(
         await sospesoRepo.updateOrSave(input.sospesoId, (sospeso) => {
           invariant(sospeso !== undefined, "존재하지 않는 소스페소입니다!");
 
-          const appliedSospeso = domain.consumeSospeso(sospeso, { ...input, consumedAt: now });
+          const appliedSospeso = domain.consumeSospeso(sospeso, {
+            ...input,
+            consumedAt: now,
+          });
 
           return appliedSospeso;
         });

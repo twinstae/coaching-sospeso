@@ -7,19 +7,19 @@ import { href } from "@/routing/href.ts";
 
 describe("SospesoFilter", () => {
   test("발행됨, 대기중, 사용함 상태를 필터하는 링크가 있다", async () => {
-    renderTL(<SospesoFilter />);
+    renderTL(<SospesoFilter currentStatus={undefined} />);
 
-    await expectTL(queryTL.link("발행됨")).toHaveAttribute(
+    await expectTL(queryTL.link("발행")).toHaveAttribute(
       "href",
       href("홈", { status: "issued" }), // /?status=issued
     );
 
-    await expectTL(queryTL.link("대기중")).toHaveAttribute(
+    await expectTL(queryTL.link("신청")).toHaveAttribute(
       "href",
       href("홈", { status: "pending" }),
     );
 
-    await expectTL(queryTL.link("사용함")).toHaveAttribute(
+    await expectTL(queryTL.link("사용")).toHaveAttribute(
       "href",
       href("홈", { status: "consumed" }),
     );

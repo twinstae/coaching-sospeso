@@ -1,9 +1,9 @@
 import * as v from "valibot";
 
-import { formatDate } from "./dateApi.ts";
 import { env } from "./env.ts";
 import invariant from "@/invariant.ts";
 import type { PaidPayment, Payment } from "@/payment/domain.ts";
+import { formatyyyyMMddHH } from "./dateApi.ts";
 
 export type PayplePaymentApiI = {
   generatePaymentLink: (payment: Payment) => Promise<{
@@ -69,7 +69,7 @@ export const payplePaymentApi = {
           PCD_PAY_GOODS: payment.goodsTitle,
           PCD_PAY_GOODS_EXPLAIN: payment.goodsDescription,
           PCD_PAY_TOTAL: String(payment.totalAmount),
-          PCD_LINK_EXPIREDATE: formatDate(payment.expiredDate, "yyyyMMddHH"), // "2024110315" 2024년 11월 3일 15시
+          PCD_LINK_EXPIREDATE: formatyyyyMMddHH(payment.expiredDate), // "2024110315" 2024년 11월 3일 15시
           PCD_PAY_ISTAX: false, // 비과세
           PCD_LINK_PARAMETER: "id=" + payment.id,
           PCD_LINK_NOTI_MSG: "", // 결제 완료 후 메세지
@@ -126,6 +126,5 @@ export const fakePayplePaymentApi = {
         payment.id,
     };
   },
-  cancelPayment: async (payment: PaidPayment) => {
-  },
+  cancelPayment: async (payment: PaidPayment) => {},
 } satisfies PayplePaymentApiI;

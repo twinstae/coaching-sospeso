@@ -25,18 +25,24 @@ const currentUser: {
 ---
 
 <Layout title="코칭 소스페소 프로필">
-  <div class="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
-    <h2 class="text-lg font-bold">{currentUser.nickname} ({currentUser.name})</h2>
+  <div
+    class="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4"
+  >
+    <h2 class="text-lg font-bold">
+      {currentUser.nickname} ({currentUser.name})
+    </h2>
     <p>이메일: {user.email}</p>
     <p>전화번호: {currentUser.phone}</p>
-    
-  <div class="grid grid-cols-2 gap-2">
-    <Link routeKey="개인정보-변경" params={undefined} className="btn btn-primary">
-      개인정보 변경하기
-    </Link>
-    <button id="logout-button" class="btn btn-error">
-      로그아웃
-    </button>
+
+    <div class="grid grid-cols-2 gap-2">
+      <Link
+        routeKey="개인정보-변경"
+        params={undefined}
+        className="btn btn-primary"
+      >
+        개인정보 변경하기
+      </Link>
+      <button id="logout-button" class="btn btn-error"> 로그아웃 </button>
     </div>
   </div>
 </Layout>

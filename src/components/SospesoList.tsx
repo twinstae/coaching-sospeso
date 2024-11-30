@@ -1,7 +1,10 @@
-import { formatDate } from "@/adapters/dateApi";
+import { format년월일 } from "@/adapters/dateApi";
 import { Link } from "@/routing/Link.tsx";
+import { Bean } from "@/shared/icons/Bean";
+import { Coffee } from "@/shared/icons/Coffee";
 import type { SospesoStatus } from "@/sospeso/domain";
 import { clsx } from "clsx";
+import { Mail } from "lucide-react";
 
 export function SospesoList({
   sospesoList,
@@ -15,14 +18,14 @@ export function SospesoList({
   }[];
 }) {
   return (
-    <table className="table">
+    <table className="table bg-base-100 rounded-lg">
       <thead>
         <tr>
           <th>From.</th>
           <th>To.</th>
-          <th>발행일</th>
-          <th>상태</th>
-          <th></th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Detail</th>
         </tr>
       </thead>
       <tbody>
@@ -33,14 +36,23 @@ export function SospesoList({
           >
             <td>{sospeso.from}</td>
             <td>{sospeso.to}</td>
-            <td>{formatDate(sospeso.issuedAt, "yyyy년 M월 d일")}</td>
+            <td>{format년월일(sospeso.issuedAt)}</td>
             <td>
               {sospeso.status === "issued" ? (
-                <div className="badge">발행됨</div>
+                <div className="flex items-center gap-1">
+                  <Bean className="text-yellow-400" />
+                  발행
+                </div>
               ) : sospeso.status === "pending" ? (
-                <div className="badge"> 대기중</div>
+                <div className="flex items-center gap-1">
+                  <Coffee className="text-yellow-400" />
+                  신청
+                </div>
               ) : (
-                <div className="stamp">사용함</div>
+                <div className="flex items-center gap-1">
+                  <Mail className="text-yellow-400" />
+                  사용
+                </div>
               )}
             </td>
             <td>

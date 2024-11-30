@@ -4,7 +4,7 @@ import { Form } from "@/shared/form/Form";
 import { TextField } from "@/shared/form/TextField";
 import { createSafeEvent } from "@/event/SafeEventBus";
 import { phoneSchema } from "@/auth/schema";
-import { PhoneField } from '@/shared/form/PhoneField';
+import { PhoneField } from "@/shared/form/PhoneField";
 
 const updateUserSchema = v.object({
   name: v.pipe(v.string(), v.minLength(1, "실명이 꼭 있어야 해요")),

@@ -18,6 +18,7 @@ const envSchema = v.object({
   TWITTER_CLIENT_SECRET: v.string(),
   GITHUB_CLIENT_ID: v.string(),
   GITHUB_CLIENT_SECRET: v.string(),
+  OUTLINE_API_SECRET_KEY: v.string(),
 });
 
 const result = v.safeParse(envSchema, {
@@ -35,6 +36,7 @@ const result = v.safeParse(envSchema, {
   TWITTER_CLIENT_SECRET: import.meta.env.TWITTER_CLIENT_SECRET,
   GITHUB_CLIENT_ID: import.meta.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: import.meta.env.GITHUB_CLIENT_SECRET,
+  OUTLINE_API_SECRET_KEY: import.meta.env.OUTLINE_API_SECRET_KEY,
 });
 
 invariant(

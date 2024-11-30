@@ -10,10 +10,17 @@ import { generateNanoId } from "@/adapters/generateId.ts";
 import { createSospesoServices } from "./services";
 import { TEST_NOW } from "@/actions/fixtures";
 import { SOSPESO_PRICE } from "@/sospeso/constants";
-import { completePayment, createSospesoIssuingPayment, type Payment } from '@/payment/domain';
-import { TEST_SOSPESO_LIST_ITEM } from '@/sospeso/fixtures';
-import { EXAMPLE_PAYMENT_PAYLOAD } from '@/payment/fixtures';
-import { createFakePaymentRepository, type PaymentRepositoryI } from '@/payment/repository';
+import {
+  completePayment,
+  createSospesoIssuingPayment,
+  type Payment,
+} from "@/payment/domain";
+import { TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures";
+import { EXAMPLE_PAYMENT_PAYLOAD } from "@/payment/fixtures";
+import {
+  createFakePaymentRepository,
+  type PaymentRepositoryI,
+} from "@/payment/repository";
 
 const generateId = generateNanoId;
 
@@ -28,7 +35,7 @@ const event = {
     issuerId: TEST_USER_ID,
     paidAmount: SOSPESO_PRICE,
     issuedAt: TEST_NOW,
-  }
+  },
 };
 
 function runSospesoServicesTest(
@@ -36,7 +43,7 @@ function runSospesoServicesTest(
   createSospesoRepository: (
     initState: Record<string, Sospeso>,
   ) => Promise<SospesoRepositoryI>,
-  createPaymentRepository:  (
+  createPaymentRepository: (
     initState: Record<string, Payment>,
   ) => Promise<PaymentRepositoryI>,
 ) {
@@ -47,17 +54,18 @@ function runSospesoServicesTest(
       const sospesoRepo = await createSospesoRepository({});
       const paymentRepo = await createPaymentRepository({});
 
-      const sospesoServices = createSospesoServices({ sospesoRepo, paymentRepo });
+      const sospesoServices = createSospesoServices({
+        sospesoRepo,
+        paymentRepo,
+      });
 
       await sospesoServices.issueSospeso(command);
 
-      const result = await sospesoRepo.retrieveSospesoDetail(
-        command.sospesoId,
-      );
+      const result = await sospesoRepo.retrieveSospesoDetail(command.sospesoId);
 
       expect(result?.status).toBe("issued");
     });
-    
+
     const testPayment = createSospesoIssuingPayment({
       sospesoId: TEST_SOSPESO_LIST_ITEM.id,
       now: TEST_NOW,
@@ -71,53 +79,61 @@ function runSospesoServicesTest(
         paidAmount: 80000,
       },
     });
-    
-    test("결제를 완료할 수 있다", async () => {
 
+    test("결제를 완료할 수 있다", async () => {
       const sospesoRepo = await createSospesoRepository({});
       const paymentRepo = await createPaymentRepository({
-        [testPayment.id]: testPayment
+        [testPayment.id]: testPayment,
       });
-      
-      const sospesoServices = createSospesoServices({ sospesoRepo, paymentRepo });
 
-      await sospesoServices.completeSospesoPayment(
-        {
-          paymentId: TEST_SOSPESO_LIST_ITEM.id,
-          paymentResult: EXAMPLE_PAYMENT_PAYLOAD,
-        }
+      const sospesoServices = createSospesoServices({
+        sospesoRepo,
+        paymentRepo,
+      });
+
+      await sospesoServices.completeSospesoPayment({
+        paymentId: TEST_SOSPESO_LIST_ITEM.id,
+        paymentResult: EXAMPLE_PAYMENT_PAYLOAD,
+      });
+
+      const payment = await paymentRepo.retrievePayment(
+        TEST_SOSPESO_LIST_ITEM.id,
       );
-
-      const payment = await paymentRepo.retrievePayment(TEST_SOSPESO_LIST_ITEM.id);
 
       expect(payment?.status).toBe("paid");
     });
 
     test("결제를 취소할 수 있다", async () => {
-      const completedPayment = completePayment(testPayment, EXAMPLE_PAYMENT_PAYLOAD);
+      const completedPayment = completePayment(
+        testPayment,
+        EXAMPLE_PAYMENT_PAYLOAD,
+      );
 
       const sospesoRepo = await createSospesoRepository({});
       const paymentRepo = await createPaymentRepository({
-        [completedPayment.id]: completedPayment
+        [completedPayment.id]: completedPayment,
       });
 
-      const sospesoServices = createSospesoServices({ sospesoRepo, paymentRepo });
+      const sospesoServices = createSospesoServices({
+        sospesoRepo,
+        paymentRepo,
+      });
 
-      await sospesoServices.cancelSospesoPayment(
-        {
-          sospesoId: TEST_SOSPESO_LIST_ITEM.id,
-        },
+      await sospesoServices.cancelSospesoPayment({
+        sospesoId: TEST_SOSPESO_LIST_ITEM.id,
+      });
+
+      const payment = await paymentRepo.retrievePayment(
+        TEST_SOSPESO_LIST_ITEM.id,
       );
-
-      const payment = await paymentRepo.retrievePayment(TEST_SOSPESO_LIST_ITEM.id);
 
       expect(payment?.status).toBe("cancelled");
     });
-
   });
 }
 
-runSospesoServicesTest("fake", async (initState) =>
-  createFakeSospesoRepository(initState),
- async (initState) => createFakePaymentRepository(initState)
+runSospesoServicesTest(
+  "fake",
+  async (initState) => createFakeSospesoRepository(initState),
+  async (initState) => createFakePaymentRepository(initState),
 );

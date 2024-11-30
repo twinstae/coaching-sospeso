@@ -59,10 +59,11 @@ export function SospesoApplyingForm({
 
   return (
     <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
-      <h2 className="text-2xl font-semibold">소스페소 신청하기</h2>
+      <h1 className="text-page-title">소스페소 신청하기</h1>
       <p>From. {sospeso.from}</p>
       <p>To. {sospeso.to}</p>
       <Form
+        className="flex flex-col gap-4"
         form={{
           schema: applyingSchema,
           defaultValues: { applicationId: id, content: "", usage: false },

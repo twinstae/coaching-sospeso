@@ -3,8 +3,8 @@ import {
   type SospesoRepositoryI,
 } from "@/sospeso/repository";
 import * as schema from "./schema.ts";
-import { count } from 'drizzle-orm/sql/functions/aggregate';
-import { eq } from 'drizzle-orm/sql/expressions/conditions';
+import { count } from "drizzle-orm/sql/functions/aggregate";
+import { eq } from "drizzle-orm/sql/expressions/conditions";
 import {
   calcStatus,
   type Sospeso,
@@ -158,6 +158,7 @@ export function createDrizzleSospesoRepository(
           from: sospeso.from,
           status: "consumed",
           to: sospeso.to,
+          issuedAt: sospeso.issuing.issuedAt,
           consuming: {
             consumer: {
               id: consumer.id,
@@ -173,6 +174,7 @@ export function createDrizzleSospesoRepository(
         from: sospeso.from,
         status,
         to: sospeso.to,
+        issuedAt: sospeso.issuing.issuedAt,
         consuming: undefined,
       };
     },

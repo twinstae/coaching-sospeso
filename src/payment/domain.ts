@@ -78,9 +78,7 @@ export function completePayment(
   } satisfies PaidPayment;
 }
 
-export function cancelPayment(
-  paidPayment: PaidPayment,
-): CancelledPayment {
+export function cancelPayment(paidPayment: PaidPayment): CancelledPayment {
   return {
     ...paidPayment,
     status: "cancelled",

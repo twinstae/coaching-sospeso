@@ -1,5 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { cancelPayment, completePayment, createSospesoIssuingPayment, isPaid } from "./domain";
+import {
+  cancelPayment,
+  completePayment,
+  createSospesoIssuingPayment,
+  isPaid,
+} from "./domain";
 import { EXAMPLE_PAYMENT_PAYLOAD } from "./fixtures";
 import { TEST_SOSPESO_ID, TEST_SOSPESO_LIST_ITEM } from "@/sospeso/fixtures";
 import { TEST_USER_ID } from "@/auth/fixtures";

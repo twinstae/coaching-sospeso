@@ -19,7 +19,9 @@ export function href<RouteKey extends RouteKeys>(
             return path.replace("[" + key + "]", encodeURIComponent(value));
           }
 
-          searchParams.set(key, encodeURIComponent(value));
+          if (value !== undefined) {
+            searchParams.set(key, encodeURIComponent(value));
+          }
           return path;
         },
         route.path,

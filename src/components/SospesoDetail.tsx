@@ -11,6 +11,8 @@ import {
 import { toastifyToastApi, type ToastApiI } from "@/adapters/toastApi.tsx";
 import { href } from "@/routing/href.ts";
 import { Link } from "@/routing/Link.tsx";
+import { SospesoLogo } from "@/shared/icons/SospesoLogo";
+import { format년월일 } from "@/adapters/dateApi";
 
 export function SospesoDetail({
   sospeso,
@@ -23,6 +25,7 @@ export function SospesoDetail({
         from: string;
         to: string;
         status: "issued" | "pending";
+        issuedAt: Date;
         consuming: undefined;
       }
     | {
@@ -30,6 +33,7 @@ export function SospesoDetail({
         from: string;
         to: string;
         status: "consumed";
+        issuedAt: Date;
         consuming: {
           consumer: { id: string; nickname: string };
           content: string;
@@ -39,20 +43,37 @@ export function SospesoDetail({
   toastApi?: ToastApiI;
 }) {
   return (
-    <div className="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
-      <p>From. {sospeso.from}</p>
-      <p>To. {sospeso.to}</p>
-      {sospeso.status === "issued" && (
-        <Link
-          className="btn btn-primary"
-          routeKey="소스페소-신청"
-          params={{ sospesoId: sospeso.id }}
-        >
-          신청하기
-        </Link>
-      )}
+    <div className="max-w-md m-auto mt-4">
+      <div className="flex flex-col gap-4 card bg-base-100 shadow-xl p-8">
+        <h1 className="text-page-title">
+          <SospesoLogo aria-label="코칭 소스페소" className="w-full" />
+        </h1>
+        <div className="flex justify-between">
+          <p>
+            <strong className="font-bold uppercase">From.</strong>{" "}
+            {sospeso.from}
+          </p>
 
-      <div>
+          <time className="text" dateTime={sospeso.issuedAt.toISOString()}>
+            {format년월일(sospeso.issuedAt)}
+          </time>
+        </div>
+        <div className="flex gap-4 font-bold items-center uppercase mt-2 border-b-2 border-black">
+          <div className="text-2xl">To.</div>
+          <div className="text-3xl">{sospeso.to}</div>
+        </div>
+      </div>
+      <div className="flex justify-around p-2 w-full">
+        {sospeso.status === "issued" && (
+          <Link
+            className="btn btn-primary"
+            routeKey="소스페소-신청"
+            params={{ sospesoId: sospeso.id }}
+          >
+            신청하기
+          </Link>
+        )}
+
         {sospeso.status === "pending" && (
           <TooltipProvider timeout={100}>
             <TooltipAnchor
@@ -73,15 +94,6 @@ export function SospesoDetail({
           </TooltipProvider>
         )}
 
-        {sospeso.status === "consumed" && <div className="stamp">사용함</div>}
-
-        {sospeso.status === "consumed" && (
-          <div>
-            <span>{sospeso.consuming.consumer.nickname}</span>
-            <p>{sospeso.consuming.content}</p>
-          </div>
-        )}
-
         <button
           className="btn btn-primary"
           onClick={async () => {
@@ -96,9 +108,18 @@ export function SospesoDetail({
             }
           }}
         >
-          공유 링크 복사하기
+          공유하기
         </button>
       </div>
+
+      {sospeso.status === "consumed" && <div className="stamp">사용함</div>}
+
+      {sospeso.status === "consumed" && (
+        <div>
+          <span>{sospeso.consuming.consumer.nickname}</span>
+          <p>{sospeso.consuming.content}</p>
+        </div>
+      )}
     </div>
   );
 }

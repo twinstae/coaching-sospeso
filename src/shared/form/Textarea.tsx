@@ -33,8 +33,10 @@ export function Textarea<InputT extends Record<string, any>>({
 
   return (
     <div className="w-full">
-      <label className="flex flex-col items-start">
-        {label}
+      <label className="form-control">
+        <div className="label">
+          <span className="label-text">{label}</span>
+        </div>
         <textarea
           {...props}
           name={field.name} // send down the input name

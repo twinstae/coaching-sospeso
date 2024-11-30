@@ -51,9 +51,9 @@ export function SospesoConsumingForm({
         },
       }}
     >
-      <h2 id={formTitleId} className="text-2xl font-semibold">
+      <h1 id={formTitleId} className="text-page-title">
         소스페소 사용하기 (코칭 완료)
-      </h2>
+      </h1>
 
       <SimpleSelect
         optionList={coachList.map(({ id, name }) => ({

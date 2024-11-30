@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import vercel from "@astrojs/vercel/serverless";
+import svgr from "vite-plugin-svgr";
 
 import sentry from "@sentry/astro";
 
@@ -13,6 +14,8 @@ const ReactCompilerConfig = {
 
 // https://astro.build/config
 export default defineConfig({
+  output: "server",
+  adapter: vercel(),
   integrations: [
     react({
       babel: {
@@ -27,8 +30,9 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tsconfigPaths()],
+    plugins: [tsconfigPaths(), svgr()],
   },
-  output: "server",
-  adapter: vercel(),
+  experimental: {
+    contentLayer: true,
+  }
 });

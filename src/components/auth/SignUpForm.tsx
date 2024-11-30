@@ -7,7 +7,7 @@ import { Checkbox } from "@/shared/form/Checkbox.tsx";
 import { emailSchema, passwordSchema, phoneSchema } from "@/auth/schema";
 import { Link } from "@/routing/Link";
 import { PasswordInput } from "@/shared/form/PasswordInput";
-import { PhoneField } from '@/shared/form/PhoneField';
+import { PhoneField } from "@/shared/form/PhoneField";
 
 const signUpSchema = v.pipe(
   v.object({

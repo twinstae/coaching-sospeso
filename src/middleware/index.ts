@@ -1,9 +1,16 @@
 import { auth } from "@/lib/auth";
 import { defineMiddleware } from "astro:middleware";
 
+const staticRoutes = ["/lifelifter/coaches"] satisfies string[];
+
 export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.now = new Date();
 
+  if (staticRoutes.includes(context.url.pathname)) {
+    return next();
+  }
+
+  // dynamic routes
   const result = await auth.api.getSession({
     headers: context.request.headers,
   });

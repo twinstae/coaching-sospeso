@@ -12,6 +12,7 @@ type SospesoDto =
       from: string;
       to: string;
       status: "issued" | "pending";
+      issuedAt: Date;
       consuming: undefined;
     }
   | {
@@ -19,6 +20,7 @@ type SospesoDto =
       from: string;
       to: string;
       status: "consumed";
+      issuedAt: Date;
       consuming: {
         consumer: { id: string; nickname: string };
         content: string;
@@ -110,6 +112,7 @@ export const createFakeSospesoRepository = (
           from: sospeso.from,
           status,
           to: sospeso.to,
+          issuedAt: sospeso.issuing.issuedAt,
           consuming: {
             consumer: {
               id: TEST_USER.id,
@@ -125,6 +128,7 @@ export const createFakeSospesoRepository = (
         from: sospeso.from,
         status,
         to: sospeso.to,
+        issuedAt: sospeso.issuing.issuedAt,
         consuming: undefined,
       };
     },

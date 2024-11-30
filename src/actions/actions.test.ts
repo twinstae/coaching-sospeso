@@ -99,7 +99,7 @@ function runSospesoActionsTest(
         {
           sospesoId: id,
           applicationId: TEST_APPLICATION_ID,
-          content: "저 퀴어 문화 축제 갔다 왔어요"
+          content: "저 퀴어 문화 축제 갔다 왔어요",
         },
         LOGGED_IN_CONTEXT,
       );

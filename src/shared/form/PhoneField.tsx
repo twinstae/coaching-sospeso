@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useId, type ComponentProps } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { SimpleErrorMessage } from "./SimpleErrorMessage";
-import { formatPhoneNumber } from './phone';
+import { formatPhoneNumber } from "./phone";
 
 export function PhoneField<InputT extends Record<string, any>>({
   label,
@@ -12,7 +12,10 @@ export function PhoneField<InputT extends Record<string, any>>({
 }: {
   label: string;
   name: keyof InputT & string;
-} & Omit<ComponentProps<"input">, "onChange" | "onBlur" | "value" | "maxLength" | "type">) {
+} & Omit<
+  ComponentProps<"input">,
+  "onChange" | "onBlur" | "value" | "maxLength" | "type"
+>) {
   const { control } = useFormContext();
   const {
     field,
@@ -27,8 +30,10 @@ export function PhoneField<InputT extends Record<string, any>>({
 
   return (
     <div>
-      <label className="flex flex-col items-start">
-        {label}
+      <label className="form-control">
+        <div className="label">
+          <span className="label-text">{label}</span>
+        </div>
         <input
           {...props}
           type="tel"
@@ -38,11 +43,11 @@ export function PhoneField<InputT extends Record<string, any>>({
             "input input-bordered aria-[invalid=true]:input-error w-full",
             className,
           )}
-          onChange={event => {
-            field.onChange(formatPhoneNumber(event.target.value))
+          onChange={(event) => {
+            field.onChange(formatPhoneNumber(event.target.value));
           }}
           onBlur={field.onBlur} // notify when input is touched/blur
-          value={formatPhoneNumber(field.value  ?? "")} // input value
+          value={formatPhoneNumber(field.value ?? "")} // input value
           maxLength={13}
           ref={field.ref} // send input ref, so we can focus on input when error appear
           aria-invalid={isInvalid}

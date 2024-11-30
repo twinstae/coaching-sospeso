@@ -75,5 +75,5 @@ export const EXAMPLE_WEBHOOK_PAYLOAD = {
   PCD_REGULER_FLAG: "N",
   PCD_SIMPLE_FLAG: "N",
   PCD_RST_URL: "/order_result.html",
-  PCD_LINK_ADD_PARAM: "{\"params1\":\"val1\",\"params2\":\"val2\"}"
-}
+  PCD_LINK_ADD_PARAM: '{"params1":"val1","params2":"val2"}',
+};
