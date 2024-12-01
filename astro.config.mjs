@@ -33,6 +33,7 @@ export default defineConfig({
     plugins: [tsconfigPaths(), svgr()],
   },
   experimental: {
+    serverIslands: true,
     contentLayer: true,
   }
 });
