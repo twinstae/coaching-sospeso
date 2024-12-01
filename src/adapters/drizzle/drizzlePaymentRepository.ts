@@ -1,10 +1,10 @@
 import * as schema from "./schema.ts";
 import * as v from "valibot";
-import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
 import type { Payment } from "@/payment/domain.ts";
 import type { PaymentRepositoryI } from "@/payment/repository.ts";
 import invariant from "@/invariant.ts";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
+import type { DrizzlePostgresDb } from './types.ts';
 
 const paymentSchema = v.object({
   id: v.string(),
@@ -33,7 +33,7 @@ function dbModelToDomainModel(dbModel: {
 }
 
 export function createDrizzlePaymentRepository(
-  db: LibSQLDatabase<typeof schema>,
+  db: DrizzlePostgresDb,
 ): PaymentRepositoryI {
   return {
     async retrievePayment(paymentId: string) {

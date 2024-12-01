@@ -1,5 +1,4 @@
-import { afterAll, describe, expect, test } from "vitest";
-import { drizzle } from "drizzle-orm/libsql";
+import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { like } from "drizzle-orm/expressions";
 
 import * as schema from "@/adapters/drizzle/schema.ts";
@@ -27,6 +26,8 @@ import {
 } from "@/payment/repository.ts";
 import { type Payment } from "@/payment/domain.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
+import { testDbReallySeriously } from '@/adapters/db.ts';
+import { migrate } from 'drizzle-orm/pglite/migrator';
 
 const generateId = generateNanoId;
 
@@ -248,13 +249,12 @@ function runSospesoActionsTest(
   });
 }
 
-const testDbReallySeriously = drizzle({
-  schema,
-  logger: false,
-  connection: {
-    url: "file:test.db",
-  },
-});
+
+beforeAll(async () => {
+  await migrate(testDbReallySeriously, {
+    migrationsFolder: './migrations'
+  })
+})
 
 async function createDrizzleTestSospesoRepository(
   initState: Record<string, Sospeso>,
@@ -271,10 +271,10 @@ async function createDrizzleTestSospesoRepository(
   const repo = createDrizzleSospesoRepository(testDbReallySeriously);
 
   // prod db에 실행하면 절대 안 됨
-  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
-  await testDbReallySeriously.delete(schema.sospesoApplication).all();
-  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
-  await testDbReallySeriously.delete(schema.sospeso).all();
+  await testDbReallySeriously.delete(schema.sospesoConsuming).execute();
+  await testDbReallySeriously.delete(schema.sospesoApplication).execute();
+  await testDbReallySeriously.delete(schema.sospesoIssuing).execute();
+  await testDbReallySeriously.delete(schema.sospeso).execute();
 
   for (const sospeso of Object.values(initState)) {
     await repo.updateOrSave(sospeso.id, () => sospeso);
@@ -289,7 +289,7 @@ async function createDrizzleTestPaymentRepository(
   const repo = createDrizzlePaymentRepository(testDbReallySeriously);
 
   // prod db에 실행하면 절대 안 됨
-  await testDbReallySeriously.delete(schema.payment).all();
+  await testDbReallySeriously.delete(schema.payment).execute();
 
   for (const payment of Object.values(initState)) {
     await repo.updateOrSave(payment.id, () => payment);
@@ -299,27 +299,19 @@ async function createDrizzleTestPaymentRepository(
 }
 
 afterAll(async () => {
-  const testDbReallySeriously = drizzle({
-    schema,
-    logger: false,
-    connection: {
-      url: "file:test.db",
-    },
-  });
-
   // // prod db에 실행하면 절대 안 됨
   // // sospeso
-  await testDbReallySeriously.delete(schema.sospesoConsuming).all();
-  await testDbReallySeriously.delete(schema.sospesoApplication).all();
-  await testDbReallySeriously.delete(schema.sospesoIssuing).all();
-  await testDbReallySeriously.delete(schema.sospeso).all();
+  await testDbReallySeriously.delete(schema.sospesoConsuming).execute();
+  await testDbReallySeriously.delete(schema.sospesoApplication).execute();
+  await testDbReallySeriously.delete(schema.sospesoIssuing).execute();
+  await testDbReallySeriously.delete(schema.sospeso).execute();
   // payment
-  await testDbReallySeriously.delete(schema.payment).all();
+  await testDbReallySeriously.delete(schema.payment).execute();
 
   await testDbReallySeriously
     .delete(schema.user)
     .where(like(schema.user.email, "%@test.kr"))
-    .run();
+    .execute();
 
   // await createDrizzleTestSospesoRepository(
   //   Object.fromEntries(
@@ -340,7 +332,7 @@ runSospesoActionsTest(
 );
 
 runSospesoActionsTest(
-  "drizzle sqlite",
+  "drizzle pglite",
   createDrizzleTestSospesoRepository,
   createDrizzleTestPaymentRepository,
 );

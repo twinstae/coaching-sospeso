@@ -1,16 +1,18 @@
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle as drizzlePgLite } from 'drizzle-orm/pglite';
 import * as schema from "./drizzle/schema.ts";
 import { secretEnv } from "./env.secret.ts";
 import { isProd } from './env.public.ts';
+import { drizzle } from 'drizzle-orm/node-postgres';
 
-export const db = drizzle({
+export const testDbReallySeriously = drizzlePgLite({
   schema,
-  connection: isProd
-    ? {
-        url: secretEnv.TURSO_CONNECTION_URL,
-        authToken: secretEnv.TURSO_AUTH_TOKEN,
-      }
-    : {
-        url: "file:test.db",
-      },
+  logger: false
+});
+
+
+export const db = isProd ? testDbReallySeriously : drizzle({ 
+  schema,
+  connection: { 
+    connectionString: secretEnv.POSTGRES_CONNECTION_URL
+  }
 });

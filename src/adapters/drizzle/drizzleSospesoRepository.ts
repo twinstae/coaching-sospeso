@@ -13,7 +13,7 @@ import {
 } from "@/sospeso/domain.ts";
 import * as v from "valibot";
 import invariant from "@/invariant.ts";
-import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
+import type { DrizzlePostgresDb } from './types.ts';
 
 const sospesoSchema = v.object({
   id: v.string(),
@@ -84,7 +84,7 @@ function dbModelToDomainModel(dbModel: {
 }
 
 export function createDrizzleSospesoRepository(
-  db: LibSQLDatabase<typeof schema>,
+  db: DrizzlePostgresDb,
 ): SospesoRepositoryI {
   return {
     async retrieveSospesoList({ page, status }) {
@@ -93,8 +93,9 @@ export function createDrizzleSospesoRepository(
         .from(schema.sospeso)
         .where(
           status === undefined ? undefined : eq(schema.sospeso.status, status),
-        )
-        .get()) ?? { totalCount: 1 };
+        )).at(0) ?? { totalCount: 1 };
+
+
 
       const result = await db.query.sospeso.findMany({
         with: {

@@ -3,10 +3,11 @@ import { defineConfig } from "astro/config";
 
 import react from "@astrojs/react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import vercel from "@astrojs/vercel/serverless";
 import svgr from "vite-plugin-svgr";
 
 import sentry from "@sentry/astro";
+
+import node from "@astrojs/node";
 
 const ReactCompilerConfig = {
   target: "18",
@@ -15,7 +16,9 @@ const ReactCompilerConfig = {
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  adapter: vercel(),
+  adapter: node({
+    mode: "standalone"
+  }),
   integrations: [
     react({
       babel: {

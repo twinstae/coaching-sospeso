@@ -1,45 +1,24 @@
 import { relations } from "drizzle-orm/relations";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
-
-// auth
-export const user = sqliteTable("user", {
+import { pgTable, text, json, integer, timestamp, boolean } from "drizzle-orm/pg-core";
+export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  emailVerified: integer("emailVerified", {
-    mode: "boolean",
-  }).notNull(),
-  phone: text("phone_number").notNull().default(""),
+  emailVerified: boolean("emailVerified").notNull(),
   image: text("image"),
-  createdAt: integer("createdAt", {
-    mode: "timestamp",
-  }).notNull(),
-  updatedAt: integer("updatedAt", {
-    mode: "timestamp",
-  }).notNull(),
-  nickname: text("nickname").notNull().default(""),
-  role: text("role").default("user"),
-  banned: integer("banned", {
-    mode: "boolean",
-  }),
-  banReason: text("banReason"),
-  banExpires: integer("banExpires", {
-    mode: "timestamp",
-  }),
+  createdAt: timestamp("createdAt").notNull(),
+  updatedAt: timestamp("updatedAt").notNull(),
+  nickname: text("nickname").notNull(),
+  role: text("role").notNull(),
+  phone: text("phone").notNull(),
 });
 
-export const session = sqliteTable("session", {
+export const session = pgTable("session", {
   id: text("id").primaryKey(),
-  expiresAt: integer("expiresAt", {
-    mode: "timestamp",
-  }).notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
   token: text("token").notNull().unique(),
-  createdAt: integer("createdAt", {
-    mode: "timestamp",
-  }).notNull(),
-  updatedAt: integer("updatedAt", {
-    mode: "timestamp",
-  }).notNull(),
+  createdAt: timestamp("createdAt").notNull(),
+  updatedAt: timestamp("updatedAt").notNull(),
   ipAddress: text("ipAddress"),
   userAgent: text("userAgent"),
   userId: text("userId")
@@ -48,7 +27,7 @@ export const session = sqliteTable("session", {
   impersonatedBy: text("impersonatedBy"),
 });
 
-export const account = sqliteTable("account", {
+export const account = pgTable("account", {
   id: text("id").primaryKey(),
   accountId: text("accountId").notNull(),
   providerId: text("providerId").notNull(),
@@ -58,39 +37,25 @@ export const account = sqliteTable("account", {
   accessToken: text("accessToken"),
   refreshToken: text("refreshToken"),
   idToken: text("idToken"),
-  accessTokenExpiresAt: integer("accessTokenExpiresAt", {
-    mode: "timestamp",
-  }),
-  refreshTokenExpiresAt: integer("refreshTokenExpiresAt", {
-    mode: "timestamp",
-  }),
+  accessTokenExpiresAt: timestamp("accessTokenExpiresAt"),
+  refreshTokenExpiresAt: timestamp("refreshTokenExpiresAt"),
   scope: text("scope"),
   password: text("password"),
-  createdAt: integer("createdAt", {
-    mode: "timestamp",
-  }).notNull(),
-  updatedAt: integer("updatedAt", {
-    mode: "timestamp",
-  }).notNull(),
+  createdAt: timestamp("createdAt").notNull(),
+  updatedAt: timestamp("updatedAt").notNull(),
 });
 
-export const verification = sqliteTable("verification", {
+export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
-  expiresAt: integer("expiresAt", {
-    mode: "timestamp",
-  }).notNull(),
-  createdAt: integer("createdAt", {
-    mode: "timestamp",
-  }),
-  updatedAt: integer("updatedAt", {
-    mode: "timestamp",
-  }),
+  expiresAt: timestamp("expiresAt").notNull(),
+  createdAt: timestamp("createdAt"),
+  updatedAt: timestamp("updatedAt"),
 });
 
 // sospeso
-export const sospeso = sqliteTable("sospeso", {
+export const sospeso = pgTable("sospeso", {
   id: text("id").primaryKey(),
   from: text("from").notNull(),
   to: text("to").notNull(),
@@ -103,7 +68,7 @@ export const sospesoRelations = relations(sospeso, ({ one, many }) => ({
   consuming: one(sospesoConsuming),
 }));
 
-export const sospesoIssuing = sqliteTable("sospeso_issuing", {
+export const sospesoIssuing = pgTable("sospeso_issuing", {
   id: text("id").primaryKey(),
   sospesoId: text("sospeso_id")
     .references(() => sospeso.id)
@@ -112,7 +77,7 @@ export const sospesoIssuing = sqliteTable("sospeso_issuing", {
   issuerId: text("issuer_id")
     .references(() => user.id)
     .notNull(),
-  issuedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
+  issuedAt: timestamp("issued_at").notNull(),
 });
 
 export const sospesoIssuingRelations = relations(sospesoIssuing, ({ one }) => ({
@@ -122,7 +87,7 @@ export const sospesoIssuingRelations = relations(sospesoIssuing, ({ one }) => ({
   }),
 }));
 
-export const sospesoApplication = sqliteTable("sospeso_application", {
+export const sospesoApplication = pgTable("sospeso_application", {
   id: text("id").primaryKey(),
   sospesoId: text("sospeso_id")
     .references(() => sospeso.id)
@@ -132,7 +97,7 @@ export const sospesoApplication = sqliteTable("sospeso_application", {
   applicantId: text("applicant_id")
     .references(() => user.id)
     .notNull(),
-  appliedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
+  appliedAt: timestamp("issued_at").notNull(),
 });
 
 export const sospesoApplicationRelations = relations(
@@ -149,12 +114,12 @@ export const sospesoApplicationRelations = relations(
   }),
 );
 
-export const sospesoConsuming = sqliteTable("sospeso_consuming", {
+export const sospesoConsuming = pgTable("sospeso_consuming", {
   id: text("id").primaryKey(),
   sospesoId: text("sospeso_id")
     .references(() => sospeso.id)
     .notNull(),
-  consumedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
+  consumedAt: timestamp("issued_at").notNull(),
   content: text("content").notNull(),
   memo: text("memo").notNull(),
   consumerId: text("consumer_id")
@@ -179,14 +144,14 @@ export const sospesoConsumingRelations = relations(
   }),
 );
 
-export const payment = sqliteTable("payment", {
+export const payment = pgTable("payment", {
   id: text("id").primaryKey(),
   status: text("status").notNull(),
   goodsTitle: text("goods_title").notNull(),
   goodsDescription: text("goods_description").notNull(),
   totalAmount: integer("total_amount").notNull(),
-  expiredDate: integer("expired_date", { mode: "timestamp_ms" }).notNull(),
+  expiredDate: timestamp("expired_date").notNull(),
   afterLinkUrl: text("after_link_url").notNull(),
-  command: text("command", { mode: "json" }).notNull(),
-  paymentResult: text("payment_result", { mode: "json" }),
+  command: json("command").notNull(),
+  paymentResult: json("payment_result"),
 });

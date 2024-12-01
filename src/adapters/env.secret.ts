@@ -3,8 +3,7 @@ import * as v from "valibot";
 
 const envSchema = v.object({
   APP_HOST: v.string(),
-  TURSO_CONNECTION_URL: v.string(),
-  TURSO_AUTH_TOKEN: v.string(),
+  POSTGRES_CONNECTION_URL: v.string(),
   PLUNK_EMAIL_API_KEY: v.string(),
   PAYPLE_HOST: v.string(),
   PAYPLE_CST_ID: v.string(),
@@ -24,8 +23,7 @@ const hostEnv = import.meta.env ?? (typeof process !== "undefined" && process.en
 
 const result = v.safeParse(envSchema, {
   APP_HOST: hostEnv.APP_HOST,
-  TURSO_CONNECTION_URL: hostEnv.TURSO_CONNECTION_URL,
-  TURSO_AUTH_TOKEN: hostEnv.TURSO_AUTH_TOKEN,
+  POSTGRES_CONNECTION_URL: hostEnv.POSTGRES_CONNECTION_URL,
   PLUNK_EMAIL_API_KEY: hostEnv.PLUNK_EMAIL_API_KEY,
   PAYPLE_HOST: hostEnv.PAYPLE_HOST,
   PAYPLE_CST_ID: hostEnv.PAYPLE_CST_ID,
