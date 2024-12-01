@@ -1,14 +1,16 @@
 ---
-import {TopNavigation} from "@/components/TopNavigation.tsx";
+import { TopNavigation } from "@/components/TopNavigation.tsx";
 import { ViewTransitions } from "astro:transitions";
 import { ToastifyToastContainer } from "@/adapters/toastApi.tsx";
 import "../index.css";
 import "react-toastify/dist/ReactToastify.css";
+
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!doctype html>
@@ -20,6 +22,18 @@ const { title } = Astro.props;
     <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
     <meta content={Astro.generator} name="generator" />
     <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:image" content="/og.png" />
+    <meta
+      property="og:image:alt"
+      content="코칭 소스페소 라고 적힌 로고. Sospeso 의 동그란 o 를 커피콩 모양으로 그리고, S는 커피 주전자를 닮았다"
+    />
+    {description && <meta property="og:description" content={description} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content="/og.png" />
     <link
       rel="stylesheet"
       as="style"
