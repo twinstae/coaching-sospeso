@@ -2,21 +2,20 @@
 import { marked } from "marked";
 import { getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
+import sanitizeHtml from 'sanitize-html';
 import "@/styles/markdown.css";
 
 const { data } = await getEntry("coaches", "coaches");
 
-const html = marked.parse(data.content);
+const parsed = await marked.parse(data.content);
+const html = sanitizeHtml(parsed);
 
 export const prerender = true;
 ---
 
 <Layout title="코칭 소스페소 : 코치들 소개">
-  <main>
+  <main class="card bg-base-100 shadow-xl p-8 m-auto max-w-xl mt-4 markdown">
     {/* eslint-disable-next-line astro/no-set-html-directive */}
-    <article
-      class="card bg-base-100 shadow-xl p-8 m-auto max-w-xl mt-4 markdown"
-      set:html={html}
-    />
+    <article set:html={html} />
   </main>
 </Layout>

@@ -11,17 +11,17 @@ describe("SospesoFilter", () => {
 
     await expectTL(queryTL.link("발행")).toHaveAttribute(
       "href",
-      href("홈", { status: "issued" }), // /?status=issued
+      href("홈", { page: 1, status: "issued" }), // /?status=issued
     );
 
     await expectTL(queryTL.link("신청")).toHaveAttribute(
       "href",
-      href("홈", { status: "pending" }),
+      href("홈", { page: 1, status: "pending" }),
     );
 
     await expectTL(queryTL.link("사용")).toHaveAttribute(
       "href",
-      href("홈", { status: "consumed" }),
+      href("홈", { page: 1, status: "consumed" }),
     );
   });
 });

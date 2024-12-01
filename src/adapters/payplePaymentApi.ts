@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-import { env } from "./env.ts";
+import { secretEnv } from "./env.secret.ts";
 import invariant from "@/invariant.ts";
 import type { PaidPayment, Payment } from "@/payment/domain.ts";
 import { formatyyyyMMddHH } from "./dateApi.ts";
@@ -28,13 +28,13 @@ const linkGenerationResultSchema = v.object({
 export const payplePaymentApi = {
   generatePaymentLink: async (payment: Payment) => {
     const partnerAuthPayload = {
-      cst_id: env.PAYPLE_CST_ID,
-      custKey: env.PAYPLE_CUST_KEY,
+      cst_id: secretEnv.PAYPLE_CST_ID,
+      custKey: secretEnv.PAYPLE_CUST_KEY,
       PCD_PAY_WORK: "LINKREG",
     };
 
     // 파트너 인증 https://docs.payple.kr/integration/domestic-linkpay
-    const partnerAuthResult = await fetch(env.PAYPLE_HOST + "/php/auth.php", {
+    const partnerAuthResult = await fetch(secretEnv.PAYPLE_HOST + "/php/auth.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export const payplePaymentApi = {
     // 결제 링크 생성 요청
     // https://docs.payple.kr/parameters/domestic-linkpay#%EB%A7%81%ED%81%AC%EC%83%9D%EC%84%B1%EC%9A%94%EC%B2%AD
     const linkGenerationResult = await fetch(
-      env.PAYPLE_HOST + "/php/link/api/LinkRegAct.php?ACT_=LINKREG",
+      secretEnv.PAYPLE_HOST + "/php/link/api/LinkRegAct.php?ACT_=LINKREG",
       {
         method: "POST",
         headers: {
@@ -92,13 +92,13 @@ export const payplePaymentApi = {
   },
   cancelPayment: async (payment: PaidPayment) => {
     const partnerAuthPayload = {
-      cst_id: env.PAYPLE_CST_ID,
-      custKey: env.PAYPLE_CUST_KEY,
+      cst_id: secretEnv.PAYPLE_CST_ID,
+      custKey: secretEnv.PAYPLE_CUST_KEY,
       PCD_PAY_WORK: "LINKREG",
     };
 
     // 파트너 인증 https://docs.payple.kr/integration/domestic-linkpay
-    const partnerAuthResult = await fetch(env.PAYPLE_HOST + "/php/auth.php", {
+    const partnerAuthResult = await fetch(secretEnv.PAYPLE_HOST + "/php/auth.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

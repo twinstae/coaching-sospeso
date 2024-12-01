@@ -1,4 +1,4 @@
-import { env } from "./env";
+import { secretEnv } from "./env.secret";
 
 export type EmailT = {
   from: string;
@@ -25,7 +25,7 @@ export const plunkEmailApi = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + env.PLUNK_EMAIL_API_KEY,
+        Authorization: "Bearer " + secretEnv.PLUNK_EMAIL_API_KEY,
       },
       body: JSON.stringify({
         name: "코칭 소스페소",

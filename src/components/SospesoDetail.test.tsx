@@ -17,8 +17,8 @@ describe("SospesoDetail", () => {
   test("소스페소의 기본 정보를 볼 수 있다", async () => {
     renderTL(<SospesoDetail sospeso={ISSUED_SOSPESO} />);
 
-    await expectTL(queryTL.text("From. 탐정토끼")).toBeVisible();
-    await expectTL(queryTL.text("To. 퀴어 문화 축제 올 사람")).toBeVisible();
+    await expectTL(queryTL.text("탐정토끼")).toBeVisible();
+    await expectTL(queryTL.text("퀴어 문화 축제 올 사람")).toBeVisible();
   });
 
   // 신청하기 페이지로 보내는 버튼(링크)

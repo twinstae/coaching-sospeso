@@ -1,16 +1,40 @@
 ---
+import { featureFlagServerApi } from "@/adapters/featureFlagApi.server";
+import { isAdmin } from "@/auth/domain";
 import { SospesoIssuingForm } from "@/components/SospesoIssuingForm.tsx";
 import Layout from "@/layouts/Layout.astro";
+import { Link } from '@/routing/Link';
 
 const user = Astro.locals.user;
 
 if (!user) {
   return Astro.redirect("/auth/login");
 }
+
+const isFlagOn = await featureFlagServerApi.getIsEnabled("isFlagOn");
 ---
 
 <Layout title="코칭 소스페소 : 발행하기">
-  <SospesoIssuingForm client:load userNickname={user.nickname} />
+  {
+    (isFlagOn || isAdmin(user)) ? (
+      <SospesoIssuingForm client:load userNickname={user.nickname} />
+    ) : (
+      <div class="hero py-16 card bg-base-100 shadow-xl p-8 m-auto max-w-md">
+        <div class="hero-content text-center">
+          <div class="max-w-md">
+            <h1 class="text-5xl font-bold mb-12">지금은 개발 중!</h1>
+            <p class="mb-4">
+              지금은 관리자만 소스페소를 결제하고 발행할 수 있어요!
+            </p>
+
+            <Link routeKey="홈" params={{}} className="btn btn-primary" >
+            홈으로 돌아가기
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 </Layout>
 
 <script>

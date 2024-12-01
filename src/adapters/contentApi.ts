@@ -1,5 +1,5 @@
-import invariant from "@/invariant";
-import { env } from "./env";
+import invariant from "@/invariant.ts";
+import { secretEnv } from "@/adapters/env.secret.ts";
 
 export type ContentApiI = {
   getCoachProfilePage(): Promise<string>; // markdown
@@ -33,7 +33,7 @@ function createOutlineClient({ host, token }: { host: string; token: string }) {
 
 const outlineClient = createOutlineClient({
   host: "https://getoutline.life-lifter.com",
-  token: env.OUTLINE_API_SECRET_KEY,
+  token: secretEnv.OUTLINE_API_SECRET_KEY,
 });
 
 const 코치_프로필_문서_id = "7l2u7lmy65okioygjoqwna-STKqtUtocC";

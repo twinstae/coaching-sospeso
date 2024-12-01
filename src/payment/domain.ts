@@ -1,4 +1,4 @@
-import { env } from "@/adapters/env";
+import { secretEnv } from "@/adapters/env.secret";
 import { href } from "@/routing/href";
 import type { SospesoIssuingCommand } from "@/sospeso/domain";
 import { addHours } from "date-fns/addHours";
@@ -63,7 +63,7 @@ export function createSospesoIssuingPayment({
     totalAmount,
     expiredDate: addHours(now, EXPIRE_TIME_IN_HOURS),
     command,
-    afterLinkUrl: `${env.APP_HOST}${href("소스페소-상세", { sospesoId: command.sospesoId })}`,
+    afterLinkUrl: `${secretEnv.APP_HOST}${href("소스페소-상세", { sospesoId: command.sospesoId })}`,
   } satisfies Payment;
 }
 
