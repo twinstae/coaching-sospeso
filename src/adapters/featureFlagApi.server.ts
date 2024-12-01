@@ -18,7 +18,7 @@ const unleashFeatureFlagServerApi = {
   getIsEnabled: (key) => {
     return unleashServerPromise.then((unleashServer) => {
       return unleashServer.isEnabled(key);
-    });
+    }).catch(() => false);
   },
 } satisfies FeatureFlagServerApiI;
 
