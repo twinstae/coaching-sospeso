@@ -2,6 +2,7 @@ import { createAuthClient } from "better-auth/react";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 import { href } from "@/routing/href.ts";
 import type { auth } from "@/lib/auth";
+import invariant from '@/invariant';
 
 const authClient = createAuthClient({
   plugins: [inferAdditionalFields<typeof auth>()],
@@ -37,6 +38,12 @@ export type AuthApi = {
     resetPassword: (newPassword: string) => Promise<void>;
   };
   logout: () => Promise<void>;
+
+  fetchCurrentUser: () => Promise<{
+    id: string;
+    nickname: string;
+    role: "user" | "admin";
+  }>
 
   updateUser: (command: {
     nickname: string;
@@ -166,6 +173,18 @@ export const authApi: AuthApi = {
 
     if (error) {
       throw error;
+    }
+  },
+
+  async fetchCurrentUser(){
+    const {data} = await authClient.getSession();
+
+    invariant(data, "로그인하지 않았습니다!");
+    const user =  data.user;
+    return {
+      id: user.id,
+      nickname: user.nickname,
+      role: user.role as "user" | "admin"
     }
   },
 

@@ -28,7 +28,7 @@ const { error } = parseRouteParamsFromUrl("로그인", new URL(Astro.url));
   magicLinkLoginBus.on(window.document.body, (command) => {
     authApi.login.emailPassword(command).then((result) => {
       if (result === "success") {
-        navigate(href("홈", { page: 1 }));
+        navigate(href("홈", { page: 1 })).then(() => location.reload());
         return;
       }
 

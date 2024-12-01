@@ -53,8 +53,8 @@ const currentUser: {
   import { href } from "@/routing/href";
 
   document.getElementById("logout-button")?.addEventListener("click", () => {
-    authApi.logout().then(() => {
-      navigate(href("로그인", {}));
-    });
+    authApi.logout()
+      .then(() => navigate(href("로그인", {})))
+      .then(() => location.reload());
   });
 </script>
