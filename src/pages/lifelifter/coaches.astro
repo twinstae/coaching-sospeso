@@ -3,18 +3,6 @@ import { marked } from "marked";
 import { getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import "@/styles/markdown.css";
-import { isAdmin } from '@/auth/domain';
-
-const user = Astro.locals.user;
-
-if (!user) {
-  return Astro.redirect("/auth/login");
-}
-
-if (!isAdmin(user)) {
-  return Astro.redirect("/403");
-}
-
 
 const { data } = await getEntry("coaches", "coaches");
 
