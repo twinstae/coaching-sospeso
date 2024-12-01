@@ -1,8 +1,10 @@
 // 글자수 제한 중요!
+export type Role = "admin" | "user";
+
 export type User = {
   id: string;
   name: string;
-  role: "user" | "admin";
+  role: Role;
   nickname: string;
   phone: string;
   email: string;
