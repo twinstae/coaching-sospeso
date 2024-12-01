@@ -7,13 +7,13 @@ import {
 } from "./index.xml";
 import { href } from "@/routing/href";
 import { routes } from "@/routing/routes";
-import { env } from "@/adapters/env";
+import { secretEnv } from "@/adapters/env.secret";
 import { createFakeSospesoRepository } from "@/sospeso/repository";
 import { randomSospeso } from "@/sospeso/fixtures";
 
 describe("sitemap", () => {
   test("sitemap XML을 생성할 수 있다", async () => {
-    const siteUrl = env.APP_HOST;
+    const siteUrl = secretEnv.APP_HOST;
     const expectedStaticUrls = [
       { url: routes["홈"].path, priority: HOME_PRIORITY },
       { url: routes["개인정보처리방침"].path, priority: TERMS_PRIORITY },

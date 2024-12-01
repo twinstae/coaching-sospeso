@@ -12,9 +12,9 @@ describe("SospesoList", () => {
 
     await expectTL(queryTL.link("보러가기→")).toBeVisible();
     expect(tableToMarkdown(queryTL.table("").get())).toMatchInlineSnapshot(`
-      "|    From. |                    To. |          발행일 |   상태 |           |
+      "|    From. |                    To. |            Date | Status |    Detail |
       | -------- | ---------------------- | --------------- | ------ | --------- |
-      | 탐정토끼 | 퀴어 문화 축제 올 사람 | 2024년 11월 9일 | 발행됨 | 보러가기→ |
+      | 탐정토끼 | 퀴어 문화 축제 올 사람 | 2024년 11월 9일 |   발행 | 보러가기→ |
       "
     `);
   });

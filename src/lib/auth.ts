@@ -2,8 +2,9 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/adapters/db.ts";
 import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
-import { env, isProd } from "@/adapters/env.ts";
+import { secretEnv } from "@/adapters/env.secret";
 import { renderSecretLinkEmail } from "@/adapters/renderEmail";
+import { isProd } from '@/adapters/env.public';
 
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
@@ -13,16 +14,16 @@ export const auth = betterAuth({
   }),
   socialProviders: {
     google: {
-      clientId: env.GOOGLE_CLIENT_ID as string,
-      clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+      clientId: secretEnv.GOOGLE_CLIENT_ID as string,
+      clientSecret: secretEnv.GOOGLE_CLIENT_SECRET as string,
     },
     twitter: {
-      clientId: env.TWITTER_CLIENT_ID,
-      clientSecret: env.TWITTER_CLIENT_SECRET,
+      clientId: secretEnv.TWITTER_CLIENT_ID,
+      clientSecret: secretEnv.TWITTER_CLIENT_SECRET,
     },
     github: {
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
+      clientId: secretEnv.GITHUB_CLIENT_ID,
+      clientSecret: secretEnv.GITHUB_CLIENT_SECRET,
     },
   },
   user: {

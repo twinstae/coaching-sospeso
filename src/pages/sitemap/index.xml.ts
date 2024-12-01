@@ -1,5 +1,5 @@
 import { sospesoRepo } from "@/actions/actions";
-import { env } from "@/adapters/env";
+import { secretEnv } from "@/adapters/env.secret";
 import { href } from "@/routing/href";
 import { routes } from "@/routing/routes";
 import type { SospesoRepositoryI } from "@/sospeso/repository";
@@ -19,7 +19,7 @@ const makeSitemapUrls = (sitemapData: { url: string; priority: number }[]) =>
     .map(
       (sitemap) => `
     <url>
-      <loc>${new URL(encodeURI(sitemap.url), env.APP_HOST).href}</loc>
+      <loc>${new URL(encodeURI(sitemap.url), secretEnv.APP_HOST).href}</loc>
       <priority>${sitemap.priority}</priority>
     </url>
   `,
