@@ -90,7 +90,7 @@ export const payplePaymentApi = {
       paymentLink: linkGenerationResult.PCD_LINK_URL,
     };
   },
-  cancelPayment: async (payment: PaidPayment) => {
+  cancelPayment: async (_payment: PaidPayment) => {
     const partnerAuthPayload = {
       cst_id: secretEnv.PAYPLE_CST_ID,
       custKey: secretEnv.PAYPLE_CUST_KEY,
@@ -126,5 +126,5 @@ export const fakePayplePaymentApi = {
         payment.id,
     };
   },
-  cancelPayment: async (payment: PaidPayment) => {},
+  cancelPayment: async (_payment: PaidPayment) => {},
 } satisfies PayplePaymentApiI;

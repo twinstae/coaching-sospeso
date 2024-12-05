@@ -1,6 +1,6 @@
 ---
 import { TopNavigation } from "@/components/TopNavigation.tsx";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { ToastifyToastContainer } from "@/adapters/toastApi.tsx";
 import "../index.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,7 +45,7 @@ const { title, description } = Astro.props;
       defer
       src="https://umami.life-lifter.com/script.js"
       data-website-id="fb529fdb-c507-417a-ac37-9bef2965f7cc"></script>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body class="bg-base-200 min-h-screen pb-8">
     <TopNavigation client:load transition:persist />

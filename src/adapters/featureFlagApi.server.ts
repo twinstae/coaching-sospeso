@@ -15,7 +15,7 @@ export type FeatureFlagServerApiI = {
 };
 
 const unleashFeatureFlagServerApi = {
-  getIsEnabled: (key) => {
+  getIsEnabled: async (key) => {
     return unleashServerPromise.then((unleashServer) => {
       return unleashServer.isEnabled(key);
     }).catch(() => false);

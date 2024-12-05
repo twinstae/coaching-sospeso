@@ -1,9 +1,11 @@
-import { getViteConfig } from "astro/config";
+import { defineConfig } from 'vitest/config'
 import { config } from "dotenv";
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from "vite-tsconfig-paths";
+import svgr from "vite-plugin-svgr";
 
 const { parsed } = config({ path: ".env" });
-
-export default getViteConfig({
+export default defineConfig({
   root: "./",
   optimizeDeps: {
     include: ["@vitest/coverage-istanbul"],
@@ -11,6 +13,7 @@ export default getViteConfig({
   define: {
     "import.meta.env": parsed ?? {},
   },
+  plugins: [react() as any, tsconfigPaths(), svgr()],
   test: {
     pool: "vmThreads",
     poolOptions: {
