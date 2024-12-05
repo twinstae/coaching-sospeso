@@ -1,7 +1,10 @@
 import * as z from "zod";
 import invariant from "@/invariant.ts";
 import { readInbox } from "@/adapters/emailApi.ts";
-import { definePureAction, type ActionDefinition } from "./buildActionServer.ts";
+import {
+  definePureAction,
+  type ActionDefinition,
+} from "./buildActionServer.ts";
 import {
   fakePayplePaymentApi,
   payplePaymentApi,

@@ -17,10 +17,11 @@ const envSchema = v.object({
   GITHUB_CLIENT_ID: v.string(),
   GITHUB_CLIENT_SECRET: v.string(),
   OUTLINE_API_SECRET_KEY: v.string(),
-  SECRET_UNLEASH_TOKEN: v.string()
+  SECRET_UNLEASH_TOKEN: v.string(),
 });
 
-const hostEnv = import.meta.env ?? (typeof process !== "undefined" && process.env) ?? {};
+const hostEnv =
+  import.meta.env ?? (typeof process !== "undefined" && process.env) ?? {};
 
 const result = v.safeParse(envSchema, {
   APP_HOST: hostEnv.APP_HOST,
@@ -38,7 +39,7 @@ const result = v.safeParse(envSchema, {
   GITHUB_CLIENT_ID: hostEnv.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: hostEnv.GITHUB_CLIENT_SECRET,
   OUTLINE_API_SECRET_KEY: hostEnv.OUTLINE_API_SECRET_KEY,
-  SECRET_UNLEASH_TOKEN: hostEnv.SECRET_UNLEASH_TOKEN
+  SECRET_UNLEASH_TOKEN: hostEnv.SECRET_UNLEASH_TOKEN,
 });
 
 invariant(

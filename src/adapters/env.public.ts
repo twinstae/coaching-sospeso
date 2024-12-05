@@ -2,13 +2,14 @@ import invariant from "@/invariant";
 import * as v from "valibot";
 
 const envSchema = v.object({
-    PUBLIC_UNLEASH_TOKEN: v.string(),
+  PUBLIC_UNLEASH_TOKEN: v.string(),
 });
 
-const hostEnv = import.meta.env ?? (typeof process !== "undefined" && process.env) ?? {};
+const hostEnv =
+  import.meta.env ?? (typeof process !== "undefined" && process.env) ?? {};
 
 const result = v.safeParse(envSchema, {
-    PUBLIC_UNLEASH_TOKEN: hostEnv.PUBLIC_UNLEASH_TOKEN
+  PUBLIC_UNLEASH_TOKEN: hostEnv.PUBLIC_UNLEASH_TOKEN,
 });
 
 invariant(

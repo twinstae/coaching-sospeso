@@ -34,14 +34,17 @@ export const payplePaymentApi = {
     };
 
     // 파트너 인증 https://docs.payple.kr/integration/domestic-linkpay
-    const partnerAuthResult = await fetch(secretEnv.PAYPLE_HOST + "/php/auth.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
+    const partnerAuthResult = await fetch(
+      secretEnv.PAYPLE_HOST + "/php/auth.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
+        body: JSON.stringify(partnerAuthPayload),
       },
-      body: JSON.stringify(partnerAuthPayload),
-    })
+    )
       .then((res) => res.json())
       .then((body) => v.parse(partnerAuthResultSchema, body));
 
@@ -98,14 +101,17 @@ export const payplePaymentApi = {
     };
 
     // 파트너 인증 https://docs.payple.kr/integration/domestic-linkpay
-    const partnerAuthResult = await fetch(secretEnv.PAYPLE_HOST + "/php/auth.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
+    const partnerAuthResult = await fetch(
+      secretEnv.PAYPLE_HOST + "/php/auth.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
+        body: JSON.stringify(partnerAuthPayload),
       },
-      body: JSON.stringify(partnerAuthPayload),
-    })
+    )
       .then((res) => res.json())
       .then((body) => v.parse(partnerAuthResultSchema, body));
 
