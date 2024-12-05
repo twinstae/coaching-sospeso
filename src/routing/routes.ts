@@ -1,4 +1,5 @@
 import type { Role } from "@/auth/domain";
+import invariant from "@/invariant";
 import * as v from "valibot";
 
 export type StaticRoute = { path: string };
@@ -50,7 +51,7 @@ export const routes = {
     path: "/sospeso/issuing",
     auth: {
       required: true,
-      roles: ["user"],
+      roles: ["admin", "user"],
     },
   },
   "소스페소-결제": {
@@ -60,7 +61,7 @@ export const routes = {
     }),
     auth: {
       required: true,
-      roles: ["user"],
+      roles: ["admin", "user"],
     },
   },
   "소스페소-상세": {
@@ -70,7 +71,7 @@ export const routes = {
     }),
     auth: {
       required: true,
-      roles: ["user"],
+      roles: ["admin", "user"],
     },
   },
   "소스페소-신청": {
@@ -80,7 +81,7 @@ export const routes = {
     }),
     auth: {
       required: true,
-      roles: ["user"],
+      roles: ["admin", "user"],
     },
   },
   어드민: {
@@ -156,14 +157,14 @@ export const routes = {
     path: "/auth/me",
     auth: {
       required: true,
-      roles: ["user"],
+      roles: ["admin", "user"],
     },
   },
   "개인정보-변경": {
     path: "/auth/me/update",
     auth: {
       required: true,
-      roles: ["user"],
+      roles: ["admin", "user"],
     },
   },
   "소스페소-신청완료": {
@@ -208,3 +209,23 @@ export type RouteParams<RouteKey extends RouteKeys> =
   (typeof routes)[RouteKey] extends DynamicRoute
     ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
     : undefined;
+
+export function findRouteByPath(pathname: string) {
+  const [key, route] =
+    Object.entries(routes).find(([_key, route]) => {
+      if (route.path.includes("[")) {
+        // 동적 라우트인 경우 정규식으로 매칭
+        const pattern = route.path.replace(/\[.*?\]/g, "[^/]+");
+        return new RegExp(`^${pattern}$`).test(pathname);
+      }
+      return route.path === pathname;
+    }) ?? [];
+
+  invariant(key && route, "루트를 찾지 못했습니다! : " + pathname);
+
+  return {
+    key,
+    auth: { roles: [], ...route.auth } as { required: boolean; roles: Role[] },
+    path: route.path,
+  };
+}

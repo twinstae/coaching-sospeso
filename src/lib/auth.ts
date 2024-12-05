@@ -4,7 +4,7 @@ import { db } from "@/adapters/db.ts";
 import { plunkEmailApi, fakeEmailApi } from "@/adapters/emailApi.ts";
 import { secretEnv } from "@/adapters/env.secret";
 import { renderSecretLinkEmail } from "@/adapters/renderEmail";
-import { isProd } from '@/adapters/env.public';
+import { isProd } from "@/adapters/env.public";
 
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
@@ -14,9 +14,9 @@ export const auth = betterAuth({
   }),
   session: {
     cookieCache: {
-        enabled: true,
-        maxAge: 5 * 60 // Cache duration in seconds
-    }
+      enabled: true,
+      maxAge: 5 * 60, // Cache duration in seconds
+    },
   },
   socialProviders: {
     google: {

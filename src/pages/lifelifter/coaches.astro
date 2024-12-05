@@ -2,7 +2,7 @@
 import { marked } from "marked";
 import { getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from "sanitize-html";
 import "@/styles/markdown.css";
 
 const { data } = await getEntry("coaches", "coaches");

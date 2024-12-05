@@ -1,7 +1,7 @@
 import { defineCollection, z } from "astro:content";
 
 import { fakeContentApi, outlineContentApi } from "@/adapters/contentApi.ts";
-import { isProd } from '@/adapters/env.public.ts';
+import { isProd } from "@/adapters/env.public.ts";
 
 const contentApi = isProd ? outlineContentApi : fakeContentApi;
 

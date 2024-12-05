@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./drizzle/schema.ts";
 import { secretEnv } from "./env.secret.ts";
-import { isProd } from './env.public.ts';
+import { isProd } from "./env.public.ts";
 
 export const db = drizzle({
   schema,
