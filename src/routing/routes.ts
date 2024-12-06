@@ -1,5 +1,4 @@
 import type { Role } from "@/auth/domain";
-import invariant from "@/invariant";
 import * as v from "valibot";
 
 export type StaticRoute = { path: string };
@@ -216,7 +215,16 @@ export type RouteParams<RouteKey extends RouteKeys> =
     ? v.InferOutput<(typeof routes)[RouteKey]["paramsSchema"]>
     : undefined;
 
-export function findRouteByPath(pathname: string) {
+export function findRouteByPath(pathname: string):
+  | {
+      key: string;
+      auth: {
+        required: boolean;
+        roles: Role[];
+      };
+      path: string;
+    }
+  | undefined {
   const [key, route] =
     Object.entries(routes).find(([_key, route]) => {
       if (route.path.includes("[")) {
@@ -227,7 +235,9 @@ export function findRouteByPath(pathname: string) {
       return route.path === pathname || route.path + "/" === pathname;
     }) ?? [];
 
-  invariant(key && route, "루트를 찾지 못했습니다! : " + pathname);
+  if(key === undefined || route === undefined) {
+    return undefined;
+  }
 
   return {
     key,

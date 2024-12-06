@@ -13,11 +13,25 @@ export async function onAuth(
 ) {
   const user = context.locals.user;
 
-  if (context.url.pathname.startsWith("/api")) {
+  if (
+    context.url.pathname.startsWith("/api")
+    || context.url.pathname.startsWith("/_actions")
+    || context.url.pathname === "/favicon.ico"
+    || context.url.pathname === "/sitemap.xml"
+    || context.url.pathname === "/og.png"
+    || context.url.pathname === "/robots.txt"
+    || context.url.pathname === "/403"
+    || context.url.pathname === "/404"
+  ) {
     return next();
   }
 
   const route = findRouteByPath(context.url.pathname);
+
+  if (route === undefined){
+    console.warn(context.url.pathname)
+    return;
+  }
 
   if (staticRouteKeys.includes(route.key)) {
     return next();
