@@ -13,7 +13,7 @@ import {
 describe("onAuth middleware", () => {
   test("정적인 루트", async () => {
     const res = await onAuth(
-      createContext(new URL("/lifelifter/coaches", LOCALHOST), {}),
+      createContext(new URL(href("코치-소개", undefined), LOCALHOST), {}),
       next,
     );
     expect(await responseToHTTP(res)).toBe(await responseToHTTP(await next()));

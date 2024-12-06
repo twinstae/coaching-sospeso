@@ -47,6 +47,12 @@ export const routes = {
       required: false,
     },
   },
+  "코치-소개": {
+    path: "/lifelifter/coaches/",
+    auth: {
+      required: false,
+    },
+  },
   "소스페소-발행": {
     path: "/sospeso/issuing",
     auth: {
@@ -216,9 +222,9 @@ export function findRouteByPath(pathname: string) {
       if (route.path.includes("[")) {
         // 동적 라우트인 경우 정규식으로 매칭
         const pattern = route.path.replace(/\[.*?\]/g, "[^/]+");
-        return new RegExp(`^${pattern}$`).test(pathname);
+        return new RegExp(`^${pattern}\/?$`).test(pathname);
       }
-      return route.path === pathname;
+      return route.path === pathname || route.path + "/" === pathname;
     }) ?? [];
 
   invariant(key && route, "루트를 찾지 못했습니다! : " + pathname);

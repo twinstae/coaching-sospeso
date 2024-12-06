@@ -1,7 +1,7 @@
 import { sequence } from "astro:middleware";
-import { onAuth } from "./auth";
-import type { Role } from "@/auth/domain";
-import { auth } from "@/lib/auth";
+import { onAuth } from "./auth.ts";
+import type { Role } from "@/auth/domain.ts";
+import { auth } from "@/lib/auth.ts";
 export const onRequest = sequence(async (context, next) => {
   context.locals.now = new Date();
 

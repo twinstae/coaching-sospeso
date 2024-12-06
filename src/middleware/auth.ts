@@ -1,17 +1,20 @@
-import type { Role } from "@/auth/domain";
-import invariant from "@/invariant";
-import { checkAccess } from "@/routing/access";
-import { href } from "@/routing/href";
+import type { Role } from "@/auth/domain.ts";
+import invariant from "@/invariant.ts";
+import { checkAccess } from "@/routing/access.ts";
+import { href } from "@/routing/href.ts";
+import { findRouteByPath, type RouteKeys } from '@/routing/routes.ts';
 import type { APIContext } from "astro";
 
-const staticRoutes = ["/lifelifter/coaches"] satisfies string[];
+const staticRouteKeys = ["코치-소개"] satisfies RouteKeys[];
 export async function onAuth(
   context: APIContext,
   next: () => Promise<Response>,
 ) {
   const user = context.locals.user;
 
-  if (staticRoutes.includes(context.url.pathname)) {
+  const route = findRouteByPath(context.url.pathname);
+
+  if (staticRouteKeys.includes(route.key)) {
     return next();
   }
 
