@@ -4,13 +4,18 @@ import { checkAccess } from "@/routing/access.ts";
 import { href } from "@/routing/href.ts";
 import { findRouteByPath, type RouteKeys } from '@/routing/routes.ts';
 import type { APIContext } from "astro";
+import "@total-typescript/ts-reset";
 
-const staticRouteKeys = ["코치-소개"] satisfies RouteKeys[];
+const staticRouteKeys: string[] = ["코치-소개"] satisfies RouteKeys[];
 export async function onAuth(
   context: APIContext,
   next: () => Promise<Response>,
 ) {
   const user = context.locals.user;
+
+  if (context.url.pathname.startsWith("/api")) {
+    return next();
+  }
 
   const route = findRouteByPath(context.url.pathname);
 

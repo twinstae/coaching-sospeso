@@ -11,6 +11,14 @@ import {
 } from "./utils.ts";
 
 describe("onAuth middleware", () => {
+  test("api 루트", async () => {
+    const res = await onAuth(
+      createContext(new URL("/api/auth/get-session", LOCALHOST), {}),
+      next,
+    );
+    expect(await responseToHTTP(res)).toBe(await responseToHTTP(await next()));
+  });
+
   test("정적인 루트", async () => {
     const res = await onAuth(
       createContext(new URL(href("코치-소개", undefined), LOCALHOST), {}),
