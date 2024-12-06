@@ -13,6 +13,17 @@ describe("href", () => {
       key: "소스페소-발행",
       path: "/sospeso/issuing",
     });
+    // / 가 뒤에 붙어도 okay
+    expect(
+      findRouteByPath(href("소스페소-발행", undefined) + "/"),
+    ).toStrictEqual({
+      auth: {
+        required: true,
+        roles: ["admin", "user"],
+      },
+      key: "소스페소-발행",
+      path: "/sospeso/issuing",
+    });
   });
 
   test("파라미터가 있는 동적인 루트를 생성할 수 있다", () => {
