@@ -1,52 +1,27 @@
-import invariant from "@/invariant.ts";
+import GhostContentAPI from "@tryghost/content-api";
+import { marked } from "marked";
 import { secretEnv } from "@/adapters/env.secret.ts";
+export const ghostClient = new GhostContentAPI({
+  url: "https://ghost.life-lifter.com",
+  key: secretEnv.GHOST_CONTENT_API_KEY,
+  version: "v5.0",
+});
 
 export type ContentApiI = {
   getCoachProfilePage(): Promise<string>; // markdown
 };
 
-function createOutlineClient({ host, token }: { host: string; token: string }) {
-  return {
-    async exportDocumentAsMarkdown(documentId: string) {
-      const url = host + "/api/documents.export";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({ id: documentId }),
-      };
-      const response = await fetch(url, options);
-      const body = await response.json();
-
-      invariant(
-        body.ok as boolean,
-        "outline 문서를 가져오는데 실패했습니다!\n\n" +
-          JSON.stringify(body, null, 2),
-      );
-
-      return body.data as string;
-    },
-  };
-}
-
-const outlineClient = createOutlineClient({
-  host: "https://getoutline.life-lifter.com",
-  token: secretEnv.OUTLINE_API_SECRET_KEY,
-});
-
-const 코치_프로필_문서_id = "7l2u7lmy65okioygjoqwna-STKqtUtocC";
-
-export const outlineContentApi: ContentApiI = {
+export const ghostContentApi: ContentApiI = {
   async getCoachProfilePage() {
-    return outlineClient.exportDocumentAsMarkdown(코치_프로필_문서_id);
+    return ghostClient.pages
+      .read({ slug: "coaches" })
+      .then((result) => `<h1>${result.title}</h1>\n${result.html ?? ""}`);
   },
 };
 
 export const fakeContentApi: ContentApiI = {
   async getCoachProfilePage() {
-    return `# 코치들 소개
+    return marked.parse(`# 코치들 소개
 
 ## 김태형
 
@@ -73,6 +48,6 @@ asap…..
 
 배민 커넥트를 하면서 취준을 하다가 같이 스터디를 했던 사람들이 잘 되는 걸 보고 코칭을 시작했습니다. 사회 구조와 시스템에 대한 생각을 가지고 학습과학과 심리치료, 전문가 연구 등을 읽어왔습니다. 따뜻한 응원과 현실적인 행동을 모토로 코칭을 합니다.
 
-불평등한 고액 서비스가 될 수 밖에 없는 교육/심리치료 산업에 회의를 느끼고 3천 3백원 짜리 코칭을 하던 중... 노동자 자주 기업, 민주적 협동조합, 커먼즈, 사회적 돌봄 경제 같은 키워드에 매력을 느껴서 라이프리프터에 합류하고 오픈소스로 코칭 소스페소를 만들기 시작했습니다.`;
+불평등한 고액 서비스가 될 수 밖에 없는 교육/심리치료 산업에 회의를 느끼고 3천 3백원 짜리 코칭을 하던 중... 노동자 자주 기업, 민주적 협동조합, 커먼즈, 사회적 돌봄 경제 같은 키워드에 매력을 느껴서 라이프리프터에 합류하고 오픈소스로 코칭 소스페소를 만들기 시작했습니다.`);
   },
 };

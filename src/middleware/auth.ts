@@ -11,7 +11,6 @@ export async function onAuth(
   context: APIContext,
   next: () => Promise<Response>,
 ) {
-  const user = context.locals.user;
 
   if (
     context.url.pathname.startsWith("/api")
@@ -30,12 +29,13 @@ export async function onAuth(
 
   if (route === undefined){
     console.warn(context.url.pathname)
-    return;
+    return next();
   }
 
   if (staticRouteKeys.includes(route.key)) {
     return next();
   }
+  const user = context.locals.user;
 
   const accessCheckResult = checkAccess({
     path: context.url.pathname,

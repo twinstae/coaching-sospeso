@@ -1,18 +1,18 @@
 import { defineCollection, z } from "astro:content";
 
-import { fakeContentApi, outlineContentApi } from "@/adapters/contentApi.ts";
+import { fakeContentApi, ghostContentApi } from "@/adapters/contentApi.ts";
 import { isProd } from "@/adapters/env.public.ts";
 
-const contentApi = isProd ? outlineContentApi : fakeContentApi;
+const contentApi = true ? ghostContentApi : fakeContentApi;
 
 const coaches = defineCollection({
   loader: async () => {
-    const profileMarkdown = await contentApi.getCoachProfilePage();
+    const profileHTML = await contentApi.getCoachProfilePage();
 
     return [
       {
         id: "coaches",
-        content: profileMarkdown,
+        content: profileHTML,
       },
     ];
   },

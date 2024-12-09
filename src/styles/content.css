@@ -1,4 +1,4 @@
-.markdown {
+.content {
   h1 {
     font-size: 28px;
   }
@@ -20,12 +20,16 @@
     margin-bottom: 0.5em;
   }
 
+  br {
+    height: 0px;
+  }
+
   ul,
   ol {
     margin: 0px 0.1em 0px -26px;
     padding: 0px 0px 0px 48px;
   }
-  p,
+
   ol,
   ul {
     margin-top: 1em;
@@ -71,5 +75,10 @@
   li p:first-child {
     margin: 0px;
     word-break: break-word;
+  }
+
+  img {
+    max-width: 300px;
+    margin: 0 auto;
   }
 }

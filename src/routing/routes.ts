@@ -47,7 +47,7 @@ export const routes = {
     },
   },
   "코치-소개": {
-    path: "/lifelifter/coaches/",
+    path: "/lifelifter/coaches",
     auth: {
       required: false,
     },
