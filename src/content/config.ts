@@ -3,7 +3,7 @@ import { defineCollection, z } from "astro:content";
 import { fakeContentApi, ghostContentApi } from "@/adapters/contentApi.ts";
 import { isProd } from "@/adapters/env.public.ts";
 
-const contentApi = true ? ghostContentApi : fakeContentApi;
+const contentApi = isProd ? ghostContentApi : fakeContentApi;
 
 const coaches = defineCollection({
   loader: async () => {
