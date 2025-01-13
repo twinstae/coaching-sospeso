@@ -1,5 +1,6 @@
 ---
 import { sospesoRepo } from "@/actions/actions.ts";
+import { SospesoCardList } from "@/components/SospesoCardList";
 import { SospesoFilter } from "@/components/SospesoFilter";
 import { SospesoList } from "@/components/SospesoList.tsx";
 import Layout from "@/layouts/Layout.astro";
@@ -7,6 +8,8 @@ import { Link } from "@/routing/Link.tsx";
 import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams.ts";
 import { SospesoLogo } from "@/shared/icons/SospesoLogo";
 import { Pagination } from "@/shared/Pagination.tsx";
+import { calcStatus } from "@/sospeso/domain";
+import { pick, randomSospeso } from "@/sospeso/fixtures";
 
 const params = parseRouteParamsFromUrl("홈", new URL(Astro.url));
 const page = Math.max(params.page ?? 1, 1);
@@ -22,6 +25,18 @@ if (!sospesoList) {
     statusText: "Not found",
   });
 }
+
+const mockSospesoList = Array.from({ length: 10 }).map((_, _i) => {
+  const sospeso = randomSospeso(
+    pick(["issued", "consumed", "consumed", "pending"]),
+  );
+
+  return {
+    ...sospeso,
+    status: calcStatus(sospeso),
+    issuedAt: sospeso.issuing.issuedAt,
+  };
+});
 ---
 
 <Layout title="코칭 소스페소">
@@ -57,14 +72,22 @@ if (!sospesoList) {
     )
   }
 
-  <section class="mx-auto max-w-3xl flex flex-col items-center gap-4">
+  <section
+    class="mx-auto max-w-3xl flex-col items-center gap-4 mobile:flex hidden"
+  >
     <SospesoFilter currentStatus={params.status} />
-    <SospesoList sospesoList={sospesoList} />
+    <SospesoList sospesoList={mockSospesoList} />
     <Pagination
       routeKey="홈"
       params={{ status: params.status }}
       current={page}
       end={totalPage}
     />
+  </section>
+
+  <section
+    class="mx-auto max-w-3xl flex-col items-center gap-4 mobile:hidden flex"
+  >
+    <SospesoCardList sospesoList={mockSospesoList} />
   </section>
 </Layout>
