@@ -1,0 +1,32 @@
+<svg
+width="22"
+height="18"
+viewBox="0 0 22 18"
+fill="none"
+xmlns="http://www.w3.org/2000/svg"
+x="10.5"
+y="12.5"
+>
+<path
+d="M19 1H3C1.89543 1 1 1.89543 1 3V15C1 16.1046 1.89543 17 3 17H19C20.1046 17 21 16.1046 21 15V3C21 1.89543 20.1046 1 19 1Z"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round"
+/>
+<svg
+width="22"
+height="8"
+viewBox="0 0 22 8"
+fill="none"
+xmlns="http://www.w3.org/2000/svg"
+>
+<path
+d="M21 1L12.03 6.7C11.7213 6.89343 11.3643 6.99601 11 6.99601C10.6357 6.99601 10.2787 6.89343 9.97 6.7L1 1"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round"
+/>
+</svg>
+</svg>
