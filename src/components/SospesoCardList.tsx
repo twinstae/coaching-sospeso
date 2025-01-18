@@ -14,26 +14,34 @@ export function SospesoCardList({
   }[];
 }) {
   return (
-    <div className="flex flex-col gap-3 ">
+    <div className="flex flex-col gap-3" role="list">
       {sospesoList.map((sospeso) => (
         <Link
           routeKey="소스페소-상세"
           params={{ sospesoId: sospeso.id }}
           key={sospeso.id}
         >
-          <div className="border border-black p-2.5 relative">
+          <div
+            className="border border-black p-2.5 relative"
+            role="listitem"
+            aria-labelledby={`to-${sospeso.to}`}
+          >
             <div className="flex items-center mb-6">
               <span className="mr-[9px] font-bold">FROM.</span>
               <span>{sospeso.from}</span>
-              <span className="ml-auto text-[11px]">
+              <time
+                aria-label="발행일"
+                dateTime={sospeso.issuedAt.toISOString()}
+                className="ml-auto text-[11px]"
+              >
                 {format년월일(sospeso.issuedAt)}
-              </span>
+              </time>
             </div>
             <div className="max-w-max">
-              <div className="mb-[2px] font-bold">
+              <h3 className="mb-[2px] font-bold" id={`to-${sospeso.to}`}>
                 <span className="mr-[13px]">TO.</span>
                 <span>{sospeso.to}</span>
-              </div>
+              </h3>
               <div className="h-[2px] w-full min-w-[220px] bg-black" />
             </div>
             <div className="absolute bottom-3 right-1">
