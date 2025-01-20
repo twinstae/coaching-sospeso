@@ -16,7 +16,7 @@ export function SospesoTimeline({
             {status === "issued" ||
             status === "pending" ||
             status === "consumed" ? (
-              <Bean color="#FFD362" />
+              <Bean color="#FFD362" aria-label="발행됨" role="status" />
             ) : null}
           </div>
         </div>
@@ -30,7 +30,7 @@ export function SospesoTimeline({
         <div className="timeline-middle">
           <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
             {status === "pending" || status === "consumed" ? (
-              <Coffee color="#FFD362" />
+              <Coffee color="#FFD362" aria-label="신청됨" role="status" />
             ) : null}
           </div>
         </div>
@@ -43,7 +43,9 @@ export function SospesoTimeline({
         <hr className="bg-white" />
         <div className="timeline-middle">
           <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            {status === "consumed" ? <Letter color="#FFD362" /> : null}
+            {status === "consumed" ? (
+              <Letter color="#FFD362" aria-label="사용됨" role="status" />
+            ) : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">
@@ -53,5 +55,3 @@ export function SospesoTimeline({
     </ul>
   );
 }
-
-// ! 테스트 코드까지
