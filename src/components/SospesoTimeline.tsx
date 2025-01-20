@@ -1,14 +1,23 @@
 import { Bean } from "@/shared/icons/Bean";
 import { Coffee } from "@/shared/icons/Coffee";
 import { Letter } from "@/shared/icons/Letter";
+import type { SospesoStatus } from "@/sospeso/domain";
 
-export function SospesoTimeline() {
+export function SospesoTimeline({
+  status = "issued",
+}: {
+  status: SospesoStatus;
+}) {
   return (
     <ul className="timeline">
       <li>
         <div className="timeline-middle">
           <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            <Bean color="#FFD362" />
+            {status === "issued" ||
+            status === "pending" ||
+            status === "consumed" ? (
+              <Bean color="#FFD362" />
+            ) : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">
@@ -20,7 +29,9 @@ export function SospesoTimeline() {
         <hr className="bg-white" />
         <div className="timeline-middle">
           <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            <Coffee color="#FFD362" />
+            {status === "pending" || status === "consumed" ? (
+              <Coffee color="#FFD362" />
+            ) : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">
@@ -32,7 +43,7 @@ export function SospesoTimeline() {
         <hr className="bg-white" />
         <div className="timeline-middle">
           <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            <Letter color="#FFD362" />
+            {status === "consumed" ? <Letter color="#FFD362" /> : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">
@@ -42,3 +53,5 @@ export function SospesoTimeline() {
     </ul>
   );
 }
+
+// ! 테스트 코드까지
