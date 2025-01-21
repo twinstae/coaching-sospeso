@@ -8,6 +8,9 @@ export default {
       aria: {
         "current-page": 'current="page"',
       },
+      spacing: {
+        "icon-size": "43px",
+      },
     },
   },
   daisyui: {

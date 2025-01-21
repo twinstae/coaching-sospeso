@@ -8,16 +8,19 @@ export function SospesoTimeline({
 }: {
   status: SospesoStatus;
 }) {
+  const issued =
+    status === "issued" || status === "pending" || status === "consumed";
+
+  const pending = status === "pending" || status === "consumed";
+
+  const consumed = status === "consumed";
+
   return (
     <ul className="timeline">
-      <li>
+      <li aria-label="발행됨" aria-current={issued ? "step" : undefined}>
         <div className="timeline-middle">
-          <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            {status === "issued" ||
-            status === "pending" ||
-            status === "consumed" ? (
-              <Bean color="#FFD362" aria-label="발행됨" role="status" />
-            ) : null}
+          <div className="w-icon-size h-icon-size bg-white rounded-full flex justify-center items-center">
+            {issued ? <Bean color="#FFD362" /> : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">
@@ -25,13 +28,11 @@ export function SospesoTimeline({
         </div>
         <hr className="bg-white" />
       </li>
-      <li>
+      <li aria-label="신청됨" aria-current={pending ? "step" : undefined}>
         <hr className="bg-white" />
         <div className="timeline-middle">
-          <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            {status === "pending" || status === "consumed" ? (
-              <Coffee color="#FFD362" aria-label="신청됨" role="status" />
-            ) : null}
+          <div className="w-icon-size h-icon-size bg-white rounded-full flex justify-center items-center">
+            {pending ? <Coffee color="#FFD362" /> : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">
@@ -39,13 +40,11 @@ export function SospesoTimeline({
         </div>
         <hr className="bg-white" />
       </li>
-      <li>
+      <li aria-label="사용됨" aria-current={consumed ? "step" : undefined}>
         <hr className="bg-white" />
         <div className="timeline-middle">
-          <div className="w-[43px] h-[43px] bg-white rounded-full flex justify-center items-center">
-            {status === "consumed" ? (
-              <Letter color="#FFD362" aria-label="사용됨" role="status" />
-            ) : null}
+          <div className="w-icon-size h-icon-size bg-white rounded-full flex justify-center items-center">
+            {consumed ? <Letter color="#FFD362" /> : null}
           </div>
         </div>
         <div className="timeline-end timeline-box bg-transparent border-transparent shadow-none">

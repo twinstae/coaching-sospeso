@@ -11,24 +11,24 @@ import { expectTL } from "@/siheom/expectTL";
 import { describe, test } from "vitest";
 
 describe("SospesoTimeline", () => {
-  test("소스페소가 발행된 상태면 해당 상태에 맞는 UI를 보여준다", () => {
+  test("발행됨 상태", () => {
     renderTL(<SospesoTimeline status={ISSUED_SOSPESO["status"]} />);
-    expectTL(queryTL.status("발행됨")).toBeVisible();
-    expectTL(queryTL.status("신청됨")).not.toBeVisible();
-    expectTL(queryTL.status("사용됨")).not.toBeVisible();
+    expectTL(queryTL.listitem("발행됨")).toBeCurrent("step");
+    expectTL(queryTL.listitem("신청됨")).not.toBeCurrent("step");
+    expectTL(queryTL.listitem("사용됨")).not.toBeCurrent("step");
   });
 
-  test("소스페소가 신청된 상태면 해당 상태에 맞는 UI를 보여준다", () => {
+  test("신청됨 상태", () => {
     renderTL(<SospesoTimeline status={PENDING_SOSPESO["status"]} />);
-    expectTL(queryTL.status("발행됨")).toBeVisible();
-    expectTL(queryTL.status("신청됨")).toBeVisible();
-    expectTL(queryTL.status("사용됨")).not.toBeVisible();
+    expectTL(queryTL.listitem("발행됨")).not.toBeCurrent("step");
+    expectTL(queryTL.listitem("신청됨")).toBeCurrent("step");
+    expectTL(queryTL.listitem("사용됨")).not.toBeCurrent("step");
   });
 
-  test("소스페소가 사용된 상태면 해당 상태에 맞는 UI를 보여준다", () => {
+  test("사용됨 상태", () => {
     renderTL(<SospesoTimeline status={CONSUMED_SOSPESO["status"]} />);
-    expectTL(queryTL.status("발행됨")).toBeVisible();
-    expectTL(queryTL.status("신청됨")).toBeVisible();
-    expectTL(queryTL.status("사용됨")).toBeVisible();
+    expectTL(queryTL.listitem("발행됨")).not.toBeCurrent("step");
+    expectTL(queryTL.listitem("신청됨")).not.toBeCurrent("step");
+    expectTL(queryTL.listitem("사용됨")).toBeCurrent("step");
   });
 });
