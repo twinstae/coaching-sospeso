@@ -8,6 +8,9 @@ export default {
       aria: {
         "current-page": 'current="page"',
       },
+      spacing: {
+        "icon-size": "43px",
+      },
       screens: {
         mobile: "576px",
         laptop: "1024px",
