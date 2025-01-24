@@ -8,6 +8,11 @@ export default {
       aria: {
         "current-page": 'current="page"',
       },
+      screens: {
+        mobile: "576px",
+        laptop: "1024px",
+        desktop: "1280px",
+      },
     },
   },
   daisyui: {
