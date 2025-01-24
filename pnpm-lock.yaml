@@ -17,6 +17,9 @@ importers:
       '@astrojs/react':
         specifier: ^4.0.0
         version: 4.0.0(@types/node@22.10.1)(@types/react-dom@18.3.1)(@types/react@18.3.13)(jiti@1.21.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yaml@2.6.0)
+      '@astrojs/ts-plugin':
+        specifier: ^1.10.4
+        version: 1.10.4
       '@astrojs/vercel':
         specifier: ^8.0.0
         version: 8.0.0(astro@5.0.3(@types/node@22.10.1)(jiti@1.21.6)(rollup@4.24.3)(typescript@5.7.2)(yaml@2.6.0))(encoding@0.1.13)(react@18.3.1)(rollup@4.24.3)
@@ -35,9 +38,6 @@ importers:
       '@tryghost/content-api':
         specifier: ^1.11.21
         version: 1.11.21
-      astro:
-        specifier: 5.0.3
-        version: 5.0.3(@types/node@22.10.1)(jiti@1.21.6)(rollup@4.24.3)(typescript@5.7.2)(yaml@2.6.0)
       better-auth:
         specifier: ^1.0.10
         version: 1.0.10(encoding@0.1.13)
@@ -174,6 +174,9 @@ importers:
       '@vitest/ui':
         specifier: 2.1.8
         version: 2.1.8(vitest@2.1.8)
+      astro:
+        specifier: 5.0.3
+        version: 5.0.3(@types/node@22.10.1)(jiti@1.21.6)(rollup@4.24.3)(typescript@5.7.2)(yaml@2.6.0)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -306,6 +309,9 @@ packages:
   '@astrojs/telemetry@3.2.0':
     resolution: {integrity: sha512-wxhSKRfKugLwLlr4OFfcqovk+LIFtKwLyGPqMsv+9/ibqqnW3Gv7tBhtKEb0gAyUAC4G9BTVQeQahqnQAhd6IQ==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=22.0.0}
+
+  '@astrojs/ts-plugin@1.10.4':
+    resolution: {integrity: sha512-rapryQINgv5VLZF884R/wmgX3mM9eH1PC/I3kkPV9rP6lEWrRN1YClF3bGcDHFrf8EtTLc0Wqxne1Uetpevozg==}
 
   '@astrojs/vercel@8.0.0':
     resolution: {integrity: sha512-JEVt/J9NJ0unMCLh2fCOvr9M6Mugph3SoNSzaRLR88hA6ckakHabSAMyd8fTFy4pogPH/puyQkiKak7nsHyM6g==}
@@ -6994,6 +7000,16 @@ snapshots:
       which-pm-runs: 1.1.0
     transitivePeerDependencies:
       - supports-color
+
+  '@astrojs/ts-plugin@1.10.4':
+    dependencies:
+      '@astrojs/compiler': 2.10.3
+      '@astrojs/yaml2ts': 0.2.2
+      '@jridgewell/sourcemap-codec': 1.5.0
+      '@volar/language-core': 2.4.8
+      '@volar/typescript': 2.4.8
+      semver: 7.6.3
+      vscode-languageserver-textdocument: 1.0.12
 
   '@astrojs/vercel@8.0.0(astro@5.0.3(@types/node@22.10.1)(jiti@1.21.6)(rollup@4.24.3)(typescript@5.7.2)(yaml@2.6.0))(encoding@0.1.13)(react@18.3.1)(rollup@4.24.3)':
     dependencies:
