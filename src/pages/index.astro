@@ -1,5 +1,6 @@
 ---
 import { sospesoRepo } from "@/actions/actions.ts";
+import { SospesoCardList } from "@/components/SospesoCardList";
 import { SospesoFilter } from "@/components/SospesoFilter";
 import { SospesoList } from "@/components/SospesoList.tsx";
 import Layout from "@/layouts/Layout.astro";
@@ -57,7 +58,9 @@ if (!sospesoList) {
     )
   }
 
-  <section class="mx-auto max-w-3xl flex flex-col items-center gap-4">
+  <section
+    class="mx-auto max-w-3xl flex-col items-center gap-4 mobile:flex hidden"
+  >
     <SospesoFilter currentStatus={params.status} />
     <SospesoList sospesoList={sospesoList} />
     <Pagination
@@ -66,5 +69,9 @@ if (!sospesoList) {
       current={page}
       end={totalPage}
     />
+  </section>
+
+  <section class="mx-auto max-w-3xl flex-col items-center gap-4 mobile:hidden">
+    <SospesoCardList sospesoList={sospesoList} />
   </section>
 </Layout>

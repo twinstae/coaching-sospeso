@@ -11,6 +11,11 @@ export default {
       spacing: {
         "icon-size": "43px",
       },
+      screens: {
+        mobile: "576px",
+        laptop: "1024px",
+        desktop: "1280px",
+      },
     },
   },
   daisyui: {
