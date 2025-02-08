@@ -70,7 +70,7 @@ export const SOSPESO_PER_PAGE = 10;
 export const createFakeSospesoRepository = (
   initState: Record<string, Sospeso> = {},
 ): SospesoRepositoryI => {
-  let _fakeState = initState;
+  let _fakeState = structuredClone(initState);
 
   return {
     async retrieveSospesoList({ page, status, limit = SOSPESO_PER_PAGE }) {
