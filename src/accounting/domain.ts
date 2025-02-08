@@ -1,4 +1,4 @@
-import invariant from '@/invariant';
+import invariant from '@/invariant.ts';
 
 // 항목?
 export type Account = {
@@ -13,88 +13,71 @@ export type Transaction = {
       type: "asset";
       id: "돈";
     };
-    type: "증가"; // 증감, 생김, 사라짐
+    type: "증감"; // 증감, 생김, 사라짐짐
     amount: number;
   }[];
   right: {
     target: {
       type: "capital";
       id: "기부금";
+    } | {
+      type: "debt";
+      id: "코치-미지급금";
     };
-    type: "증가"; // 증감, 생김, 사라짐
+    type: "증감"; // 증감, 생김, 사라짐짐
     amount: number;
   }[];
-};
+} ;
 
 function sum(arr: number[]) {
-  let total = 0;
-  for (const n of arr) {
-    total += n;
-  }
-  return total;
+  return arr.reduce((total, n) => total + n, 0);
+}
+
+export function calcTotalAsset(account: Account): number {
+  return sum(
+    account.filter((item) => item.type === "asset").map((item) => item.amount),
+  );
+}
+export function calcTotalCapital(account: Account): number {
+  return sum(
+    account.filter((item) => item.type === "capital").map((item) => item.amount),
+  );
+}
+export function calcTotalDebt(account: Account): number {
+  return sum(
+    account.filter((item) => item.type === "debt").map((item) => item.amount),
+  );
 }
 
 // invariant
 export function 양변이_같다(account: Account): boolean {
-  // 총 자산의 합 = 자산인 것들만의 amount의 합
-  const totalAssetAmount = sum(
-    account.filter((item) => item.type === "asset").map((item) => item.amount),
-  );
-  // 자산만 걸러내기
-  // amount 만 빼내서
-  // 합해야 함
-
-  // 총 자본의 합
-  const totalCapitalAmount = sum(
-    account
-      .filter((item) => item.type === "capital")
-      .map((item) => item.amount),
-  );
-
-  // 총 부채의 합
-  const totalDebtAmount = sum(
-    account
-      .filter((item) => item.type === "debt")
-      .map((item) => item.amount),
-  );
-
-  // 둘이 같은가?
+  const totalAssetAmount = calcTotalAsset(account);
+  const totalCapitalAmount = calcTotalCapital(account);
+  const totalDebtAmount = calcTotalDebt(account);
+  
   return totalAssetAmount === totalCapitalAmount + totalDebtAmount;
 }
 
 // 동사
-export function applyTransaction(
-  account: Account,
-  transaction: Transaction,
-): Account {
-  invariant(양변이_같다(account), "트랜잭션을 시작하기 전에 양변이 같아야 합니다")
+export function applyTransaction(account: Account, transaction: Transaction): Account {
+  invariant(양변이_같다(account), "트랜잭션을 시작하기 전에 양변이 같아야 합니다");
 
-  const result = transaction.left
-    .concat(transaction.right as any)
-    .reduce((acc, action) => {
-      if (action.type === "증가") {
-        return acc.map((item) => {
-          // 증가된 항목의 amount를 증가시킨다
-          if (
-            item.type === action.target.type &&
-            item.id === action.target.id
-          ) {
-            return {
-              ...item,
-              amount: item.amount + action.amount,
-            };
-          }
+  const result = [...transaction.left, ...transaction.right].reduce((acc, action) => {
+    if (action.type === "증감") {
+      return acc.some((item) => item.type === action.target.type && item.id === action.target.id)
+        ? acc.map((item) =>
+            item.type === action.target.type && item.id === action.target.id
+              ? { ...item, amount: item.amount + action.amount }
+              : item
+          )
+        : [...acc, { type: action.target.type, id: action.target.id, amount: action.amount }];
+    }
 
-          // 대상이 아니면 그대로 둔다
-          return item;
-        });
-      }
+    // 예외 처리 강화
+    invariant(false, "지원하지 않는 트랜잭션 타입입니다.");
+  }, account);
 
-      // type이 증가가 아닌 경우는 없다!
-      throw Error("unreachable!");
-    }, account);
-
-  invariant(양변이_같다(result), "트랜잭션이 끝난 후에 양변이 같아야 합니다")
+  invariant(양변이_같다(result), "트랜잭션이 끝난 후에 양변이 같아야 합니다");
 
   return result;
 }

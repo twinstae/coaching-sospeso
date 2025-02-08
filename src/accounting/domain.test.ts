@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { applyTransaction, 양변이_같다, type Account } from "./domain.ts";
+import { applyTransaction, calcTotalAsset, calcTotalCapital, calcTotalDebt, 양변이_같다, type Account, type Transaction } from "./domain.ts";
 
 // (이벤트 소싱)
 
@@ -37,14 +37,14 @@ const transaction = {
   left: [
     {
       target: { type: "asset" as const, id: "돈" as const },
-      type: "증가" as const,
+      type: "증감" as const,
       amount: 80000,
     },
   ],
   right: [
     {
       target: { type: "capital" as const, id: "기부금" as const },
-      type: "증가" as const,
+      type: "증감" as const,
       amount: 80000,
     },
   ],
@@ -64,7 +64,7 @@ describe("accounting", () => {
         id: "기부금",
         amount: 10000,
       },
-    ];
+    ] satisfies Account;;
 
     const result = applyTransaction(initState, transaction);
 
@@ -123,7 +123,117 @@ describe("accounting", () => {
   });
 
   test("잘못된 account에 트랜잭션을 걸려하면 에러가 난다", () => {
-    expect(() => applyTransaction(invalidAccount, transaction))
-      .toThrowError("트랜잭션을 시작하기 전에 양변이 같아야 합니다");
+    expect(() => applyTransaction(invalidAccount, transaction)).toThrowError(
+      "트랜잭션을 시작하기 전에 양변이 같아야 합니다",
+    );
   });
+
+  test("코치에게 돈을 정산해주면, 자산도 감소하고, 부채도 감소한다.", () => {
+    // given 원래 돈도 있고 코치에게 줄 미지급금(부채)도 있었는데
+    const initState = [
+      {
+        type: "asset" as const,
+        id: "돈",
+        amount: 130000,
+      },
+      {
+        type: "capital" as const,
+        id: "기부금",
+        amount: 10000,
+      },
+      {
+        type: "debt" as const,
+        id: "코치-미지급금",
+        amount: 120000,
+      }
+    ] satisfies Account;
+
+    
+    // when 부채를 갚으면
+    const transaction = {
+      left: [
+        {
+          target: { type: "asset" as const, id: "돈" as const },
+          type: "증감" as const,
+          amount: -60000,
+        },
+      ],
+      right: [
+        {
+          target: { type: "debt" as const, id: "코치-미지급금" as const },
+          type: "증감" as const,
+          amount: -60000,
+        },
+      ],
+    } as Transaction;
+
+    const result = applyTransaction(initState, transaction);
+
+    // then 자산도 줄어들고 부채도 줄어들어야한다
+    expect(result).toStrictEqual([
+      {
+        type: "asset" as const,
+        id: "돈",
+        amount: 70000,
+      },
+      {
+        type: "capital" as const,
+        id: "기부금",
+        amount: 10000,
+      },
+      {
+        type: "debt" as const,
+        id: "코치-미지급금",
+        amount: 60000,
+      }
+    ]);
+  });
+
+  const testAccount = [
+    {
+      type: "asset" as const,
+      id: "돈",
+      amount: 70000,
+    },
+    {
+      type: "asset" as const,
+      id: "라즈베리파이",
+      amount: 120000,
+    },
+
+    {
+      type: "capital" as const,
+      id: "기부금",
+      amount: 10000,
+    },
+    {
+      type: "capital" as const,
+      id: "분담금",
+      amount: 120000,
+    },
+
+    {
+      type: "debt" as const,
+      id: "코치-미지급금",
+      amount: 60000,
+    }
+  ];
+
+
+  test("현재 총 자산을 알 수 있다", () => {
+    // 총 자산 => 190000 원
+    expect(calcTotalAsset(testAccount)).toBe(190000)
+  })
+
+  // 모든 자본의 합을 알 수 있다
+  test("현재 총 자본을 알 수 있다", () => {
+    // 총 자산 => 130000 원 기부금+분담금
+    expect(calcTotalCapital(testAccount)).toBe(130000)
+  })
+
+  // 모든 부채의 합을 알 수 있다
+  test("현재 총 부채를 알 수 있다", () => {
+    // 총 자산 => 60000 원 기부금+분담금
+    expect(calcTotalDebt(testAccount)).toBe(60000)
+  })
 });
