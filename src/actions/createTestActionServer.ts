@@ -5,6 +5,8 @@ import type { SospesoRepositoryI } from "@/sospeso/repository.ts";
 import type { ActionDefinition } from "./buildActionServer.ts";
 import { type PaymentRepositoryI } from "@/payment/repository.ts";
 import type { Payment } from "@/payment/domain.ts";
+import type { Account } from "@/accounting/domain.ts";
+import type { AccountRepositoryI } from "@/accounting/repository.ts";
 
 type ActionTestClient<TOutput, TInputSchema extends z.ZodType> = (
   input: z.input<TInputSchema>,
@@ -46,6 +48,7 @@ function defineTestAction<TInput, TOutput>({
 export async function buildTestActionServer({
   sospeso,
   payment,
+  account
 }: {
   sospeso: {
     createSospesoRepository: (
@@ -59,14 +62,22 @@ export async function buildTestActionServer({
     ) => Promise<PaymentRepositoryI>;
     initState: Record<string, Payment>;
   };
+  account: {
+    createAccountRepository: (
+      initState: Record<string, Account>,
+    ) => Promise<AccountRepositoryI>;
+    initState: Record<string, Account>;
+  };
 }): Promise<{
   actionServer: TestActionServer;
   sospesoRepo: SospesoRepositoryI;
   paymentRepo: PaymentRepositoryI;
+  accountRepo: AccountRepositoryI;
 }> {
   const sospesoRepo = await sospeso.createSospesoRepository(sospeso.initState);
   const paymentRepo = await payment.createPaymentRepository(payment.initState);
-  const pureActions = buildSospesoActions(sospesoRepo, paymentRepo);
+  const accountRepo = await account.createAccountRepository(account.initState);
+  const pureActions = buildSospesoActions(sospesoRepo, paymentRepo, accountRepo);
 
   return {
     actionServer: Object.fromEntries(
@@ -77,5 +88,6 @@ export async function buildTestActionServer({
     ) as TestActionServer,
     sospesoRepo,
     paymentRepo,
+    accountRepo,
   };
 }
