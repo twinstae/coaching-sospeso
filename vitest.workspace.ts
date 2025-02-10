@@ -24,9 +24,11 @@ export default defineWorkspace([
     extends: "./vitest.config.ts",
     test: {
       include: [
+        "src/accounting/**/*.test.ts",
         "src/actions/**/*.test.ts",
         "src/services/**/*.test.ts",
         "src/sospeso/**/*.test.ts",
+        "src/accounting/**/*.test.ts",
         "src/auth/**/*.test.ts",
         "src/pages/api/**/*.test.ts",
         "src/pages/sitemap/*.test.ts",
