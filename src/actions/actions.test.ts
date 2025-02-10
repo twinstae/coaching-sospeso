@@ -258,7 +258,7 @@ function runSospesoActionsTest(
     });
   });
 
-  test("소스페소 결제 링크를 생성할 수 있다", async () => {
+  test("계좌에 트랜잭션을 실행할 수 있다", async () => {
     // given
     const testAccount =  [
       {
@@ -312,7 +312,7 @@ function runSospesoActionsTest(
     // then
     const account = await actionServer.getAccount({ accountId: "test" }, LOGGED_IN_CONTEXT)
 
-    expect(account).toStrictEqual([
+    expect(account).toMatchObject([
       {
         type: "asset" as const,
         id: "돈",

@@ -36,9 +36,9 @@
     "lucide-react": "^0.468.0",
     "marked": "^15.0.3",
     "nanoid": "^5.0.9",
-    "react": "19.0.0",
+    "react": "^18.0.0",
     "react-compiler-runtime": "19.0.0-beta-df7b47d-20241124",
-    "react-dom": "19.0.0",
+    "react-dom": "^18.0.0",
     "react-hook-form": "^7.53.2",
     "react-toastify": "^10.0.6",
     "sanitize-html": "^2.13.1",
@@ -72,9 +72,9 @@
     "@types/tryghost__content-api": "^1.3.17",
     "@typescript-eslint/parser": "^8.17.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/browser": "^2.1.8",
-    "@vitest/coverage-istanbul": "^2.1.8",
-    "@vitest/ui": "2.1.8",
+    "@vitest/browser": "^3.0.5",
+    "@vitest/coverage-istanbul": "^3.0.5",
+    "@vitest/ui": "3.0.5",
     "autoprefixer": "^10.4.20",
     "babel-plugin-react-compiler": "19.0.0-beta-df7b47d-20241124",
     "clsx": "^2.1.1",
@@ -93,6 +93,6 @@
     "typescript": "5.7.2",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.3",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.5"
   }
 }

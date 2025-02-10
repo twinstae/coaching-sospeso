@@ -22,8 +22,8 @@ export default defineConfig({
     react({
       babel: {
         plugins: import.meta.vitest
-          ? [["babel-plugin-react-compiler", ReactCompilerConfig]]
-          : undefined,
+          ? undefined
+          : [["babel-plugin-react-compiler", ReactCompilerConfig]],
       },
     }),
     sentry({
