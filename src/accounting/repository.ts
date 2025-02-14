@@ -1,9 +1,10 @@
-import type { Account } from "./domain";
+import invariant from "@/invariant";
+import { applyTransaction, type Account, type Transaction } from "./domain";
 
 export interface AccountRepositoryI {
-  updateOrSave(
+  transact(
     accountId: string,
-    update: (account: Account | undefined) => Account,
+    transaction: Transaction,
   ): Promise<void>;
   getOneById(accountId: string): Promise<Account | undefined>;
 }
@@ -14,11 +15,15 @@ export const createFakeAccountRepository = (
   let _fakeState = structuredClone(initState);
 
   return {
-    async updateOrSave(
+    async transact(
       accountId: string,
-      update: (account: Account | undefined) => Account,
+      transaction: Transaction,
     ): Promise<void> {
-      _fakeState[accountId] = update(_fakeState[accountId]);
+      
+      const old = _fakeState[accountId];
+      invariant(old, "계좌가 존재하지 않습니다!");
+
+      _fakeState[accountId] = applyTransaction(old, transaction);
     },
     async getOneById(accountId: string) {
         return _fakeState[accountId]

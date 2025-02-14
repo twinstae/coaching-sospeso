@@ -27,8 +27,12 @@ import {
 } from "@/payment/repository.ts";
 import { type Payment } from "@/payment/domain.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
-import { createFakeAccountRepository, type AccountRepositoryI } from "@/accounting/repository.ts";
+import {
+  createFakeAccountRepository,
+  type AccountRepositoryI,
+} from "@/accounting/repository.ts";
 import type { Account } from "@/accounting/domain.ts";
+import { createDrizzleAccountRepository } from "@/adapters/drizzle/drizzleAccountRepository.ts";
 
 const generateId = generateNanoId;
 
@@ -47,7 +51,7 @@ function runSospesoActionsTest(
   function createTestActionServer({
     sospeso,
     payment,
-    account
+    account,
   }: {
     sospeso: Record<string, Sospeso>;
     payment?: Record<string, Payment>;
@@ -65,7 +69,7 @@ function runSospesoActionsTest(
       account: {
         createAccountRepository,
         initState: account ?? {},
-      }
+      },
     });
   }
 
@@ -256,79 +260,96 @@ function runSospesoActionsTest(
 
       expect(after?.status).toBe("consumed");
     });
-  });
 
-  test("계좌에 트랜잭션을 실행할 수 있다", async () => {
-    // given
-    const testAccount =  [
-      {
-        type: "asset" as const,
-        id: "돈",
-        amount: 70000,
-      },
-      {
-        type: "capital" as const,
-        id: "기부금",
-        amount: 10000,
-      },  
-      {
-        type: "debt" as const,
-        id: "코치-미지급금",
-        amount: 60000,
-      }
-    ];
+    test("계좌에 트랜잭션을 실행할 수 있다", async () => {
+      // given
+      const testAccount = [
+        {
+          id: "1",
+          type: "asset" as const,
+          name: "돈",
+          amount: 70000,
+        },
+        {
+          id: "2",
+          type: "capital" as const,
+          name: "기부금",
+          amount: 10000,
+        },
+        {
+          id: "3",
+          type: "debt" as const,
+          name: "코치-미지급금",
+          amount: 60000,
+        },
+      ];
 
-    const { actionServer } = await createTestActionServer({
-      sospeso: {},
-      account: {
-        "test": testAccount
-      }
+      const { actionServer } = await createTestActionServer({
+        sospeso: {},
+        account: {
+          test: testAccount,
+        },
+      });
+
+      const testTransactionId = generateId();
+      // when
+      await actionServer.runTransaction(
+        {
+          accountId: "test",
+          transaction: {
+            id: testTransactionId,
+            description: "소스페소 발행행",
+            left: [
+              {
+                id: generateId(),
+                target: { type: "asset" as const, name: "돈" as const },
+                type: "증감" as const,
+                amount: -60000,
+              },
+            ],
+            right: [
+              {
+                id: generateId(),
+                target: {
+                  type: "debt" as const,
+                  name: "코치-미지급금" as const,
+                },
+                type: "증감" as const,
+                amount: -60000,
+              },
+            ],
+          },
+        },
+        LOGGED_IN_CONTEXT,
+      );
+
+      // then
+      const account = await actionServer.getAccount(
+        { accountId: "test" },
+        LOGGED_IN_CONTEXT,
+      );
+
+      expect(account).toMatchObject([
+        {
+          id: "1",
+          type: "asset" as const,
+          name: "돈",
+          amount: 10000,
+        },
+        {
+          id: "2",
+          type: "capital" as const,
+          name: "기부금",
+          amount: 10000,
+        },
+        {
+          id: "3",
+          type: "debt" as const,
+          name: "코치-미지급금",
+          amount: 0,
+        },
+      ]);
     });
-
-    // when
-    await actionServer.runTransaction(
-      {
-        accountId: "test",
-        transaction: {
-          left: [
-            {
-              target: { type: "asset" as const, id: "돈" as const },
-              type: "증감" as const,
-              amount: -60000,
-            },
-          ],
-          right: [
-            {
-              target: { type: "debt" as const, id: "코치-미지급금" as const },
-              type: "증감" as const,
-              amount: -60000,
-            },
-          ],
-        }
-      },
-      LOGGED_IN_CONTEXT,
-    );
-
-    // then
-    const account = await actionServer.getAccount({ accountId: "test" }, LOGGED_IN_CONTEXT)
-
-    expect(account).toMatchObject([
-      {
-        type: "asset" as const,
-        id: "돈",
-        amount: 10000,
-      },
-      {
-        type: "capital" as const,
-        id: "기부금",
-        amount: 10000,
-      },  
-      {
-        type: "debt" as const,
-        id: "코치-미지급금",
-        amount: 0,
-      }
-    ]);
   });
 }
 
@@ -382,6 +403,28 @@ async function createDrizzleTestPaymentRepository(
   return repo;
 }
 
+async function createDrizzleTestAccountRepository(
+  initState: Record<string, Account>,
+) {
+  const repo = createDrizzleAccountRepository(testDbReallySeriously);
+
+  // prod db에 실행하면 절대 안 됨
+  await testDbReallySeriously.delete(schema.accountItem).all();
+  await testDbReallySeriously.delete(schema.transactionItem).all();
+  await testDbReallySeriously.delete(schema.transaction).all();
+
+  // seed
+  for (const [accountId, accountItems] of Object.entries(initState)) {
+    for (const accountItem of accountItems) {
+      await testDbReallySeriously
+        .insert(schema.accountItem)
+        .values({ ...accountItem, accountId });
+    }
+  }
+
+  return repo;
+}
+
 afterAll(async () => {
   const testDbReallySeriously = drizzle({
     schema,
@@ -399,6 +442,11 @@ afterAll(async () => {
   await testDbReallySeriously.delete(schema.sospeso).all();
   // payment
   await testDbReallySeriously.delete(schema.payment).all();
+
+  // account
+  await testDbReallySeriously.delete(schema.accountItem).all();
+  await testDbReallySeriously.delete(schema.transactionItem).all();
+  await testDbReallySeriously.delete(schema.transaction).all();
 
   await testDbReallySeriously
     .delete(schema.user)
@@ -424,8 +472,9 @@ runSospesoActionsTest(
   async (initState) => createFakeAccountRepository(initState),
 );
 
-// runSospesoActionsTest(
-//   "drizzle sqlite",
-//   createDrizzleTestSospesoRepository,
-//   createDrizzleTestPaymentRepository,
-// );
+runSospesoActionsTest(
+  "drizzle sqlite",
+  createDrizzleTestSospesoRepository,
+  createDrizzleTestPaymentRepository,
+  createDrizzleTestAccountRepository,
+);
