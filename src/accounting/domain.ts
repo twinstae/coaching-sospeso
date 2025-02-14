@@ -2,27 +2,32 @@ import invariant from '@/invariant.ts';
 
 // 항목?
 export type Account = {
-  type: "asset" | "capital" | "debt";
   id: string;
+  type: "asset" | "capital" | "debt";
+  name: string;
   amount: number;
 }[];
 
 export type Transaction = {
+  id: string,
+  description: string,
   left: {
+    id: string,
     target: {
       type: "asset";
-      id: "돈";
+      name: string;
     };
     type: "증감"; // 증감, 생김, 사라짐짐
     amount: number;
   }[];
   right: {
+    id: string,
     target: {
       type: "capital";
-      id: "기부금";
+      name: string;
     } | {
       type: "debt";
-      id: "코치-미지급금";
+      name: string;
     };
     type: "증감"; // 증감, 생김, 사라짐짐
     amount: number;
@@ -62,15 +67,14 @@ export function 양변이_같다(account: Account): boolean {
 export function applyTransaction(account: Account, transaction: Transaction): Account {
   invariant(양변이_같다(account), "트랜잭션을 시작하기 전에 양변이 같아야 합니다");
 
-  const result = [...transaction.left, ...transaction.right].reduce((acc, action) => {
-    if (action.type === "증감") {
-      return acc.some((item) => item.type === action.target.type && item.id === action.target.id)
-        ? acc.map((item) =>
-            item.type === action.target.type && item.id === action.target.id
-              ? { ...item, amount: item.amount + action.amount }
+  const result = [...transaction.left, ...transaction.right].reduce((acc, transactionItem) => {
+    if (transactionItem.type === "증감") {
+       invariant(acc.some((item) => item.type === transactionItem.target.type && item.name === transactionItem.target.name), "트랜잭션에 대상이 없습니다")
+       return acc.map((item) =>
+            item.type === transactionItem.target.type && item.name === transactionItem.target.name
+              ? { ...item, amount: item.amount + transactionItem.amount }
               : item
           )
-        : [...acc, { type: action.target.type, id: action.target.id, amount: action.amount }];
     }
 
     // 예외 처리 강화

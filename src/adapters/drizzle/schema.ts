@@ -190,3 +190,59 @@ export const payment = sqliteTable("payment", {
   command: text("command", { mode: "json" }).notNull(),
   paymentResult: text("payment_result", { mode: "json" }),
 });
+
+// 3개
+// 관계형 데이터베이스... -> 정규화
+
+// AccountItem {
+//   type: "asset" | "capital" | "debt";
+//   id: string;
+//   amount: number;
+// }
+
+export const accountItem = sqliteTable("account_item", {
+  id: text("id").primaryKey(),
+  accountId: text("account_id").notNull(),
+  name: text("name").notNull(),
+  amount: integer("amount").notNull(),
+  type: text("type").notNull(),
+});
+
+// TransactionItem
+// {
+//   id: string
+//   targetType: "asset"  | "capital" | "debt";
+//   targetId: "돈";
+//   itemType: "증감"; // 증감, 생김, 사라짐
+//   amount: number;
+//   transactionId <- 외래키
+// }
+export const transactionItem = sqliteTable("transaction_item", {
+  id: text("id").primaryKey(),
+  targetType: text("target_type").notNull(),
+  targetName: text("target_name").notNull(),
+  itemType: text("item_type").notNull(), 
+  amount: integer("amount").notNull(),
+  transactionId: text("transaction_id")
+    .references(() => transaction.id)
+    .notNull(),
+});
+
+export const transaction = sqliteTable("transaction", {
+  id: text("id").primaryKey(),
+  description: text("description").notNull(),
+});
+
+export const transactionRelations = relations(
+  transaction,
+  ({ many }) => ({
+    transactionItems: many(transactionItem)
+  }),
+);
+
+
+// Transaction
+// {
+//   id: string,
+//   description: string,
+// }

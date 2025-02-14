@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { applyTransaction, calcTotalAsset, calcTotalCapital, calcTotalDebt, 양변이_같다, type Account, type Transaction } from "./domain.ts";
+import { generateNanoId } from "@/adapters/generateId.ts";
 
 // (이벤트 소싱)
 
@@ -33,51 +34,60 @@ import { applyTransaction, calcTotalAsset, calcTotalCapital, calcTotalDebt, 양�
 // 자산의 감소 -> 있는 자산이 사라짐, 기존 자산의 가치가 줄어듬
 
 // when 뭘 하면
+const testTransactionId = generateNanoId();
 const transaction = {
+  id: testTransactionId,
+  description: "기부금 영수",
   left: [
     {
-      target: { type: "asset" as const, id: "돈" as const },
+      id: generateNanoId(),
+      target: { type: "asset" as const, name: "돈" as const },
       type: "증감" as const,
       amount: 80000,
     },
   ],
   right: [
     {
-      target: { type: "capital" as const, id: "기부금" as const },
+      id: generateNanoId(),
+      target: { type: "capital" as const, name: "기부금" as const },
       type: "증감" as const,
       amount: 80000,
     },
   ],
-};
+} satisfies Transaction;
 
 describe("accounting", () => {
   test("누군가 기부를 하면 자산도 늘어나고, 자본도 늘어난다", () => {
     // given 어떤 상태였는데
     const initState = [
       {
+        id: "1",
         type: "asset" as const,
-        id: "돈",
+        name: "돈",
         amount: 10000,
       },
       {
+        id: "2",
         type: "capital" as const,
-        id: "기부금",
+        name: "기부금",
         amount: 10000,
       },
-    ] satisfies Account;;
+    ] satisfies Account;
 
     const result = applyTransaction(initState, transaction);
 
     // then 어떻게 상태가 변한다~
     expect(result).toStrictEqual([
       {
+        id: "1",
         type: "asset",
-        id: "돈",
+        name: "돈",
         amount: 90000,
       },
       {
+        id: "2",
         type: "capital",
-        id: "기부금",
+        name: "기부금",
         amount: 90000,
       },
     ]);
@@ -85,13 +95,15 @@ describe("accounting", () => {
 
   const invalidAccount = [
     {
+      id: "1",
       type: "asset",
-      id: "돈",
+      name: "돈",
       amount: 90000,
     },
     {
+      id: "2",
       type: "capital",
-      id: "기부금",
+      name: "기부금",
       amount: 90001,
     },
   ] as Account;
@@ -103,18 +115,21 @@ describe("accounting", () => {
   test("양변이 같으면 괜찮다", () => {
     const validAccount = [
       {
+        id: "1",
         type: "asset",
-        id: "돈",
+        name: "돈",
         amount: 160000,
       },
       {
+        id: "2",
         type: "capital",
-        id: "기부금",
+        name: "기부금",
         amount: 40000,
       },
       {
+        id: "3",
         type: "debt",
-        id: "코칭-미지급금",
+        name: "코칭-미지급금",
         amount: 120000,
       },
     ] as Account;
@@ -132,18 +147,21 @@ describe("accounting", () => {
     // given 원래 돈도 있고 코치에게 줄 미지급금(부채)도 있었는데
     const initState = [
       {
+        id: "1",
         type: "asset" as const,
-        id: "돈",
+        name: "돈",
         amount: 130000,
       },
       {
+        id: "2",
         type: "capital" as const,
-        id: "기부금",
+        name: "기부금",
         amount: 10000,
       },
       {
+        id: "3",
         type: "debt" as const,
-        id: "코치-미지급금",
+        name: "코치-미지급금",
         amount: 120000,
       }
     ] satisfies Account;
@@ -153,14 +171,14 @@ describe("accounting", () => {
     const transaction = {
       left: [
         {
-          target: { type: "asset" as const, id: "돈" as const },
+          target: { type: "asset" as const, name: "돈" as const },
           type: "증감" as const,
           amount: -60000,
         },
       ],
       right: [
         {
-          target: { type: "debt" as const, id: "코치-미지급금" as const },
+          target: { type: "debt" as const, name: "코치-미지급금" as const },
           type: "증감" as const,
           amount: -60000,
         },
@@ -172,18 +190,21 @@ describe("accounting", () => {
     // then 자산도 줄어들고 부채도 줄어들어야한다
     expect(result).toStrictEqual([
       {
+        id: "1",
         type: "asset" as const,
-        id: "돈",
+        name: "돈",
         amount: 70000,
       },
       {
+        id: "2",
         type: "capital" as const,
-        id: "기부금",
+        name: "기부금",
         amount: 10000,
       },
       {
+        id: "3",
         type: "debt" as const,
-        id: "코치-미지급금",
+        name: "코치-미지급금",
         amount: 60000,
       }
     ]);
@@ -191,30 +212,35 @@ describe("accounting", () => {
 
   const testAccount = [
     {
+      id: "1",
       type: "asset" as const,
-      id: "돈",
+      name: "돈",
       amount: 70000,
     },
     {
+      id: "2",
       type: "asset" as const,
-      id: "라즈베리파이",
+      name: "라즈베리파이",
       amount: 120000,
     },
 
     {
+      id: "3",
       type: "capital" as const,
-      id: "기부금",
+      name: "기부금",
       amount: 10000,
     },
     {
+      id: "4",
       type: "capital" as const,
-      id: "분담금",
+      name: "분담금",
       amount: 120000,
     },
 
     {
+      id: "5",
       type: "debt" as const,
-      id: "코치-미지급금",
+      name: "코치-미지급금",
       amount: 60000,
     }
   ];

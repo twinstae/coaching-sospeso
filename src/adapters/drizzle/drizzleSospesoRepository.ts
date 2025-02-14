@@ -239,7 +239,7 @@ export function createDrizzleSospesoRepository(
             await tx.update(schema.sospesoIssuing).set({
               id: after.issuing.id,
               issuedAt: after.issuing.issuedAt,
-            });
+            }).where(eq(schema.sospesoIssuing.id, after.issuing.id));
           }
 
           invariant(
