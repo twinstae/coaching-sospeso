@@ -38,7 +38,7 @@ export type ActionContext = {
 export function buildSospesoActions(
   sospesoRepo: SospesoRepositoryI,
   paymentRepo: PaymentRepositoryI,
-  accountRepo: AccountRepositoryI
+  accountRepo: AccountRepositoryI,
 ) {
   return {
     approveSospesoApplication: definePureAction({
@@ -163,42 +163,45 @@ export function buildSospesoActions(
       },
     }),
 
-    
     runTransaction: definePureAction({
       input: z.object({
         accountId: z.string(),
         transaction: z.object({
-          left: z.array(z.object({
-            target: z.object({
-              type: z.literal("asset"),
-              id: z.string()
+          id: z.string(),
+          description: z.string(),
+          left: z.array(
+            z.object({
+              id: z.string(),
+              target: z.object({
+                type: z.literal("asset"),
+                name: z.string(),
+              }),
+              type: z.literal("증감"),
+              amount: z.number().int(),
             }),
-            type: z.literal("증감"),
-            amount: z.number().int()
-          })),
-          right: z.array(z.object({
-            target: z.object({
-              type: z.enum(["capital", "debt"]),
-              id: z.string()
+          ),
+          right: z.array(
+            z.object({
+              id: z.string(),
+              target: z.object({
+                type: z.enum(["capital", "debt"]),
+                name: z.string(),
+              }),
+              type: z.literal("증감"),
+              amount: z.number().int(),
             }),
-            type: z.literal("증감"),
-            amount: z.number().int()
-          }))
-        })
+          ),
+        }),
       }),
       handler: async (input, { locals: { user } }) => {
         invariant(user, "로그인을 해야 합니다");
 
-        await accountRepo.updateOrSave(input.accountId, (account) => {
-          invariant(account, "계좌가 존재하지 않습니다!");
-          return applyTransaction(account, input.transaction as Transaction);
-        })
+        await accountRepo.transact(input.accountId, input.transaction);
       },
     }),
-
     getAccount: definePureAction({
       input: z.object({
-        accountId: z.string()
+        accountId: z.string(),
       }),
       handler: async (input, { locals: { user } }) => {
         invariant(user, "로그인을 해야 합니다");
