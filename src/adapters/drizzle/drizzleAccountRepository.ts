@@ -16,6 +16,9 @@ const accountSchema = v.array(
     name: v.string(),
     type: v.picklist(["asset", "capital", "debt"]),
     amount: v.pipe(v.number(), v.integer()),
+    majorCategory: v.string(),
+    middleCategory: v.optional(v.string()),
+    smallCategory: v.optional(v.string()),
   }),
 );
 
@@ -25,9 +28,26 @@ function dbModelToDomainModel(
     id: string;
     name: string;
     amount: number;
+    majorCategory: string;
+    middleCategory: string | null;
+    smallCategory: string | null;
   }[],
 ): Account {
-  return v.parse(accountSchema, dbModel);
+  const a = dbModel.map(item => {
+
+    const result = { ...item } as any; // 방어적 복사
+
+    if (result.smallCategory === null) {
+      delete result["smallCategory"]
+      
+    }
+    if (result.middleCategory === null) {
+      delete result["middleCategory"]
+    }
+
+    return result;    
+  })
+  return v.parse(accountSchema, a);
 }
 
 export function createDrizzleAccountRepository(
@@ -87,7 +107,7 @@ export function createDrizzleAccountRepository(
         where: eq(schema.accountItem.accountId, accountId),
       });
 
-      return v.parse(accountSchema, result);
+      return dbModelToDomainModel(result);
     },
   } satisfies AccountRepositoryI;
 }

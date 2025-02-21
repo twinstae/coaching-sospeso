@@ -1,62 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { applyTransaction, calcTotalAsset, calcTotalCapital, calcTotalDebt, 양변이_같다, type Account, type Transaction } from "./domain.ts";
-import { generateNanoId } from "@/adapters/generateId.ts";
+import { testAccount, testTransaction } from "./fixtures.ts";
+import { middleware } from "astro:i18n";
 
-// (이벤트 소싱)
-
-// 트랜잭션
-
-// 자산의 취득이나 소멸이 여러 개 있을 수 있음
-
-// 자본이랑, 부채도 마찬가지
-
-// 자산의 증감의 합과 = 자본과 부채의 증감의 합과 같아야 함 (불변식 invariant)
-
-// 파생 상태 (getter, computed, derived)
-
-// 자산 => 현금, 유형자산, 무형자산 (모든 것으로 돈으로 환원된다)
-
-// 자본 => 코칭비를 낸 것 + 기부(매출) 분담금(이익x)
-
-// 부채 => 미지급한 돈…(수수료, 코칭비를 아직 안 줌…)
-
-// 코칭비 매출 = 코칭비 합 => 영업을 해서 얻은 매출
-
-// 기부금 매출 = 기부금 합 => 영업을 해서 얻은 매출
-
-// 매출 = 분담금이 아닌… 자본 증가의 합
-
-// 비용 = 현금 자산의 감소 = 사무실 비용, 수수료, 파이 구매, 코칭비 준 것…
-
-// 이익 = 매출 + 자산의 취득 - 비용 (이익이 마이너스면 손해)
-
-// 자산의 증가 -> 자산이 새로운 자산이 생김, 기존 자산의 가치가 늘어남
-// 자산의 감소 -> 있는 자산이 사라짐, 기존 자산의 가치가 줄어듬
-
-// when 뭘 하면
-const testTransactionId = generateNanoId();
-const transaction = {
-  id: testTransactionId,
-  description: "기부금 영수",
-  left: [
-    {
-      id: generateNanoId(),
-      target: { type: "asset" as const, name: "돈" as const },
-      type: "증감" as const,
-      amount: 80000,
-    },
-  ],
-  right: [
-    {
-      id: generateNanoId(),
-      target: { type: "capital" as const, name: "기부금" as const },
-      type: "증감" as const,
-      amount: 80000,
-    },
-  ],
-} satisfies Transaction;
-
-describe("accounting", () => {
+describe("accounting domain", () => {
   test("누군가 기부를 하면 자산도 늘어나고, 자본도 늘어난다", () => {
     // given 어떤 상태였는데
     const initState = [
@@ -65,16 +12,19 @@ describe("accounting", () => {
         type: "asset" as const,
         name: "돈",
         amount: 10000,
+        majorCategory: "유동자산",
+        middleCategory: "현금및현금성자산",
       },
       {
         id: "2",
         type: "capital" as const,
         name: "기부금",
         amount: 10000,
+        majorCategory: "이익잉여금",
       },
     ] satisfies Account;
 
-    const result = applyTransaction(initState, transaction);
+    const result = applyTransaction(initState, testTransaction);
 
     // then 어떻게 상태가 변한다~
     expect(result).toStrictEqual([
@@ -83,12 +33,15 @@ describe("accounting", () => {
         type: "asset",
         name: "돈",
         amount: 90000,
+        majorCategory: "유동자산",
+        middleCategory: "현금및현금성자산",
       },
       {
         id: "2",
         type: "capital",
         name: "기부금",
         amount: 90000,
+        majorCategory: "이익잉여금",
       },
     ]);
   });
@@ -138,7 +91,7 @@ describe("accounting", () => {
   });
 
   test("잘못된 account에 트랜잭션을 걸려하면 에러가 난다", () => {
-    expect(() => applyTransaction(invalidAccount, transaction)).toThrowError(
+    expect(() => applyTransaction(invalidAccount, testTransaction)).toThrowError(
       "트랜잭션을 시작하기 전에 양변이 같아야 합니다",
     );
   });
@@ -151,18 +104,23 @@ describe("accounting", () => {
         type: "asset" as const,
         name: "돈",
         amount: 130000,
+        majorCategory: "유동자산",
+        middleCategory: "현금및현금성자산",
       },
       {
         id: "2",
         type: "capital" as const,
         name: "기부금",
         amount: 10000,
+        majorCategory: "이익잉여금",
       },
       {
         id: "3",
         type: "debt" as const,
         name: "코치-미지급금",
         amount: 120000,
+        majorCategory: "유동부채",
+        middleCategory: "미지급금",
       }
     ] satisfies Account;
 
@@ -194,57 +152,26 @@ describe("accounting", () => {
         type: "asset" as const,
         name: "돈",
         amount: 70000,
+        majorCategory: "유동자산",
+        middleCategory: "현금및현금성자산",
       },
       {
         id: "2",
         type: "capital" as const,
         name: "기부금",
         amount: 10000,
+        majorCategory: "이익잉여금",
       },
       {
         id: "3",
         type: "debt" as const,
         name: "코치-미지급금",
         amount: 60000,
+        majorCategory: "유동부채",
+        middleCategory: "미지급금",
       }
     ]);
   });
-
-  const testAccount = [
-    {
-      id: "1",
-      type: "asset" as const,
-      name: "돈",
-      amount: 70000,
-    },
-    {
-      id: "2",
-      type: "asset" as const,
-      name: "라즈베리파이",
-      amount: 120000,
-    },
-
-    {
-      id: "3",
-      type: "capital" as const,
-      name: "기부금",
-      amount: 10000,
-    },
-    {
-      id: "4",
-      type: "capital" as const,
-      name: "분담금",
-      amount: 120000,
-    },
-
-    {
-      id: "5",
-      type: "debt" as const,
-      name: "코치-미지급금",
-      amount: 60000,
-    }
-  ];
-
 
   test("현재 총 자산을 알 수 있다", () => {
     // 총 자산 => 190000 원
