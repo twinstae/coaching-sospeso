@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { applyTransaction, calcTotalAsset, calcTotalCapital, calcTotalDebt, 양변이_같다, type Account, type Transaction } from "./domain.ts";
 import { testAccount, testTransaction } from "./fixtures.ts";
-import { middleware } from "astro:i18n";
 
 describe("accounting domain", () => {
   test("누군가 기부를 하면 자산도 늘어나고, 자본도 늘어난다", () => {

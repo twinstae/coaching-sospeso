@@ -1,6 +1,6 @@
 import invariant from '@/invariant.ts';
 
-type AccontItem = {
+type AccountItem = {
   id: string;
   type: "asset" | "capital" | "debt";
   name: string;
@@ -11,7 +11,7 @@ type AccontItem = {
 };
 
 // 항목?
-export type Account = AccontItem[];
+export type Account = AccountItem[];
 
 export type Transaction = {
   id: string,
