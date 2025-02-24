@@ -204,8 +204,15 @@ export const accountItem = sqliteTable("account_item", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   name: text("name").notNull(),
-  amount: integer("amount").notNull(),
   type: text("type").notNull(),
+  // 금액
+  amount: integer("amount").notNull(),
+  // 대분류
+  majorCategory: text("major_category").notNull(),
+  // 중분류
+  middleCategory: text("middle_category"),
+  // 소분류
+  smallCategory: text("small_category"),
 });
 
 // TransactionItem

@@ -269,18 +269,23 @@ function runSospesoActionsTest(
           type: "asset" as const,
           name: "돈",
           amount: 70000,
+          majorCategory: "유동자산",
+          middleCategory: "현금및현금성자산",
         },
         {
           id: "2",
           type: "capital" as const,
           name: "기부금",
           amount: 10000,
+          majorCategory: "이익잉여금",
         },
         {
           id: "3",
           type: "debt" as const,
           name: "코치-미지급금",
           amount: 60000,
+          majorCategory: "유동부채",
+          middleCategory: "미지급금",
         },
       ];
 
