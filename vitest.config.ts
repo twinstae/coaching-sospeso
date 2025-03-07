@@ -15,10 +15,6 @@ export default defineConfig({
   },
   plugins: [react() as any, tsconfigPaths(), svgr()],
   test: {
-    pool: "vmThreads",
-    poolOptions: {
-      useAtomics: true,
-    },
     coverage: {
       enabled: false,
       provider: "istanbul",

@@ -33,6 +33,7 @@ import {
 } from "@/accounting/repository.ts";
 import type { Account } from "@/accounting/domain.ts";
 import { createDrizzleAccountRepository } from "@/adapters/drizzle/drizzleAccountRepository.ts";
+import { 기부금_10000원, 코치_미지급금_60000원, 현금_70000원 } from "@/accounting/fixtures.ts";
 
 const generateId = generateNanoId;
 
@@ -264,30 +265,10 @@ function runSospesoActionsTest(
     test("계좌에 트랜잭션을 실행할 수 있다", async () => {
       // given
       const testAccount = [
-        {
-          id: "1",
-          type: "asset" as const,
-          name: "돈",
-          amount: 70000,
-          majorCategory: "유동자산",
-          middleCategory: "현금및현금성자산",
-        },
-        {
-          id: "2",
-          type: "capital" as const,
-          name: "기부금",
-          amount: 10000,
-          majorCategory: "이익잉여금",
-        },
-        {
-          id: "3",
-          type: "debt" as const,
-          name: "코치-미지급금",
-          amount: 60000,
-          majorCategory: "유동부채",
-          middleCategory: "미지급금",
-        },
-      ];
+        현금_70000원,
+        기부금_10000원,
+        코치_미지급금_60000원
+      ]
 
       const { actionServer } = await createTestActionServer({
         sospeso: {},
@@ -334,26 +315,13 @@ function runSospesoActionsTest(
         LOGGED_IN_CONTEXT,
       );
 
-      expect(account).toMatchObject([
-        {
-          id: "1",
-          type: "asset" as const,
-          name: "돈",
-          amount: 10000,
-        },
-        {
-          id: "2",
-          type: "capital" as const,
-          name: "기부금",
-          amount: 10000,
-        },
-        {
-          id: "3",
-          type: "debt" as const,
-          name: "코치-미지급금",
-          amount: 0,
-        },
-      ]);
+      const expected: Account = [
+        { ...현금_70000원, amount: 10000 },
+        기부금_10000원,
+        { ...코치_미지급금_60000원, amount: 0 }
+      ];
+
+      expect(account).toMatchObject(expected);
     });
   });
 }
