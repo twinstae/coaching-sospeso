@@ -20,7 +20,6 @@ import { createSospesoIssuingPayment } from "@/payment/domain.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
 import type { AccountRepositoryI } from "@/accounting/repository.ts";
-import { applyTransaction, type Transaction } from "@/accounting/domain.ts";
 
 export const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
@@ -173,7 +172,7 @@ export function buildSospesoActions(
             z.object({
               id: z.string(),
               target: z.object({
-                type: z.literal("asset"),
+                type: z.enum(["asset", "capital", "debt"]),
                 name: z.string(),
               }),
               type: z.literal("증감"),
@@ -184,7 +183,7 @@ export function buildSospesoActions(
             z.object({
               id: z.string(),
               target: z.object({
-                type: z.enum(["capital", "debt"]),
+                type: z.enum(["asset", "capital", "debt"]),
                 name: z.string(),
               }),
               type: z.literal("증감"),

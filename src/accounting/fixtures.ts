@@ -1,25 +1,37 @@
 import { generateNanoId } from "@/adapters/generateId.ts";
-import type { AccountItem, Transaction } from "./domain.ts";
+import type { AccountItem, Transaction, TransactionItem } from "./domain.ts";
 
 export const testTransactionId = generateNanoId();
+
+export const 자산_현금_증감_80000원: TransactionItem = {
+    id: generateNanoId(),
+    target: { type: "asset" as const, name: "돈" as const },
+    type: "증감" as const,
+    amount: 80000,
+}
+
+export const 자본_기부금_증감_80000원: TransactionItem = {
+  id: generateNanoId(),
+  target: { type: "capital" as const, name: "기부금" as const },
+  type: "증감" as const,
+  amount: 80000,
+}
+
+export const 부채_증감_60000원: TransactionItem = {
+    id: generateNanoId(),
+    target: { type: "debt" as const, name: "코치-미지급금" as const },
+    type: "증감" as const,
+    amount: 60000,
+}
+
 export const testTransaction = {
   id: testTransactionId,
   description: "기부금 영수",
   left: [
-    {
-      id: generateNanoId(),
-      target: { type: "asset" as const, name: "돈" as const },
-      type: "증감" as const,
-      amount: 80000,
-    },
+    자산_현금_증감_80000원,
   ],
   right: [
-    {
-      id: generateNanoId(),
-      target: { type: "capital" as const, name: "기부금" as const },
-      type: "증감" as const,
-      amount: 80000,
-    },
+    자본_기부금_증감_80000원,
   ],
 } satisfies Transaction;
 

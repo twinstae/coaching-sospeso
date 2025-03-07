@@ -33,7 +33,7 @@ import {
 } from "@/accounting/repository.ts";
 import type { Account } from "@/accounting/domain.ts";
 import { createDrizzleAccountRepository } from "@/adapters/drizzle/drizzleAccountRepository.ts";
-import { 기부금_10000원, 코치_미지급금_60000원, 현금_70000원 } from "@/accounting/fixtures.ts";
+import { 기부금_10000원, 부채_증감_60000원, 자산_현금_증감_80000원, 코치_미지급금_60000원, 현금_70000원 } from "@/accounting/fixtures.ts";
 
 const generateId = generateNanoId;
 
@@ -264,7 +264,7 @@ function runSospesoActionsTest(
 
     test("계좌에 트랜잭션을 실행할 수 있다", async () => {
       // given
-      const testAccount = [
+      const testAccount: Account = [
         현금_70000원,
         기부금_10000원,
         코치_미지급금_60000원
@@ -284,25 +284,18 @@ function runSospesoActionsTest(
           accountId: "test",
           transaction: {
             id: testTransactionId,
-            description: "소스페소 발행행",
-            left: [
-              {
-                id: generateId(),
-                target: { type: "asset" as const, name: "돈" as const },
-                type: "증감" as const,
-                amount: -60000,
-              },
-            ],
-            right: [
-              {
-                id: generateId(),
-                target: {
-                  type: "debt" as const,
-                  name: "코치-미지급금" as const,
-                },
-                type: "증감" as const,
-                amount: -60000,
-              },
+            description: "소스페소 발행",
+              left: [
+                {
+                ...자산_현금_증감_80000원,
+                amount: -60000
+                }
+              ],
+              right: [
+                {
+                ...부채_증감_60000원,
+                amount: -60000
+                }
             ],
           },
         },
