@@ -1,25 +1,18 @@
 import { describe, expect, test } from "vitest";
 import { applyTransaction, calcTotalAsset, calcTotalCapital, calcTotalDebt, 양변이_같다, type Account, type Transaction } from "./domain.ts";
-import { testAccount, testTransaction } from "./fixtures.ts";
+import { testAccount, testTransaction, 기부금_10000원, 부채_증감_60000원, 자산_현금_증감_80000원, 코치_미지급금_60000원, 현금_70000원 } from "./fixtures.ts";
 
 describe("accounting domain", () => {
   test("누군가 기부를 하면 자산도 늘어나고, 자본도 늘어난다", () => {
     // given 어떤 상태였는데
     const initState = [
       {
-        id: "1",
-        type: "asset" as const,
-        name: "돈",
+        ...현금_70000원,
         amount: 10000,
-        majorCategory: "유동자산",
-        middleCategory: "현금및현금성자산",
       },
       {
-        id: "2",
-        type: "capital" as const,
-        name: "기부금",
+        ...기부금_10000원,
         amount: 10000,
-        majorCategory: "이익잉여금",
       },
     ] satisfies Account;
 
@@ -28,19 +21,12 @@ describe("accounting domain", () => {
     // then 어떻게 상태가 변한다~
     expect(result).toStrictEqual([
       {
-        id: "1",
-        type: "asset",
-        name: "돈",
+        ...현금_70000원,
         amount: 90000,
-        majorCategory: "유동자산",
-        middleCategory: "현금및현금성자산",
       },
       {
-        id: "2",
-        type: "capital",
-        name: "기부금",
-        amount: 90000,
-        majorCategory: "이익잉여금",
+        ...기부금_10000원,
+        amount: 90000
       },
     ]);
   });
@@ -65,26 +51,20 @@ describe("accounting domain", () => {
   });
 
   test("양변이 같으면 괜찮다", () => {
-    const validAccount = [
+    const validAccount: Account = [
       {
-        id: "1",
-        type: "asset",
-        name: "돈",
+        ...현금_70000원,
         amount: 160000,
       },
       {
-        id: "2",
-        type: "capital",
-        name: "기부금",
-        amount: 40000,
+        ...기부금_10000원,
+        amount: 40000
       },
       {
-        id: "3",
-        type: "debt",
-        name: "코칭-미지급금",
-        amount: 120000,
-      },
-    ] as Account;
+        ...코치_미지급금_60000원,
+        amount: 120000
+      }
+    ];
 
     expect(양변이_같다(validAccount)).toBe(true);
   });
@@ -99,27 +79,16 @@ describe("accounting domain", () => {
     // given 원래 돈도 있고 코치에게 줄 미지급금(부채)도 있었는데
     const initState = [
       {
-        id: "1",
-        type: "asset" as const,
-        name: "돈",
+        ...현금_70000원,
         amount: 130000,
-        majorCategory: "유동자산",
-        middleCategory: "현금및현금성자산",
       },
       {
-        id: "2",
-        type: "capital" as const,
-        name: "기부금",
-        amount: 10000,
-        majorCategory: "이익잉여금",
+        ...기부금_10000원,
+        amount: 10000
       },
       {
-        id: "3",
-        type: "debt" as const,
-        name: "코치-미지급금",
-        amount: 120000,
-        majorCategory: "유동부채",
-        middleCategory: "미지급금",
+        ...코치_미지급금_60000원,
+        amount: 120000
       }
     ] satisfies Account;
 
@@ -128,17 +97,15 @@ describe("accounting domain", () => {
     const transaction = {
       left: [
         {
-          target: { type: "asset" as const, name: "돈" as const },
-          type: "증감" as const,
-          amount: -60000,
-        },
+        ...자산_현금_증감_80000원,
+        amount: -60000
+        }
       ],
       right: [
         {
-          target: { type: "debt" as const, name: "코치-미지급금" as const },
-          type: "증감" as const,
-          amount: -60000,
-        },
+          ...부채_증감_60000원,
+          amount: -60000
+        }
       ],
     } as Transaction;
 
@@ -146,29 +113,9 @@ describe("accounting domain", () => {
 
     // then 자산도 줄어들고 부채도 줄어들어야한다
     expect(result).toStrictEqual([
-      {
-        id: "1",
-        type: "asset" as const,
-        name: "돈",
-        amount: 70000,
-        majorCategory: "유동자산",
-        middleCategory: "현금및현금성자산",
-      },
-      {
-        id: "2",
-        type: "capital" as const,
-        name: "기부금",
-        amount: 10000,
-        majorCategory: "이익잉여금",
-      },
-      {
-        id: "3",
-        type: "debt" as const,
-        name: "코치-미지급금",
-        amount: 60000,
-        majorCategory: "유동부채",
-        middleCategory: "미지급금",
-      }
+      현금_70000원,
+      기부금_10000원,
+      코치_미지급금_60000원
     ]);
   });
 

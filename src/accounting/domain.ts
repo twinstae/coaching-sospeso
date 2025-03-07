@@ -1,6 +1,6 @@
 import invariant from '@/invariant.ts';
 
-type AccountItem = {
+export type AccountItem = {
   id: string;
   type: "asset" | "capital" | "debt";
   name: string;
@@ -13,30 +13,21 @@ type AccountItem = {
 // 항목?
 export type Account = AccountItem[];
 
+export type TransactionItem = {
+  id: string,
+  target: {
+    type: "asset" | "capital" | "debt" ;
+    name: string;
+    };
+  type: "증감"; // 증감, 생김, 사라짐
+  amount: number;
+}
+
 export type Transaction = {
   id: string,
   description: string,
-  left: {
-    id: string,
-    target: {
-      type: "asset";
-      name: string;
-    };
-    type: "증감"; // 증감, 생김, 사라짐짐
-    amount: number;
-  }[];
-  right: {
-    id: string,
-    target: {
-      type: "capital";
-      name: string;
-    } | {
-      type: "debt";
-      name: string;
-    };
-    type: "증감"; // 증감, 생김, 사라짐짐
-    amount: number;
-  }[];
+  left: TransactionItem[];
+  right: TransactionItem[];
 } ;
 
 function sum(arr: number[]) {
