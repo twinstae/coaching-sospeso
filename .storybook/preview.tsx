@@ -14,16 +14,15 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <div>
-      <Story />
-      
-    <ToastifyToastContainer
-      closeOnClick
-      autoClose={5000}
-      hideProgressBar={true}
-      closeButton={false}
-      theme=""
-    />
+      <div data-theme="lofi">
+        <Story />    
+        <ToastifyToastContainer
+          closeOnClick
+          autoClose={5000}
+          hideProgressBar={true}
+          closeButton={false}
+          theme=""
+        />
       </div>
     ),
   ],

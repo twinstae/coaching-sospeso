@@ -3,9 +3,6 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx,astro}"],
   theme: {
     extend: {
-      aria: {
-        "current-page": 'current="page"',
-      },
       spacing: {
         "icon-size": "43px",
       },
