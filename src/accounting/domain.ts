@@ -6,8 +6,8 @@ export type AccountItem = {
   name: string;
   amount: number;
   majorCategory: string;
-  middleCategory?: string;
-  smallCategory?: string;
+  middleCategory: string | undefined;
+  smallCategory: string | undefined;
 };
 
 // 항목?

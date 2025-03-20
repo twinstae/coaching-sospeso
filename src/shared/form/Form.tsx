@@ -36,8 +36,8 @@ export function Form<
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit((data, event) => {
-          form.bus?.dispatch(event?.target, data);
-          form.onSubmit?.(data, event);
+          form.bus?.dispatch(event?.target, data as any);
+          form.onSubmit?.(data as any, event);
         })}
         {...props}
       />

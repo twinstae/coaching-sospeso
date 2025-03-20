@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, lofi;
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
@@ -9,7 +10,7 @@ body {
     sans-serif;
 }
 
-@layer components {
+@layer utilities {
   :root {
     --rounded-box: 0;
   }

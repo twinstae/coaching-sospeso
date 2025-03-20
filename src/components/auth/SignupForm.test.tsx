@@ -44,7 +44,8 @@ describe("SignUpForm", () => {
         checkbox: "이용약관 (필수)"  [checked=false]
         link: "개인정보처리방침 (필수)"  
         checkbox: "개인정보처리방침 (필수)"  [checked=false]
-        button: "회원가입하기""
+        button: "회원가입하기"  
+      group: "Notifications Alt+T""
     `);
 
     expect(result).toEqual({});

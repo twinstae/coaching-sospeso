@@ -4,10 +4,8 @@ import type { LibSQLDatabase } from "drizzle-orm/libsql/driver";
 import {
   applyTransaction,
   type Account,
-  type Transaction,
 } from "@/accounting/domain.ts";
 import type { AccountRepositoryI } from "@/accounting/repository.ts";
-import invariant from "@/invariant.ts";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 const accountSchema = v.array(
@@ -17,8 +15,8 @@ const accountSchema = v.array(
     type: v.picklist(["asset", "capital", "debt"]),
     amount: v.pipe(v.number(), v.integer()),
     majorCategory: v.string(),
-    middleCategory: v.optional(v.string()),
-    smallCategory: v.optional(v.string()),
+    middleCategory: v.undefinedable(v.string()),
+    smallCategory: v.undefinedable(v.string()),
   }),
 );
 
@@ -38,11 +36,10 @@ function dbModelToDomainModel(
     const result = { ...item } as any; // 방어적 복사
 
     if (result.smallCategory === null) {
-      delete result["smallCategory"]
-      
+      result["smallCategory"] = undefined
     }
     if (result.middleCategory === null) {
-      delete result["middleCategory"]
+      result["middleCategory"] = undefined
     }
 
     return result;    

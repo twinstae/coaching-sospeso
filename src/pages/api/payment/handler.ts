@@ -1,11 +1,12 @@
 import { paymentRepo, sospesoRepo } from "@/actions/actions";
+import invariant from '@/invariant';
 import type { PaymentRepositoryI } from "@/payment/repository";
 import { createSospesoServices } from "@/services/services";
 import type { SospesoRepositoryI } from "@/sospeso/repository";
 import type { APIRoute } from "astro";
 
 const parseSospesoId = (linkAddParam: string) => {
-  const params = JSON.parse(linkAddParam);
+  const params = JSON.parse(linkAddParam) as { id: string };
   return params.id;
 };
 
@@ -19,9 +20,11 @@ export function createHandler({
   const services = createSospesoServices({ sospesoRepo, paymentRepo });
 
   return (async ({ request }: { request: Request }) => {
-    const params = await request.json();
+    const params = (await request.json()) as Record<string, string>;
     const { PCD_PAY_RST, PCD_PAY_CODE, PCD_PAY_TYPE, PCD_LINK_ADD_PARAM } =
       params;
+
+    invariant(PCD_LINK_ADD_PARAM, "")
 
     if (
       PCD_PAY_RST === "success" &&

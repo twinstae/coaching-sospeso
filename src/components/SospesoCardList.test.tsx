@@ -10,7 +10,7 @@ describe("SospesoCardList", () => {
   test("목록에서 소스페소의 기본 정보를 볼 수 있다", async () => {
     renderTL(<SospesoCardList sospesoList={[TEST_SOSPESO_LIST_ITEM]} />);
 
-    await expectTL(queryTL.link(/FROM. 탐정토끼/)).toHaveAttribute(
+    await expectTL(queryTL.link(/FROM.탐정토끼/)).toHaveAttribute(
       "href",
       href("소스페소-상세", { sospesoId: TEST_SOSPESO_LIST_ITEM.id }),
     );

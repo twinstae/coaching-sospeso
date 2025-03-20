@@ -13,6 +13,8 @@ export function checkAccess({
 }): "need-login" | "not-authorized" | "can-access" {
   const route = findRouteByPath(path);
 
+  invariant(route, "루트가 있어야 합니다");
+
   if (route.auth.required === false) {
     return "can-access";
   }

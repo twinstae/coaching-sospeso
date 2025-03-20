@@ -1,8 +1,8 @@
 import { defineAction, type ActionClient } from "astro:actions";
-import { buildSospesoActions, paymentRepo, sospesoRepo } from "./actions";
+import { accountRepo, buildSospesoActions, paymentRepo, sospesoRepo } from "./actions";
 import type { ActionDefinition } from "./buildActionServer";
 import type * as z from "zod";
-import type { Prettify } from "valibot";
+import type { Prettify } from 'better-auth';
 
 type InferDefinedActions<T> = Prettify<{
   [K in keyof T]: T[K] extends ActionDefinition<infer Input, infer Output>
@@ -22,5 +22,5 @@ export function buildActionServer<T extends Record<string, ActionDefinition>>(
 }
 
 export const server = buildActionServer(
-  buildSospesoActions(sospesoRepo, paymentRepo),
+  buildSospesoActions(sospesoRepo, paymentRepo, accountRepo),
 );

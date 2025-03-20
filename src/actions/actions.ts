@@ -19,7 +19,7 @@ import { isAdmin } from "@/auth/domain.ts";
 import { createSospesoIssuingPayment } from "@/payment/domain.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
-import type { AccountRepositoryI } from "@/accounting/repository.ts";
+import { createFakeAccountRepository, type AccountRepositoryI } from "@/accounting/repository.ts";
 
 export const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
@@ -213,3 +213,4 @@ export function buildSospesoActions(
 
 export const sospesoRepo = createDrizzleSospesoRepository(db);
 export const paymentRepo = createDrizzlePaymentRepository(db);
+export const accountRepo = createFakeAccountRepository({});

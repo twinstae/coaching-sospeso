@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 import svgr from "vite-plugin-svgr";
+import tailwindcss from "@tailwindcss/vite";
 
 import sentry from "@sentry/astro";
 
@@ -33,7 +34,8 @@ export default defineConfig({
   ],
   vite: {
     plugins: [ 
-      svgrConfig
+      svgrConfig,
+      tailwindcss()
     ],
   }
 });

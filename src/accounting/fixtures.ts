@@ -42,6 +42,7 @@ export const 현금_70000원: AccountItem = {
   amount: 70000,
   majorCategory: "유동자산",
   middleCategory: "현금및현금성자산",
+  smallCategory: undefined,
 };
 
 export const 기부금_10000원: AccountItem = {
@@ -50,6 +51,8 @@ export const 기부금_10000원: AccountItem = {
   name: "기부금",
   amount: 10000,
   majorCategory: "이익잉여금",
+  middleCategory: "미지급금",
+  smallCategory: undefined,
 }
 
 export const 코치_미지급금_60000원: AccountItem = {
@@ -59,6 +62,7 @@ export const 코치_미지급금_60000원: AccountItem = {
   amount: 60000,
   majorCategory: "유동부채",
   middleCategory: "미지급금",
+  smallCategory: undefined
 }
 
 export const testAccount = [
@@ -79,6 +83,8 @@ export const testAccount = [
     name: "분담금",
     amount: 120000,
     majorCategory: "자본금",
+    middleCategory: undefined,
+    smallCategory: undefined
   },
   코치_미지급금_60000원
 ];
