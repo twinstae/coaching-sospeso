@@ -45,9 +45,6 @@ export function SospesoDetail({
   return (
     <div className="max-w-md m-auto mt-4">
       <div className="flex flex-col gap-4 card bg-base-100 shadow-xl p-8">
-        <h1 className="text-page-title">
-          <SospesoLogo aria-label="코칭 소스페소" className="w-full" />
-        </h1>
         <div className="flex justify-between">
           <p>
             <strong className="font-bold uppercase">From.</strong>{" "}
@@ -62,16 +59,20 @@ export function SospesoDetail({
           <div className="text-2xl">To.</div>
           <div className="text-3xl">{sospeso.to}</div>
         </div>
+
+        <p>
+          코칭 2회 이용권 (1회기 평균 1시간 반)
+        </p>
       </div>
-      <div className="flex justify-around p-2 w-full">
+      <div className="flex justify-around p-2 gap-2 flex-col">
         {sospeso.status === "issued" && (
-          <Link
-            className="btn btn-primary"
-            routeKey="소스페소-신청"
-            params={{ sospesoId: sospeso.id }}
+          <a
+            className="btn btn-primary  w-full"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSeMsxctQJib-YI7Y9OO-PkOc7aNn52XaKvruErDERg6RYPiRw/viewform"
+            target="_blank"
           >
             신청하기
-          </Link>
+          </a>
         )}
 
         {sospeso.status === "pending" && (
@@ -95,7 +96,7 @@ export function SospesoDetail({
         )}
 
         <button
-          className="btn btn-primary"
+          className="btn btn-secondary w-full"
           onClick={async () => {
             try {
               await clipboardApi.copy(

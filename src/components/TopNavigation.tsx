@@ -1,5 +1,6 @@
 import { authApi } from "@/adapters/authApi";
 import { Link } from "@/routing/Link.tsx";
+import { SospesoLogo } from "@/shared/icons/SospesoLogo";
 import { useEffect, useState } from "react";
 
 export function TopNavigation() {
@@ -29,7 +30,7 @@ export function TopNavigation() {
           routeKey="홈"
           params={{ page: 1 }}
         >
-          Coaching Sospeso
+          <SospesoLogo aria-label="코칭 소스페소" className="w-full h-12" />
         </Link>
       </div>
       <div className="flex-none">

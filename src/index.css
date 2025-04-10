@@ -24,6 +24,12 @@ body {
     border-radius: 0;
   }
 
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 240px));
+    justify-content: center;
+  }
+
   .btn.btn-twitter {
     color: white;
     background-color: rgb(29, 155, 240, 0.8);

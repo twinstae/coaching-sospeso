@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@sentry/cli'
+  - esbuild
+  - msw
+  - sharp

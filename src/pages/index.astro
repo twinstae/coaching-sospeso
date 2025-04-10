@@ -1,12 +1,10 @@
 ---
 import { sospesoRepo } from "@/actions/actions.ts";
-import { SospesoCardList } from "@/components/SospesoCardList";
+import { SospesoCardGrid } from "@/components/SospesoCardListGrid";
 import { SospesoFilter } from "@/components/SospesoFilter";
 import { SospesoList } from "@/components/SospesoList.tsx";
 import Layout from "@/layouts/Layout.astro";
-import { Link } from "@/routing/Link.tsx";
 import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams.ts";
-import { SospesoLogo } from "@/shared/icons/SospesoLogo";
 import { Pagination } from "@/shared/Pagination.tsx";
 
 const params = parseRouteParamsFromUrl("홈", new URL(Astro.url));
@@ -31,9 +29,6 @@ if (!sospesoList) {
       <div class="hero bg-base-200 py-16">
         <div class="hero-content text-center">
           <div class="max-w-md">
-            <h1 class="text-page-title mb-12">
-              <SospesoLogo aria-label="코칭 소스페소" className="w-full" />
-            </h1>
             <p class="mb-4">
               소스페소는 맡겨둔 커피라는 뜻의 이탈리아어입니다. 커피값을 누군가
               먼저 계산해두고 영수증을 걸어두면, 조건에 맞는 누구나 그 커피를
@@ -45,13 +40,12 @@ if (!sospesoList) {
               맞는 사람이라면 누구나 코칭을 받고 도움을 받을 수 있습니다.
             </p>
 
-            <Link
-              className="btn btn-primary mt-16"
-              routeKey="소스페소-발행"
-              params={undefined}
+            <a
+              class="btn btn-primary mt-16"
+              href="https://ghost.life-lifter.com/"
             >
-              소스페소 발행하러 가기
-            </Link>
+              소스페소 블로그 보러가기
+            </a>
           </div>
         </div>
       </div>
@@ -71,7 +65,7 @@ if (!sospesoList) {
     />
   </section>
 
-  <section class="mx-auto max-w-3xl flex-col items-center gap-4 mobile:hidden">
-    <SospesoCardList sospesoList={sospesoList} />
+  <section class="mx-auto max-w-3xl flex-col items-center gap-4 mobile:hidden mb-16">
+    <SospesoCardGrid sospesoList={sospesoList} />
   </section>
 </Layout>
