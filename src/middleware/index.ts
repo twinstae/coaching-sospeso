@@ -9,10 +9,7 @@ const staticRouteKeys: string[] = ["코치-소개"] satisfies RouteKeys[];
 export const onRequest = sequence(async (context, next) => {
   context.locals.now = new Date();
 
-  if (
-    context.url.pathname.startsWith("/api")
-    || context.url.pathname.startsWith("/_actions")
-    || context.url.pathname === "/favicon.ico"
+  if (context.url.pathname === "/favicon.ico"
     || context.url.pathname === "/sitemap.xml"
     || context.url.pathname === "/og.png"
     || context.url.pathname === "/robots.txt"
@@ -22,17 +19,22 @@ export const onRequest = sequence(async (context, next) => {
     return next();
   }
 
-  const route = findRouteByPath(context.url.pathname);
+  const isApiOrActionRoute = context.url.pathname.startsWith("/api")
+    || context.url.pathname.startsWith("/_actions");
+  if (!isApiOrActionRoute) {
 
-  if (route === undefined){
-    console.warn(context.url.pathname)
-    return next();
+    const route = findRouteByPath(context.url.pathname);
+
+    if (route === undefined) {
+      console.warn(context.url.pathname)
+      return next();
+    }
+
+    if (staticRouteKeys.includes(route.key)) {
+      return next();
+    }
   }
 
-  if (staticRouteKeys.includes(route.key)) {
-    return next();
-  }
-  
   const session = await auth.api.getSession({
     headers: context.request.headers,
   });
