@@ -48,8 +48,8 @@ importers:
         specifier: ^16.4.7
         version: 16.4.7
       drizzle-orm:
-        specifier: ^0.40.1
-        version: 0.40.1(@libsql/client@0.15.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.1)(kysely@0.27.6)
+        specifier: ^0.41.0
+        version: 0.41.0(@libsql/client@0.15.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.1)(kysely@0.27.6)
       jsx-email:
         specifier: ^2.7.1
         version: 2.7.1(@jsx-email/plugin-inline@1.0.1)(@jsx-email/plugin-minify@1.0.1)(@jsx-email/plugin-pretty@1.0.0)(@types/node@22.13.10)(@types/react-dom@18.3.5(@types/react@18.3.19))(@types/react@18.3.19)(lightningcss@1.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
@@ -3834,8 +3834,8 @@ packages:
     resolution: {integrity: sha512-U4wWit0fyZuGuP7iNmRleQyK2V8wCuv57vf5l3MnG4z4fzNTjY/U13M8owyQ5RavqvqxBifWORaR3wIUzlN64g==}
     hasBin: true
 
-  drizzle-orm@0.40.1:
-    resolution: {integrity: sha512-aPNhtiJiPfm3qxz1czrnIDkfvkSdKGXYeZkpG55NPTVI186LmK2fBLMi4dsHpPHlJrZeQ92D322YFPHADBALew==}
+  drizzle-orm@0.41.0:
+    resolution: {integrity: sha512-7A4ZxhHk9gdlXmTdPj/lREtP+3u8KvZ4yEN6MYVxBzZGex5Wtdc+CWSbu7btgF6TB0N+MNPrvW7RKBbxJchs/Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -10849,7 +10849,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.40.1(@libsql/client@0.15.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.1)(kysely@0.27.6):
+  drizzle-orm@0.41.0(@libsql/client@0.15.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.1)(kysely@0.27.6):
     optionalDependencies:
       '@libsql/client': 0.15.0
       '@opentelemetry/api': 1.9.0

@@ -235,6 +235,17 @@ export const transactionItem = sqliteTable("transaction_item", {
     .notNull(),
 });
 
+
+export const transactionItemRelations = relations(
+  transactionItem,
+  ({ one }) => ({
+    transaction: one(transaction, {
+      fields: [transactionItem.transactionId],
+      references: [transaction.id],
+    })
+  }),
+);
+
 export const transaction = sqliteTable("transaction", {
   id: text("id").primaryKey(),
   description: text("description").notNull(),
