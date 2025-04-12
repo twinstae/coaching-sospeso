@@ -6,13 +6,14 @@ import { secretEnv } from "@/adapters/env.secret";
 import { renderSecretLinkEmail } from "@/adapters/renderEmail";
 import { isProd } from "@/adapters/env.public";
 
+console.log([import.meta.env.VERCEL_URL!, import.meta.env.BETTER_AUTH_URL!, "https://coaching-sospeso.org"])
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
-  trustedOrigins: [process.env.VERCEL_URL!, process.env.BETTER_AUTH_URL!, "https://coaching-sospeso.org"],
+  trustedOrigins: [import.meta.env.VERCEL_URL!, import.meta.env.BETTER_AUTH_URL!, "https://coaching-sospeso.org"],
   session: {
     cookieCache: {
       enabled: true,
