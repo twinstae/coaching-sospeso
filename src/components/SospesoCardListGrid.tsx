@@ -3,8 +3,10 @@ import { Link } from "@/routing/Link";
 import type { SospesoStatus } from "@/sospeso/domain";
 
 export function SospesoCardGrid({
+  isLoggedIn,
   sospesoList,
 }: {
+  isLoggedIn: boolean,
   sospesoList: {
     id: string;
     from: string;
@@ -40,13 +42,21 @@ export function SospesoCardGrid({
           </ul>
           <div className="self-end mt-8 mb-2">
             {sospeso.status === "issued" && (
-              <a
-                className="btn btn-primary"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeMsxctQJib-YI7Y9OO-PkOc7aNn52XaKvruErDERg6RYPiRw/viewform?usp=sharing"
-                target="_blank"
-              >
-                신청하기
-              </a>
+              isLoggedIn ? (
+                <a
+                  className="btn btn-primary"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSeMsxctQJib-YI7Y9OO-PkOc7aNn52XaKvruErDERg6RYPiRw/viewform?usp=sharing"
+                  target="_blank"
+                >
+                  신청하기
+                </a>
+              ) : (
+                <Link className="btn btn-primary"
+                  routeKey="로그인"
+                  params={{}}>
+                  신청하기
+                </Link>
+              )
             )}
             {sospeso.status === "pending" && (
               <StatusStamp>신청자 있음</StatusStamp>

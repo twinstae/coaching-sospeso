@@ -52,7 +52,7 @@ export type AuthApi = {
   }) => Promise<void>;
 };
 
-const SIGNUP_CALLBACK_URL = "/auth/me/update";
+const SIGNUP_CALLBACK_URL = "/";
 
 export const authApi: AuthApi = {
   async sendEmailVerification({ email }) {
