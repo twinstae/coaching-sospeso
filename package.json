@@ -96,5 +96,6 @@
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.9"
-  }
+  },
+  "packageManager": "pnpm@10.8.0"
 }
