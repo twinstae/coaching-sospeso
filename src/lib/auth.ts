@@ -12,7 +12,7 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
-  trustedOrigins: [process.env.VERCEL_URL!, process.env.BETTER_AUTH_URL!],
+  trustedOrigins: [process.env.VERCEL_URL!, process.env.BETTER_AUTH_URL!, "https://coaching-sospeso.org"],
   session: {
     cookieCache: {
       enabled: true,
