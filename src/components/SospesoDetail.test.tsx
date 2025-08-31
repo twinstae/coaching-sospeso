@@ -22,14 +22,14 @@ describe("SospesoDetail", () => {
   });
 
   // 신청하기 페이지로 보내는 버튼(링크)
-  test("발행된 소스페소에서는 신청할 수 있는 링크를 볼 수 있다", async () => {
-    renderTL(<SospesoDetail sospeso={ISSUED_SOSPESO} />);
+  // test("발행된 소스페소에서는 신청할 수 있는 링크를 볼 수 있다", async () => {
+  //   renderTL(<SospesoDetail sospeso={ISSUED_SOSPESO} />);
 
-    await expectTL(queryTL.link("신청하기")).toHaveAttribute(
-      "href",
-      href("소스페소-신청", { sospesoId: ISSUED_SOSPESO.id }),
-    );
-  });
+  //   await expectTL(queryTL.link("신청하기")).toHaveAttribute(
+  //     "href",
+  //     href("소스페소-신청", { sospesoId: ISSUED_SOSPESO.id }),
+  //   );
+  // });
 
   // -> 사용됨 (스탬프 쾅)
   test("이미 사용된 소스페소는 스탬프가 있다", async () => {

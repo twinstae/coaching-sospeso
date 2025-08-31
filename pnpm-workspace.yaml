@@ -1,6 +1,7 @@
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@sentry/cli'
+  - '@tailwindcss/oxide'
   - esbuild
   - msw
   - sharp

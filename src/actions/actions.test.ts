@@ -1,6 +1,5 @@
 import { afterAll, describe, expect, test } from "vitest";
 import { drizzle } from "drizzle-orm/libsql";
-import { like } from "drizzle-orm/expressions";
 
 import * as schema from "@/adapters/drizzle/schema.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
@@ -34,6 +33,7 @@ import {
 import type { Account } from "@/accounting/domain.ts";
 import { createDrizzleAccountRepository } from "@/adapters/drizzle/drizzleAccountRepository.ts";
 import { 기부금_10000원, 부채_증감_60000원, 자산_현금_증감_80000원, 코치_미지급금_60000원, 현금_70000원 } from "@/accounting/fixtures.ts";
+import { like } from "drizzle-orm/sql/expressions/conditions";
 
 const generateId = generateNanoId;
 

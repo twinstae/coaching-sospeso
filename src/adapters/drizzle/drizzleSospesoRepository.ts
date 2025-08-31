@@ -224,16 +224,15 @@ export function createDrizzleSospesoRepository(
         });
 
         const before = result && dbModelToDomainModel(result);
-
+        
         const after = update(before);
 
         if (before) {
           await tx.update(schema.sospeso).set({
-            id: after.id,
             from: after.from,
             to: after.to,
             status: calcStatus(after),
-          });
+          }).where(eq(schema.sospeso.id, after.id));
 
           if (before.issuing !== after.issuing) {
             await tx.update(schema.sospesoIssuing).set({

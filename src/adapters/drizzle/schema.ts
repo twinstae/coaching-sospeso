@@ -132,7 +132,7 @@ export const sospesoApplication = sqliteTable("sospeso_application", {
   applicantId: text("applicant_id")
     .references(() => user.id)
     .notNull(),
-  appliedAt: integer("issued_at", { mode: "timestamp_ms" }).notNull(),
+  appliedAt: integer("applied_at", { mode: "timestamp_ms" }).notNull(),
 });
 
 export const sospesoApplicationRelations = relations(
