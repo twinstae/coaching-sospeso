@@ -17,7 +17,11 @@ export function SospesoCardGrid({
 }) {
   return (
     <ul className="card-grid gap-3">
-      {sospesoList.map((sospeso) => (
+      {sospesoList
+      .sort((a,b) => {
+        return b.issuedAt.getTime() - a.issuedAt.getTime();
+      })
+      .map((sospeso) => (
         <li key={sospeso.id} aria-labelledby={`to-${sospeso.to}`} className="card bg-base-100 shadow-xl border border-black p-2 relative max-w-60">
           <div className="flex flex-col items-start">
             <span className="font-bold">FROM.</span>
