@@ -1,7 +1,15 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { Link } from "@/routing/Link";
 ---
 
 <Layout title="소스페소 신청 성공">
-  <h2>소스페소 신청이 잘 되었습니다.</h2>
+ <div class="max-w-md flex flex-col gap-4 card bg-base-100 shadow-xl p-8 m-auto mt-4">
+    <h1 class="text-page-title">소스페소 신청 완료</h1>
+    <p>신청이 완료되었습니다. 가입하신 연락처로 라이프리프터 코치가 연락을 드릴테니, 조금만 기다려주세요.</p>
+
+    <Link routeKey="홈" params={{}} className="btn btn-primary">
+      홈으로 돌아가기
+    </Link>
+  </div>
 </Layout>
