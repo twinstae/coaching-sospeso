@@ -264,8 +264,10 @@ export function createDrizzleSospesoRepository(
               .onConflictDoUpdate({
                 target: schema.sospesoApplication.id,
                 set: {
+                  sospesoId,
                   status: application.status,
                   appliedAt: application.appliedAt,
+                  applicantId: application.applicantId,
                   content: application.content,
                 },
               });
