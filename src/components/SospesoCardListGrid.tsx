@@ -37,19 +37,19 @@ export function SospesoCardGrid({
           </div>
 
           <ul className="list-disc pl-4 text-sm">
-            <li>퍼포먼스 코칭 2회 이용권</li>
+            <li>퍼포먼스 1회 코칭 이용권</li>
             <li>신청 후 90일 이내에 사용</li>
           </ul>
           <div className="self-end mt-8 mb-2">
             {sospeso.status === "issued" && (
               isLoggedIn ? (
-                <a
+                <Link
                   className="btn btn-primary"
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeMsxctQJib-YI7Y9OO-PkOc7aNn52XaKvruErDERg6RYPiRw/viewform?usp=sharing"
-                  target="_blank"
+                  routeKey="소스페소-신청"
+                  params={{ sospesoId: sospeso.id }}
                 >
                   신청하기
-                </a>
+                </Link>
               ) : (
                 <Link className="btn btn-primary"
                   routeKey="로그인"

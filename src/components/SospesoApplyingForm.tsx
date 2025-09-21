@@ -70,7 +70,7 @@ export function SospesoApplyingForm({
           bus: sospesoApplyingEventBus,
         }}
       >
-        <Textarea label="코치에게 쓰는 편지" name="content" />
+        <Textarea label="내용" name="content" />
         <Checkbox
           label={
             <>

@@ -61,7 +61,7 @@ export function SospesoDetail({
         </div>
 
         <p>
-          코칭 2회 이용권 (1회기 평균 1시간 반)
+          코칭 이용권 (1회기 평균 1시간 반)
         </p>
       </div>
       <div className="flex justify-around p-2 gap-2 flex-col">
