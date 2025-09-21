@@ -12,7 +12,7 @@ const applyingSchema = v.pipe(
     applicationId: v.string(),
     content: v.pipe(
       v.string(),
-      v.minLength(1, "코치에게 쓸 편지를 입력해주세요"),
+      v.minLength(1, "내용을 입력해주세요"),
     ),
     usage: v.boolean(),
   }),

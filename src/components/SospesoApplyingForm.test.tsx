@@ -32,7 +32,7 @@ describe("SospesoApplyingForm", () => {
 
     // then expect 뭐시기를 하면서 검증을 함!
     await expectTL(queryTL.textbox("내용")).toHaveErrorMessage(
-      "코치에게 쓸 편지를 입력해주세요",
+      "내용을 입력해주세요",
     );
 
     await queryTL
@@ -63,7 +63,7 @@ describe("SospesoApplyingForm", () => {
       </SafeEventHandler>,
     );
 
-    // when 내용를 입력하고 신청하기 버튼을 클릭한다
+    // when 내용을 입력하고 신청하기 버튼을 클릭한다
     await queryTL
       .textbox("내용")
       .fill("퀴어 문화 축제 갔다왔어요~ Love wins all~");

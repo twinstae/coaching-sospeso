@@ -266,6 +266,7 @@ export function createDrizzleSospesoRepository(
                 set: {
                   status: application.status,
                   appliedAt: application.appliedAt,
+                  content: application.content,
                 },
               });
           }
