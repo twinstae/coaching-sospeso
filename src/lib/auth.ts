@@ -6,14 +6,14 @@ import { secretEnv } from "@/adapters/env.secret";
 import { renderSecretLinkEmail } from "@/adapters/renderEmail";
 import { isProd } from "@/adapters/env.public";
 
-console.log([import.meta.env.VERCEL_URL!, import.meta.env.BETTER_AUTH_URL!, "https://coaching-sospeso.org"])
 const emailApi = isProd ? plunkEmailApi : fakeEmailApi;
 const LIFE_LIFTER_ADMIN_EMAIL = "taehee.kim@life-lifter.com";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
-  trustedOrigins: [import.meta.env.VERCEL_URL!, import.meta.env.BETTER_AUTH_URL!, "https://coaching-sospeso.org", "https://www.coaching-sospeso.org"],
+  trustedOrigins: [import.meta.env.VERCEL_URL, import.meta.env.BETTER_AUTH_URL, "https://coaching-sospeso.org", "https://www.coaching-sospeso.org"]
+    .filter(url => !!url),
   session: {
     cookieCache: {
       enabled: true,
@@ -54,6 +54,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     sendResetPassword: async ({ user, url }) => {
+      console.log("sendResetPassword", { user, url });
       await emailApi.send({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,
@@ -72,6 +73,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url }) => {
+      console.log("sendVerificationEmail", { user, url });
       emailApi.send({
         to: user.email,
         from: LIFE_LIFTER_ADMIN_EMAIL,

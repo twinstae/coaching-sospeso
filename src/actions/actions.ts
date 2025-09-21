@@ -16,10 +16,11 @@ import * as domain from "@/sospeso/domain.ts";
 import { SOSPESO_PRICE } from "@/sospeso/constants.ts";
 import { type PaymentRepositoryI } from "@/payment/repository.ts";
 import { isAdmin } from "@/auth/domain.ts";
-import { createSospesoIssuingPayment } from "@/payment/domain.ts";
+import { completePayment, createSospesoIssuingPayment } from "@/payment/domain.ts";
 import { createDrizzleSospesoRepository } from "@/adapters/drizzle/drizzleSospesoRepository.ts";
 import { createDrizzlePaymentRepository } from "@/adapters/drizzle/drizzlePaymentRepository.ts";
 import { createFakeAccountRepository, type AccountRepositoryI } from "@/accounting/repository.ts";
+import { createSospesoServices } from "@/services/services.ts";
 
 export const paymentApi = isProd ? payplePaymentApi : fakePayplePaymentApi;
 
@@ -39,6 +40,12 @@ export function buildSospesoActions(
   paymentRepo: PaymentRepositoryI,
   accountRepo: AccountRepositoryI,
 ) {
+
+  const sospesoServices = createSospesoServices({
+    sospesoRepo,
+    paymentRepo,
+  });
+
   return {
     approveSospesoApplication: definePureAction({
       input: z.object({
@@ -93,22 +100,23 @@ export function buildSospesoActions(
 
         invariant(issuerId, "로그인해야 소스페소를 발급할 수 있어요!");
 
+        const newPayment = createSospesoIssuingPayment({
+          sospesoId: input.sospesoId,
+          now,
+          totalAmount: SOSPESO_PRICE,
+          command: {
+            sospesoId: input.sospesoId,
+            issuedAt: now,
+            from: input.from,
+            to: input.to,
+            issuerId,
+            paidAmount: SOSPESO_PRICE,
+          },
+        });
         await paymentRepo.updateOrSave(input.sospesoId, (payment) => {
           invariant(payment === undefined, "이미 결제가 진행 중이에요!");
 
-          return createSospesoIssuingPayment({
-            sospesoId: input.sospesoId,
-            now,
-            totalAmount: SOSPESO_PRICE,
-            command: {
-              sospesoId: input.sospesoId,
-              issuedAt: now,
-              from: input.from,
-              to: input.to,
-              issuerId,
-              paidAmount: SOSPESO_PRICE,
-            },
-          });
+          return newPayment;
         });
       },
     }),
@@ -159,6 +167,28 @@ export function buildSospesoActions(
 
           return appliedSospeso;
         });
+      },
+    }),
+    completeSospeoPayment: definePureAction({
+      input: z.object({
+        paymentId: z.string(),
+      }),
+      handler: async (input, { locals: { user } }) => {
+        invariant(user, "로그인을 해야 합니다");
+
+        try {
+          const event = await sospesoServices.completeSospesoPayment({
+            paymentId: input.paymentId,
+            paymentResult: {}
+          })
+
+          await sospesoServices.issueSospeso({
+            ...event.payload,
+            issuedAt: new Date(event.payload.issuedAt)
+          });
+        } catch (error) {
+          console.error(error);
+        }
       },
     }),
 

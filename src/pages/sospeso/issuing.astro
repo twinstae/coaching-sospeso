@@ -48,9 +48,8 @@ const isFlagOn = await featureFlagServerApi.getIsEnabled("isFlagOn");
   sospesoIssuingEventBus.on(window.document.body, async (command) => {
     actions
       .createIssuingSospesoPayment(command)
-      .then(() => {
-        navigate(href("소스페소-결제", { paymentId: command.sospesoId }));
-      })
+      .then(() => actions.completeSospeoPayment({ paymentId: command.sospesoId }))
+      .then(() => navigate(href("소스페소-상세", { sospesoId: command.sospesoId })))
       .catch(() => {
         toastApi.toast(
           "알 수 없는 에러가 발생했어요. 잠시 뒤에 다시 시도해주세요.",
