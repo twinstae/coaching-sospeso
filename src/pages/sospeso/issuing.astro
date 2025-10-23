@@ -17,7 +17,9 @@ const isFlagOn = await featureFlagServerApi.getIsEnabled("isFlagOn");
 <Layout title="코칭 소스페소 : 발행하기">
   {
     isFlagOn || isAdmin(user) ? (
-      <SospesoIssuingForm client:load userNickname={user.nickname} />
+      <issuing-handler>
+        <SospesoIssuingForm client:load userNickname={user.nickname} />
+      </issuing-handler>
     ) : (
       <div class="hero py-16 card bg-base-100 shadow-xl p-8 m-auto max-w-md">
         <div class="hero-content text-center">
@@ -45,16 +47,26 @@ const isFlagOn = await featureFlagServerApi.getIsEnabled("isFlagOn");
   import { href } from "@/routing/href.ts";
   const toastApi = toastifyToastApi;
 
-  sospesoIssuingEventBus.on(window.document.body, async (command) => {
-    actions
-      .createIssuingSospesoPayment(command)
-      .then(() => actions.completeSospeoPayment({ paymentId: command.sospesoId }))
-      .then(() => navigate(href("소스페소-상세", { sospesoId: command.sospesoId })))
-      .catch(() => {
-        toastApi.toast(
-          "알 수 없는 에러가 발생했어요. 잠시 뒤에 다시 시도해주세요.",
-          "error",
-        );
+  class IssuingHandler extends HTMLElement {
+    connectedCallback() {
+      sospesoIssuingEventBus.on(window.document.body, async (command) => {
+        actions
+          .createIssuingSospesoPayment(command)
+          .then(() =>
+            actions.completeSospeoPayment({ paymentId: command.sospesoId })
+          )
+          .then(() =>
+            navigate(href("소스페소-상세", { sospesoId: command.sospesoId }))
+          )
+          .catch(() => {
+            toastApi.toast(
+              "알 수 없는 에러가 발생했어요. 잠시 뒤에 다시 시도해주세요.",
+              "error"
+            );
+          });
       });
-  });
+    }
+  }
+
+  customElements.define("issuing-handler", IssuingHandler);
 </script>

@@ -25,7 +25,9 @@ if (!sospeso) {
 ---
 
 <Layout title="코칭 소스페소 : 신청하기">
-  <SospesoApplyingForm sospeso={sospeso} client:load />
+  <apply-handler>
+    <SospesoApplyingForm sospeso={sospeso} client:load />
+  </apply-handler>
 </Layout>
 
 <script>
@@ -35,17 +37,23 @@ if (!sospeso) {
   import { href } from "@/routing/href.ts";
   import { getParsedParams } from "@/routing/parseRouteParams.ts";
 
-  const { sospesoId } = getParsedParams("소스페소-신청");
 
-  sospesoApplyingEventBus.on(window.document.body, (command) => {
-    actions
-      .applySospeso({ ...command, sospesoId: sospesoId })
-      .then((result) => {
-        if (result.error) {
-          return console.error(result.error);
-        }
+  class ApplyHandler extends HTMLElement {
+    connectedCallback() {
+      sospesoApplyingEventBus.on(window.document.body, (command) => {
+        const { sospesoId } = getParsedParams("소스페소-신청");
+        actions
+          .applySospeso({ ...command, sospesoId })
+          .then((result) => {
+            if (result.error) {
+              return console.error(result.error);
+            }
 
-        navigate(href("소스페소-신청완료", undefined));
+            navigate(href("소스페소-신청완료", undefined));
+          });
       });
-  });
+    }
+  }
+
+  customElements.define("apply-handler", ApplyHandler);
 </script>

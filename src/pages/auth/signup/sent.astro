@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { Link } from "@/routing/Link";
 import { parseRouteParamsFromUrl } from "@/routing/parseRouteParams";
 
 const { email } = parseRouteParamsFromUrl(
@@ -9,7 +10,14 @@ const { email } = parseRouteParamsFromUrl(
 ---
 
 <Layout title="코칭 소스페소 회원가입 이메일 전송 완료">
-  {email}로 회원가입 인증 이메일을 보냈어요. 메일함을 확인해주세요.
+  
+  <article class="card bg-base-100 shadow-xl p-8 m-auto max-w-xl mt-4 content gap-8">
+    <h1 class="text-page-title">회원가입 이메일 전송 완료</h1>
+    <p>
+      {email}로 회원가입 인증 이메일을 보냈어요. 메일함을 확인해주세요.
+    </p>
+    <Link routeKey="홈" params={{}} className="btn btn-primary">홈으로 돌아가기</Link>
+  </article>
 </Layout>
 
 <script>

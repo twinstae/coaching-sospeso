@@ -11,7 +11,6 @@ import {
 import { toastifyToastApi, type ToastApiI } from "@/adapters/toastApi.tsx";
 import { href } from "@/routing/href.ts";
 import { Link } from "@/routing/Link.tsx";
-import { SospesoLogo } from "@/shared/icons/SospesoLogo";
 import { format년월일 } from "@/adapters/dateApi";
 
 export function SospesoDetail({
@@ -20,25 +19,25 @@ export function SospesoDetail({
   toastApi = toastifyToastApi,
 }: {
   sospeso:
-    | {
-        id: string;
-        from: string;
-        to: string;
-        status: "issued" | "pending";
-        issuedAt: Date;
-        consuming: undefined;
-      }
-    | {
-        id: string;
-        from: string;
-        to: string;
-        status: "consumed";
-        issuedAt: Date;
-        consuming: {
-          consumer: { id: string; nickname: string };
-          content: string;
-        };
-      };
+  | {
+    id: string;
+    from: string;
+    to: string;
+    status: "issued" | "pending";
+    issuedAt: Date;
+    consuming: undefined;
+  }
+  | {
+    id: string;
+    from: string;
+    to: string;
+    status: "consumed";
+    issuedAt: Date;
+    consuming: {
+      consumer: { id: string; nickname: string };
+      content: string;
+    };
+  };
   clipboardApi?: ClipboardApiI;
   toastApi?: ToastApiI;
 }) {
@@ -66,13 +65,13 @@ export function SospesoDetail({
       </div>
       <div className="flex justify-around p-2 gap-2 flex-col">
         {sospeso.status === "issued" && (
-          <a
+          <Link
             className="btn btn-primary  w-full"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSeMsxctQJib-YI7Y9OO-PkOc7aNn52XaKvruErDERg6RYPiRw/viewform"
-            target="_blank"
+            routeKey="소스페소-신청"
+            params={{ sospesoId: sospeso.id }}
           >
             신청하기
-          </a>
+          </Link>
         )}
 
         {sospeso.status === "pending" && (
@@ -101,7 +100,7 @@ export function SospesoDetail({
             try {
               await clipboardApi.copy(
                 window.origin +
-                  href("소스페소-상세", { sospesoId: sospeso.id }),
+                href("소스페소-상세", { sospesoId: sospeso.id }),
               );
               toastApi.toast("소스페소 링크를 복사했어요!", "success");
             } catch {

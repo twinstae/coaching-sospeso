@@ -1,10 +1,11 @@
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, lofi;
 }
 
 @custom-variant aria-current-page {
-  &[aria-current="page"]{
+  &[aria-current="page"] {
     @slot;
   }
 }
@@ -20,6 +21,7 @@ body {
   :root {
     --rounded-box: 0;
   }
+
   .card {
     border-radius: 0;
   }
@@ -74,16 +76,11 @@ body {
     }
   }
 
-  .table
-    :where(
-      thead tr,
-      tbody tr:not(:last-child),
-      tbody tr:first-child:last-child
-    ) {
-    border-bottom-color: var(
-      --fallback-b3,
-      oklch(var(--b3) / var(--tw-border-opacity))
-    );
+  .table :where(thead tr,
+    tbody tr:not(:last-child),
+    tbody tr:first-child:last-child) {
+    border-bottom-color: var(--fallback-b3,
+        oklch(var(--b3) / var(--tw-border-opacity)));
   }
 
   .select-item {
@@ -130,6 +127,11 @@ body {
   .input {
     transition: outline-color 0.125s ease-in-out;
     outline-color: transparent;
+  }
+
+  ::placeholder {
+    color: var(--color-base-content);
+    opacity: 0.4;
   }
 
   .input:focus,
