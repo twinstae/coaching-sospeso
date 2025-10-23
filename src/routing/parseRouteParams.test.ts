@@ -9,7 +9,7 @@ describe("parseRouteParams", () => {
   test("정적인 route의 params를 읽어올 수 있다", () => {
     const path = href("어드민", undefined);
 
-    const url = new URL(window.origin + path);
+    const url = new URL("http://localhost:3000" + path);
 
     expect(parseRouteParamsFromUrl("어드민", url)).toEqual(undefined);
   });
@@ -20,7 +20,7 @@ describe("parseRouteParams", () => {
       consumerId: TEST_CONSUMER_ID,
     });
 
-    const url = new URL(window.origin + path);
+    const url = new URL("http://localhost:3000" + path);
 
     expect(parseRouteParamsFromUrl("어드민-소스페소-사용", url)).toEqual({
       sospesoId: TEST_SOSPESO_ID,
@@ -35,7 +35,7 @@ describe("parseRouteParams", () => {
       q: TEST_ID,
     });
 
-    const url = new URL(window.origin + path);
+    const url = new URL("http://localhost:3000" + path);
 
     expect(parseRouteParamsFromUrl("파라미터-테스트", url)).toEqual({
       testId: TEST_ID,

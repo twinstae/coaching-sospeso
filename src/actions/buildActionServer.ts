@@ -6,7 +6,7 @@ export type ActionHandler<TInputSchema, TOutput> =
     ? (input: z.infer<TInputSchema>, context: ActionContext) => Promise<TOutput>
     : (input: any, context: ActionContext) => Promise<TOutput>;
 
-export type ActionDefinition<TInput = any, TOutput = any> = {
+export type ActionDefinition<TInput = unknown, TOutput = unknown> = {
   input: z.ZodType<TInput>;
   handler: ActionHandler<TInput, TOutput>;
 };
@@ -17,6 +17,6 @@ export function definePureAction<
 >(actionDefinition: {
   input: TInputSchema;
   handler: ActionHandler<TInputSchema, TOutput>;
-}): ActionDefinition<z.output<TInputSchema>, TOutput> {
-  return actionDefinition;
+}) {
+  return actionDefinition as ActionDefinition<z.output<TInputSchema>, TOutput>;
 }

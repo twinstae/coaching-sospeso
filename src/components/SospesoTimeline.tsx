@@ -17,7 +17,7 @@ export function SospesoTimeline({
 
   return (
     <ul className="timeline">
-      <li aria-label="발행됨" aria-current={issued ? "step" : undefined}>
+      <li aria-label="발행됨" aria-current={status === "issued" ? "step" : undefined}>
         <div className="timeline-middle">
           <div className="w-icon-size h-icon-size bg-white rounded-full flex justify-center items-center">
             {issued ? <Bean color="#FFD362" /> : null}
@@ -28,7 +28,7 @@ export function SospesoTimeline({
         </div>
         <hr className="bg-white" />
       </li>
-      <li aria-label="신청됨" aria-current={pending ? "step" : undefined}>
+      <li aria-label="신청됨" aria-current={status === "pending" ? "step" : undefined}>
         <hr className="bg-white" />
         <div className="timeline-middle">
           <div className="w-icon-size h-icon-size bg-white rounded-full flex justify-center items-center">
@@ -40,7 +40,7 @@ export function SospesoTimeline({
         </div>
         <hr className="bg-white" />
       </li>
-      <li aria-label="사용됨" aria-current={consumed ? "step" : undefined}>
+      <li aria-label="사용됨" aria-current={status === "consumed" ? "step" : undefined}>
         <hr className="bg-white" />
         <div className="timeline-middle">
           <div className="w-icon-size h-icon-size bg-white rounded-full flex justify-center items-center">

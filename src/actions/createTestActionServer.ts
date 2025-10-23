@@ -26,7 +26,7 @@ type TestActionServer = InferDefinedTestActions<
 function defineTestAction<TInput, TOutput>({
   input,
   handler,
-}: ActionDefinition<TInput, TOutput>) {
+}: ActionDefinition<z.ZodType<TInput>, TOutput>) {
   return async (unparsedInput: unknown, context: unknown) => {
     if (unparsedInput instanceof FormData) {
       throw new Error("This action only accepts JSON.");

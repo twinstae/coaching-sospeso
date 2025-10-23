@@ -26,26 +26,40 @@ describe("SignUpForm", () => {
     await queryTL.button("회원가입하기").click();
 
     expect(getA11ySnapshot(document.body)).toMatchInlineSnapshot(`
-      "heading: "회원가입"  
-      form  
-        textbox: "이메일"  [value=]
-        alert [text="이메일이 없어요"] 
-        textbox: "비밀번호"  [value=]
-        alert [text="최소 10자리 이상이어야해요"] 
-        textbox: "비밀번호 확인"  [value=]
-        alert [text="최소 10자리 이상이어야해요"] 
-        textbox: "이름(실명)"  [value=]
-        alert [text="실명이 꼭 있어야 해요"] 
-        textbox: "전화번호"  [value=]
-        alert [text="010-1234-5678 같은 휴대폰 번호를 입력해주세요"] 
-        textbox: "별명"  [value=]
-        alert [text="별명을 꼭 입력해주세요"] 
-        link: "이용약관 (필수)"  
-        checkbox: "이용약관 (필수)"  [checked=false]
-        link: "개인정보처리방침 (필수)"  
-        checkbox: "개인정보처리방침 (필수)"  [checked=false]
-        button: "회원가입하기"  
-      group: "Notifications Alt+T""
+      "heading: "회원가입" 
+      form 
+          "이메일"
+        textbox: "이메일" [value=]
+        alert 
+          "이메일이 없어요"
+          "비밀번호"
+        textbox: "비밀번호" [value=]
+        alert 
+          "최소 10자리 이상이어야해요"
+          "비밀번호 확인"
+        textbox: "비밀번호 확인" [value=]
+        alert 
+          "최소 10자리 이상이어야해요"
+          "이름(실명)"
+        textbox: "이름(실명)" [value=]
+        alert 
+          "실명이 꼭 있어야 해요"
+          "전화번호"
+        textbox: "전화번호" [value=]
+        alert 
+          "010-1234-5678 같은 휴대폰 번호를 입력해주세요"
+          "별명"
+        textbox: "별명" [value=]
+        alert 
+          "별명을 꼭 입력해주세요"
+        link: "이용약관 (필수)" 
+            "(필수)"
+        checkbox: "이용약관 (필수)" [checked=false]
+        link: "개인정보처리방침 (필수)" 
+            "(필수)"
+        checkbox: "개인정보처리방침 (필수)" [checked=false]
+        button: "회원가입하기" 
+      region: "Notifications Alt+T""
     `);
 
     expect(result).toEqual({});

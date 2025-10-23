@@ -1,34 +1,34 @@
-import { renderTL } from "@/siheom/renderTL";
-
 import { SospesoTimeline } from "./SospesoTimeline";
 import {
   CONSUMED_SOSPESO,
   ISSUED_SOSPESO,
   PENDING_SOSPESO,
 } from "@/sospeso/fixtures";
-import { queryTL } from "@/siheom/queryTL";
-import { expectTL } from "@/siheom/expectTL";
 import { describe, test } from "vitest";
+import { given } from "@/siheom/given";
+import { assertions } from "@/siheom/assert";
+import { query } from "@/siheom/query";
+import { runSiheom } from "@/siheom/siheom";
 
 describe("SospesoTimeline", () => {
-  test("발행됨 상태", () => {
-    renderTL(<SospesoTimeline status={ISSUED_SOSPESO["status"]} />);
-    expectTL(queryTL.listitem("발행됨")).toBeCurrent("step");
-    expectTL(queryTL.listitem("신청됨")).not.toBeCurrent("step");
-    expectTL(queryTL.listitem("사용됨")).not.toBeCurrent("step");
-  });
+  test("발행됨 상태", async () => runSiheom(
+    given.render(<SospesoTimeline status={ISSUED_SOSPESO["status"]} />),
+    assertions.current(query.listitem("발행됨"), "step"),
+    assertions.not.current(query.listitem("신청됨"), "step"),
+    assertions.not.current(query.listitem("사용됨"), "step"),
+  ));
 
-  test("신청됨 상태", () => {
-    renderTL(<SospesoTimeline status={PENDING_SOSPESO["status"]} />);
-    expectTL(queryTL.listitem("발행됨")).not.toBeCurrent("step");
-    expectTL(queryTL.listitem("신청됨")).toBeCurrent("step");
-    expectTL(queryTL.listitem("사용됨")).not.toBeCurrent("step");
-  });
+  test("신청됨 상태", async () => runSiheom(
+    given.render(<SospesoTimeline status={PENDING_SOSPESO["status"]} />),
+    assertions.not.current(query.listitem("발행됨"), "step"),
+    assertions.current(query.listitem("신청됨"), "step"),
+    assertions.not.current(query.listitem("사용됨"), "step"),
+  ));
 
-  test("사용됨 상태", () => {
-    renderTL(<SospesoTimeline status={CONSUMED_SOSPESO["status"]} />);
-    expectTL(queryTL.listitem("발행됨")).not.toBeCurrent("step");
-    expectTL(queryTL.listitem("신청됨")).not.toBeCurrent("step");
-    expectTL(queryTL.listitem("사용됨")).toBeCurrent("step");
-  });
+  test("사용됨 상태", async () => runSiheom(
+    given.render(<SospesoTimeline status={CONSUMED_SOSPESO["status"]} />),
+    assertions.not.current(query.listitem("발행됨"), "step"),
+    assertions.not.current(query.listitem("신청됨"), "step"),
+    assertions.current(query.listitem("사용됨"), "step"),
+  ));
 });
